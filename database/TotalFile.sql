@@ -1,29 +1,77 @@
---create database trash43
+--create database trash1
 --------------------------------------------------------------UserInfor------------------------------------------------------------------
 Create table UserInfor(
 	ID INT IDENTITY(1,1) NOT NULL,
 	UserID AS 'UID' + RIGHT('00000000' + CAST(ID AS VARCHAR(8)), 8) persisted PRIMARY KEY,
 	Account varchar(155) unique,
 	Password varchar(155),
-	FullName NVARCHAR(255),
-	Address NVARCHAR(255),
-	Mail VARCHAR(255),
-	PhoneNumber VARCHAR(15),
-	CHECK (PhoneNumber LIKE '%[^0-9]%'),
-	Dob DATE,
-	Gender BIT,
+	FullName nvarchar(255),
+	Address nvarchar(255),
+	Mail varchar(255),
+	PhoneNumber varchar(15),
+	check (PhoneNumber like '%[^0-9]%'),
+	Dob date,
+	Gender bit,
 	-- 0: girl
 	-- 1: man
-	Nation NVARCHAR(255),
-	ImageUser NVARCHAR(255),
+	Nation nvarchar(255),
+	ImageUser nvarchar(255),
 	NumFriend INT DEFAULT 0,
 	NumPost INT DEFAULT 0,
-	TimeCreate DATETIME DEFAULT GETDATE(),
+	TimeCreate datetime DEFAULT getDate(),
 	isAdmin BIT DEFAULT 0
 	-- 0 khong phai admin
 	-- 1 chinh  la  admin
 );
+--NumFriend: trigger khi add friend, trigger khi huy friend dbo.USERRELATION
+CREATE TRIGGER trigger_friend
+ON USERRELATION AFTER UPDATE 
+AS
+BEGIN
+	IF (UPDATE(isFriend))
+	BEGIN
+		IF((SELECT isFriend FROM inserted) = 1)
+		BEGIN
+			UPDATE [dbo].[UserInfor]
+			SET NumFriend = NumFriend + 1
+			WHERE UserID IN (SELECT UserID1 FROM inserted);
 
+			UPDATE [dbo].[UserInfor]
+			SET NumFriend = NumFriend + 1
+			WHERE UserID IN (SELECT UserID2 FROM inserted);
+		END
+		ELSE
+		BEGIN
+			UPDATE [dbo].[UserInfor]
+			SET NumFriend = NumFriend - 1
+			WHERE UserID IN (SELECT UserID1 FROM deleted);
+
+			UPDATE [dbo].[UserInfor]
+			SET NumFriend = NumFriend - 1
+			WHERE UserID IN (SELECT UserID2 FROM deleted);
+		END
+	END
+END;
+
+
+--NumPost  : Trigger khi ddanwg bai
+CREATE TRIGGER post_INSERT
+ON POST After INSERT
+AS
+BEGIN
+	UPDATE dbo.UserInfor
+	SET NumPost= NumPost +1
+	WHERE UserID= (SELECT UserID FROM inserted);
+END;
+
+CREATE TRIGGER post_DELETE
+ON POST After DELETE
+AS
+BEGIN
+	UPDATE dbo.UserInfor
+	SET NumPost= NumPost -1
+	WHERE UserID= (SELECT UserID FROM Deleted);
+END;
 
 
 
@@ -41,6 +89,34 @@ Create table POST(
 	NumComment INT DEFAULT 0,
 	NumShare INT DEFAULT 0, 
 )
+-- NumInterface: tigger khi huy like va like dbo. (casi nay khong can trigger)
+-- NumComment: trigger khi comment va xoa comment
+	CREATE TRIGGER delete_comment_of_post
+	ON dbo.comment AFTER DELETE
+	as
+	BEGIN
+		UPDATE dbo.POST
+		SET NumComment= NumComment -1
+		WHERE PostID= (SELECT PostID FROM Deleted)
+	END;
+
+	CREATE TRIGGER insert_comment_of_post
+	ON dbo.comment AFTER INSERT 
+	as
+	BEGIN
+		UPDATE dbo.POST
+		SET NumComment= NumComment +1
+		WHERE PostID= (SELECT PostID FROM Inserted)
+	END;
+-- NumShare: trigger khi share
+CREATE TRIGGER increase_when_share_POST
+ON dbo.POSTSHARE AFTER INSERT
+AS
+BEGIN
+	UPDATE dbo.POST
+	SET NumShare= NumShare +1
+	WHERE PostID= (SELECT PostID FROM INSERTed)
+END
 
 
 
@@ -57,7 +133,7 @@ Create table COMMENT(
 	ImageComment varchar(255),
 	NumInterface INT DEFAULT 0,
 )
-
+-- NumInterface: tigger khi huy like va like (casi nay khong can trigger)
 
 
 
@@ -77,7 +153,16 @@ CREATE TABLE USERRELATION(
 	-- 0: da ket ban
 	-- 1: chua ket ban
 )
-	
+	-- trigger neu user1 va user2 dong thoi yeu cau kb cho nhau thi chuyen bit = 1;
+	CREATE TRIGGER ChangeToFriend
+	ON USERRELATION AFTER UPDATE
+	AS
+	BEGIN
+		IF( UPDATE(U1RequestU2) AND UPDATE(U2RequestU1))
+			UPDATE dbo.USERRELATION
+			SET U1RequestU2= 0, U2RequestU1= 0, isFriend= 1
+			WHERE UserID1= (SELECT UserID1 FROM dbo.USERRELATION) AND UserID2= (SELECT UserID2 FROM dbo.USERRELATION)
+    END;
 
 
 --------------------------------------------------------------DBO.CHATCONTENT------------------------------------------------------------------
@@ -107,6 +192,24 @@ ID INT IDENTITY(1,1) NOT NULL,
 	NumInterface INT DEFAULT 0,
 	NumComment INT DEFAULT 0,
 )
+-- NumComment: trigger khi comment va xoa comment
+	CREATE TRIGGER delete_comment_of_POSTSHARE
+	ON dbo.COMMENTSHARE AFTER DELETE
+	as
+	BEGIN
+		UPDATE dbo.POSTSHARE
+		SET NumComment= NumComment -1
+		WHERE ShareID= (SELECT ShareID FROM Deleted)
+	END;
+
+	CREATE TRIGGER insert_comment_of_POSTSHARE
+	ON dbo.COMMENTSHARE AFTER INSERT 
+	as
+	BEGIN
+		UPDATE dbo.POSTSHARE
+		SET NumComment= NumComment +1
+		WHERE ShareID= (SELECT ShareID FROM Inserted)
+	END;
 
 Create table COMMENTSHARE(
 	ID INT IDENTITY(1,1) NOT NULL,
