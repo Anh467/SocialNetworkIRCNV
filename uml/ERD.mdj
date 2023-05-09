@@ -1504,11 +1504,11 @@
 										"$ref": "AAAAAAGH+tHisZuTmEE="
 									},
 									"font": "Arial;13;1",
-									"left": 648,
-									"top": 501,
+									"left": 584,
+									"top": 509,
 									"width": 205.322265625,
 									"height": 13,
-									"text": "COMMENTSHARE"
+									"text": "COMMENT"
 								},
 								{
 									"_type": "ERDColumnCompartmentView",
@@ -1530,8 +1530,8 @@
 												"$ref": "AAAAAAGH+tIKdpueK2g="
 											},
 											"font": "Arial;13;0",
-											"left": 653,
-											"top": 524,
+											"left": 589,
+											"top": 532,
 											"width": 195.322265625,
 											"height": 13
 										},
@@ -1545,8 +1545,8 @@
 												"$ref": "AAAAAAGH+tIMXpuktDE="
 											},
 											"font": "Arial;13;0",
-											"left": 653,
-											"top": 539,
+											"left": 589,
+											"top": 547,
 											"width": 195.322265625,
 											"height": 13
 										},
@@ -1560,8 +1560,8 @@
 												"$ref": "AAAAAAGH+tIOCJuqe4c="
 											},
 											"font": "Arial;13;0",
-											"left": 653,
-											"top": 554,
+											"left": 589,
+											"top": 562,
 											"width": 195.322265625,
 											"height": 13
 										},
@@ -1575,8 +1575,8 @@
 												"$ref": "AAAAAAGH+tIPk5uwVV8="
 											},
 											"font": "Arial;13;0",
-											"left": 653,
-											"top": 569,
+											"left": 589,
+											"top": 577,
 											"width": 195.322265625,
 											"height": 13
 										},
@@ -1590,8 +1590,8 @@
 												"$ref": "AAAAAAGH+7RG/3PlwaE="
 											},
 											"font": "Arial;13;0",
-											"left": 653,
-											"top": 584,
+											"left": 589,
+											"top": 592,
 											"width": 195.322265625,
 											"height": 13
 										},
@@ -1605,8 +1605,8 @@
 												"$ref": "AAAAAAGH+tIRZJu2zNc="
 											},
 											"font": "Arial;13;0",
-											"left": 653,
-											"top": 599,
+											"left": 589,
+											"top": 607,
 											"width": 195.322265625,
 											"height": 13
 										},
@@ -1620,22 +1620,22 @@
 												"$ref": "AAAAAAGH+tITJJu8WXU="
 											},
 											"font": "Arial;13;0",
-											"left": 653,
-											"top": 614,
+											"left": 589,
+											"top": 622,
 											"width": 195.322265625,
 											"height": 13
 										}
 									],
 									"font": "Arial;13;0",
-									"left": 648,
-									"top": 519,
+									"left": 584,
+									"top": 527,
 									"width": 205.322265625,
 									"height": 113
 								}
 							],
 							"font": "Arial;13;0",
-							"left": 648,
-							"top": 496,
+							"left": 584,
+							"top": 504,
 							"width": 205.322265625,
 							"height": 136,
 							"nameLabel": {
@@ -1698,7 +1698,7 @@
 									},
 									"font": "Arial;13;0",
 									"left": 765,
-									"top": 464,
+									"top": 472,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 30,
@@ -1715,7 +1715,7 @@
 								"$ref": "AAAAAAGH+s9vmZs3Tng="
 							},
 							"lineStyle": 2,
-							"points": "832:342;750:342;750:496",
+							"points": "832:342;750:342;750:504",
 							"nameLabel": {
 								"$ref": "AAAAAAGH+tIkY5vNEKk="
 							},
@@ -1778,7 +1778,7 @@
 										"$ref": "AAAAAAGH+tLNH5vieNo="
 									},
 									"font": "Arial;13;0",
-									"left": 622,
+									"left": 558,
 									"top": 500,
 									"height": 13,
 									"alpha": -0.5235987755982988,
@@ -1796,7 +1796,7 @@
 								"$ref": "AAAAAAGH+s1dEprTrjc="
 							},
 							"lineStyle": 2,
-							"points": "490:295;490:521;648:521",
+							"points": "490:295;490:521;584:521",
 							"nameLabel": {
 								"$ref": "AAAAAAGH+tLNH5vj16A="
 							},
@@ -2793,7 +2793,7 @@
 									"top": 37,
 									"width": 205.322265625,
 									"height": 13,
-									"text": "COMMENTSHARE"
+									"text": "COMMENT"
 								},
 								{
 									"_type": "ERDColumnCompartmentView",
@@ -3492,7 +3492,7 @@
 					"_parent": {
 						"$ref": "AAAAAAGH+s1RKZrMOHY="
 					},
-					"name": "COMMENTSHARE",
+					"name": "COMMENT",
 					"columns": [
 						{
 							"_type": "ERDColumn",
