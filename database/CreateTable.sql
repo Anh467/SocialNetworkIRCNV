@@ -1,4 +1,4 @@
---create database trash433
+--create database trash43
 --------------------------------------------------------------UserInfor------------------------------------------------------------------
 Create table UserInfor(
 	ID INT IDENTITY(1,1) NOT NULL,
@@ -16,7 +16,6 @@ Create table UserInfor(
 	-- 1: man
 	Nation NVARCHAR(255),
 	ImageUser NVARCHAR(255),
-	ImageBackGround NVARCHAR(255),
 	NumFriend INT DEFAULT 0,
 	NumPost INT DEFAULT 0,
 	TimeCreate DATETIME DEFAULT GETDATE(),
@@ -41,7 +40,6 @@ Create table POST(
 	NumInterface INT DEFAULT 0,
 	NumComment INT DEFAULT 0,
 	NumShare INT DEFAULT 0, 
-	PublicPost BIT,
 )
 
 
@@ -108,7 +106,6 @@ ID INT IDENTITY(1,1) NOT NULL,
 	TimeShare DATETIME DEFAULT getDate(),
 	NumInterface INT DEFAULT 0,
 	NumComment INT DEFAULT 0,
-	PublicPost BIT,
 )
 
 Create table COMMENTSHARE(
