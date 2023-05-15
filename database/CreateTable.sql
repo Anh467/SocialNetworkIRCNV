@@ -1,4 +1,4 @@
---create database trash43
+--create database trash433
 --------------------------------------------------------------UserInfor------------------------------------------------------------------
 Create table UserInfor(
 	ID INT IDENTITY(1,1) NOT NULL,
