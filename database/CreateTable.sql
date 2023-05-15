@@ -1,4 +1,4 @@
---create database trash43
+﻿--create database trash4334
 --------------------------------------------------------------UserInfor------------------------------------------------------------------
 Create table UserInfor(
 	ID INT IDENTITY(1,1) NOT NULL,
@@ -16,6 +16,7 @@ Create table UserInfor(
 	-- 1: man
 	Nation NVARCHAR(255),
 	ImageUser NVARCHAR(255),
+	ImageBackGround NVARCHAR(255),
 	NumFriend INT DEFAULT 0,
 	NumPost INT DEFAULT 0,
 	TimeCreate DATETIME DEFAULT GETDATE(),
@@ -40,6 +41,7 @@ Create table POST(
 	NumInterface INT DEFAULT 0,
 	NumComment INT DEFAULT 0,
 	NumShare INT DEFAULT 0, 
+	PublicPost BIT,
 )
 
 
@@ -89,6 +91,11 @@ CREATE TABLE CHATCONTENT(
 	UserID2 varchar(11),
 	constraint fk_user_id2_dboCHATCONTENT foreign key (UserID2) references dbo.UserInfor(UserID),
 	check (UserID1>UserID2),
+	Mess NVARCHAR(500),
+	ofUser1 BIT,
+	--ofUser1 đúng thì đây sẽ là đoạn chat của user1
+	--ofUser1 sai thì đây sẽ là đoạn chat của user2 
+	CreateAt DATETIME DEFAULT GETDATE(),
 	-- rang buoc UserID1 luc nao cung lon hon UserID2
 )
 --------------------------------------------------------------DBO.SHARE------------------------------------------------------------------
@@ -106,6 +113,7 @@ ID INT IDENTITY(1,1) NOT NULL,
 	TimeShare DATETIME DEFAULT getDate(),
 	NumInterface INT DEFAULT 0,
 	NumComment INT DEFAULT 0,
+	PublicPost BIT,
 )
 
 Create table COMMENTSHARE(
