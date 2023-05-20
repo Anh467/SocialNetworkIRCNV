@@ -115,23 +115,24 @@ public class AutoLogin implements Filter {
         try {
             for (Cookie aCookie : cookies) {
                 if (aCookie.getName().equals("id")) {
-                    if (aCookie.getValue() == null) {
+                    if (aCookie.getValue() == null || aCookie.getValue().equals("")) {
                         break;
                     } else {
                         session.setAttribute("id", aCookie.getValue());
                         System.out.println("rq.getContextPath(): "+rq.getContextPath());
                         System.out.println("rq.getContextPath(): "+rq.getServerName());
                         System.out.println("rq.getContextPath(): "+rq.getServerPort());
-                        String url= rq.getServerName()+":"+rq.getServerPort()+rq.getContextPath()+"/user.jsp";
-                        rp.sendRedirect("../index.jsp");
-                        return;
+                        String url= rq.getServerName()+":"+rq.getServerPort()+rq.getContextPath()+"/user.jsp";                       
                     }
                 }
             }
-
         } catch (Exception e) {
         }
-
+        
+        if(session.getAttribute("id")!=null){
+            rp.sendRedirect("../index.jsp");
+                        return;
+        }
         Throwable problem = null;
         try {
             chain.doFilter(request, response);
