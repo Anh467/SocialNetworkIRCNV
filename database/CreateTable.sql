@@ -10,7 +10,6 @@ CREATE TABLE UserInfor(
 	Address NVARCHAR(255),
 	Mail VARCHAR(255),
 	PhoneNumber VARCHAR(15),
-	CHECK (PhoneNumber LIKE '%[^0-9]%'),
 	Dob DATE,
 	Gender BIT,
 	-- 0: girl
