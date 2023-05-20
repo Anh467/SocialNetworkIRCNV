@@ -4,16 +4,11 @@
  */
 package connection;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-
 public class Config {
 
-    public String databaseName = "";
+    public String databaseName = "Social";
     public String user = "sa";
-    public String password = "nguyenanhviet";
-    public String serverName = "MSI\\SQLEXPRESS:1433";
+    public String password = "lioooo0000";
+    public String serverName = "DESKTOP-ULQ9JUL\\TCNJK:1433";
 
 }

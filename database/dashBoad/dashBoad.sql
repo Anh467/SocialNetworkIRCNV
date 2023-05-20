@@ -113,3 +113,18 @@ INSERT INTO SignupStatistics (MonthDate, SignupCount) VALUES
     (DATEADD(MONTH, -2, @ThisMonth), 240),
     (DATEADD(MONTH, -1, @ThisMonth), 220),
     (@ThisMonth, 256);
+
+
+SELECT * FROM (SELECT TOP 12 MonthDate, PostCount
+				FROM PostStatistics
+				ORDER BY MonthDate DESC) a
+ORDER BY a.MonthDate ASC;
+
+SELECT CONCAT(DATEPART(MONTH, MonthDate), '/', RIGHT(DATEPART(YEAR, MonthDate), 2)) AS MonthYear,
+       PostCount
+FROM (SELECT TOP 12 MonthDate, PostCount
+      FROM PostStatistics
+      ORDER BY MonthDate DESC) a
+ORDER BY a.MonthDate ASC;
+
+
