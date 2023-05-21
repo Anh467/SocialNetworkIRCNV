@@ -4,6 +4,8 @@
  */
 package model;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author 84384
@@ -13,6 +15,7 @@ public class Post {
     private String PostID, UserID, Content, timePost;
     private int NumInterface, NumComment;
     private boolean Public;
+  
 
     public Post(String PostID, String UserID, String Content, String timePost, int NumInterface, int NumComment, boolean Public) {
         this.PostID = PostID;
