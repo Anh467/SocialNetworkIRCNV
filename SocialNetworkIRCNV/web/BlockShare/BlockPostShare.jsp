@@ -1,5 +1,7 @@
 
 
+<%@page import="java.util.ArrayList"%>
+<%@page import="model.Comment"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -96,51 +98,140 @@
                 margin:5px 0px;
                 max-height: 530px;
             }
+            .share .share-bottom, .share .counter{
+                box-shadow: 1px solid #ddd;
+                display:flex;
+                justify-content: space-between;
+                padding:0 10%;
+                font-size: 18px;
+                font-family: sans-serif;
+
+            }
+            .share .counter{
+                padding: 10px 10%;
+                color: #00587c;
+            }
+            .share .share-bottom .action{
+                padding:10px;
+                border-radius:10px;
+                transition: .3s ease-in;
+                cursor: pointer;
+            }
+
+            .share .share-bottom .action:hover{
+                background:#eee;
+            }
             
         </style>
     </head>
     <body>
-
+         <%
+            String img_pro = request.getParameter("img_pro");
+            String name_user = request.getParameter("name_user");
+            String timePost = request.getParameter("timePost");
+            String Content = request.getParameter("Content");
+            String img_post = request.getParameter("img_post");
+            
+            String img_pros = request.getParameter("img_pros");
+            String name_users = request.getParameter("name_users");
+            String timePosts = request.getParameter("timePosts");
+            String Publics = request.getParameter("Publics");
+            String Contents = request.getParameter("Contents");
+            
+            String num_like = request.getParameter("num_like");
+            String num_cmt = request.getParameter("num_cmt");
+            String num_share = request.getParameter("num_share");
+        %>
         <div class="share">
             <div class="share-head">
                 <div class="dp" >
-                    <img src="https://i.pinimg.com/564x/ab/0f/a0/ab0fa0f12e173f8503567a4eaab3ce06.jpg" alt="" style="width: 100%;" >
+                    <img src="<%=img_pros%>" alt="" style="width: 100%;" >
                 </div>
                 <div class="share-info">
-                    <p class="name" style="color: #003140">David Noob</p>
-                    <span class="time" style="color: #70d8ff">2 days ago</span>
+                    <p class="name" style="color: #003140"><%=name_users%></p>
+                    <span class="time" style="color: #70d8ff"><%=timePosts%></span>
                     <i style="">
                         <select class="fas fa-ellipsis-h">
-                            <option value="pri">Private</option>
-                            <option value="pub">Public</option>
+                            <option value="<%=Publics%>">Private</option>
+                            <option value="<%=Publics%>">Public</option>
                         </select> 
                     </i>
                 </div>
                 <i class="fas fa-ellipsis-h"></i>
             </div>
             <div class="share-content">
-                I don't think so
+                <%=Contents%>
             </div>
             <div class="share-body">
                 <div class="share-top" >
                     <div class="dp" >
-                        <img src="https://i.pinimg.com/564x/de/62/2c/de622c247814fd996711686810eb6206.jpg" alt="" style="width: 100%;" >
+                        <img src="<%=img_pro%>" alt="" style="width: 100%;" >
                     </div>
                     <div class="share-info">
-                        <p class="name" style="color: #003140">Ramesh GC</p>
-                        <span class="time" style="color: #70d8ff">2 days ago</span>
+                        <p class="name" style="color: #003140"><%=name_user%></p>
+                        <span class="time" style="color: #70d8ff"><%=timePost%></span>
                     </div>
 
                 </div>
 
                 <div class="share-content" style="text-align: center;">
-                    <p style="text-align: left;">Mountains are so cool</p>
-                    <img src="https://i.pinimg.com/564x/f2/16/70/f21670c355402865e48d47aba7686c14.jpg" />
+                    <p style="text-align: left;"><%=Content%></p>
+                    <img src="<%=img_post%>" />
                 </div>
-            </div>   
-        </div>
+            </div> 
+               
+            <div class="counter">
+                <div class="count-like">
+                    <span><%=num_like%></span>
+                </div>
+                <div class="count-cmt">
+                    <span><%=num_cmt%></span>
+                </div>
+                <div class="count-share">
+                    <span><%=num_share%></span>
+                </div>
+            </div>
+            <div class="share-bottom" style=" width: 90%; color:  #00abfd; border-top: 1px #00587c solid; margin-left: 5%; padding: 0 5%;">
+                <div class="action">
+                    <i class="far fa-thumbs-up"></i>
+                    <span>Like</span>
+                </div>
+                <div class="action">
+                    <a href="#writecomment-share" style="text-decoration: none; color:  #00abfd;">
+                        <i class="far fa-comment"></i>
+                        <span>Comment</span>
+                    </a>
+                </div>
+                <div class="action">
+                    <i class="fa fa-share"></i>
+                    <span>Share</span>
+                </div>
+            </div>
         
-        <div class="comment" style="width: 100%;" ><%@include file="BlockCommentPostShare.jsp" %></div>
+        </div>
+        <%
+                    ArrayList<Comment> cmts = (ArrayList<Comment>) request.getAttribute("ListCmtShare");
+                    
+                    for (int i = 0; i < cmts.size(); i++) {%>
+                <div class="comment" style="width: 100%">
+                    <%try {%>
+                    <jsp:include page="BlockCommentPostShare.jsp">
+                        <jsp:param name="img_user" value="<%=cmts.get(i).getImgUser()%>" />
+
+                        <jsp:param name="n_user_cmt" value="<%= cmts.get(i).getNameUser()%>" />
+
+                        <jsp:param name="time_cmt" value="<%=cmts.get(i).getTimeCmt()%>" />
+
+                        <jsp:param name="content_cmt" value="<%=cmts.get(i).getContentCmt()%>" />
+                        <jsp:param name="img_cmt" value="<%=cmts.get(i).getImgCmt()%>" />
+                        <jsp:param name="num_like_cmt" value="<%=cmts.get(i).getNumInter()%>" />
+                        
+                </jsp:include>
+                <%} catch (Exception e) {
+                             
+                         }%>
+                </div>
+                <%}%>
    
 
 </body>
