@@ -189,7 +189,7 @@
                 }
             }
             .write-comment-share{
-                margin: 20px 0;
+                margin: 20px 0 20px 10px;
                 width: 100%;
                 display: inline-flex;
                 text-align: center;
@@ -202,9 +202,9 @@
             }
             .input-group {
                 margin: 15px;
-                
+
                 display: block;
-                width: 70%;
+                width: 77%;
                 height: 55px;
                 border: solid 1px #00abfd;
                 background-color: #ffffff;
@@ -232,7 +232,7 @@
                 background-color: rgba(255, 255, 255, 0);
                 top: 0;
                 height: 55px;
-                width: 70%;
+                width: 77%;
                 padding: 0 53px;
                 box-sizing: border-box;
                 z-index: 3;
@@ -285,58 +285,21 @@
                 color: #e0e0e0;
                 font-family: "Ubuntu", sans-serif;
             }
-            .share .share-bottom, .share .counter{
-                box-shadow: 1px solid #ddd;
-                display:flex;
-                justify-content: space-between;
-                padding:0 10%;
-                font-size: 18px;
-                font-family: sans-serif;
 
-            }
-            .share .counter{
-                padding: 10px 10%;
-                color: #00587c;
-            }
-            .share .share-bottom .action{
-                padding:10px;
-                border-radius:10px;
-                transition: .3s ease-in;
-                cursor: pointer;
-            }
 
-            .share .share-bottom .action:hover{
-                background:#eee;
-            }
         </style>
     </head>
     <body>
-        <div class="share">
-            <div class="counter">
-                <div class="count-like">
-                    <span>1000 Like</span>
-                </div>
-                <div class="count-cmt">
-                    <span>1 Commnet</span>
-                </div>
-            </div>
-            <div class="share-bottom" style=" width: 90%; color:  #00abfd; border-top: 1px #00587c solid; margin-left: 5%; padding: 0 5%;">
-                <div class="action">
-                    <i class="far fa-thumbs-up"></i>
-                    <span>Like</span>
-                </div>
-                <div class="action">
-                    <a href="#writecomment-share" style="text-decoration: none; color:  #00abfd;">
-                        <i class="far fa-comment"></i>
-                        <span>Comment</span>
-                    </a>
-                </div>
-                <div class="action">
-                    <i class="fa fa-share"></i>
-                    <span>Share</span>
-                </div>
-            </div>
-        </div>
+        <%
+
+            String time_cmt = request.getParameter("time_cmt");
+            String n_user_cmt = request.getParameter("n_user_cmt");
+            String content_cmt = request.getParameter("content_cmt");
+            String num_like_cmt = request.getParameter("num_like_cmt");
+            String num_dislike_cmt = request.getParameter("num_dislike_cmt");
+            String img_cmt = request.getParameter("img_cmt");
+            String img_user = request.getParameter("img_user");
+        %>
         <main>
             <section class="comment-share-module">
                 <ul>
@@ -344,26 +307,26 @@
                     <li>
                         <div class="comment-share">
                             <div class="comment-share-img">
-                                <img src="https://i.pinimg.com/564x/00/96/dc/0096dc386bbeca215bc5f42deef14d6a.jpg" alt="ảnh" style="border-radius: 50%;">
+                                <img src="<%=img_user%>" alt="ảnh" style="border-radius: 50%;">
                             </div>
                             <div class="comment-share-content">
                                 <div class="comment-share-details">
-                                    <h4 class="comment-share-name" style="color: #003140; margin-top: 7px;">andrew231</h4>
-                                    <span class="comment-share-log" style="color: #70d8ff">20 hours ago</span>
+                                    <h4 class="comment-share-name" style="color: #003140; margin-top: 7px;"><%=n_user_cmt%></h4>
+                                    <span class="comment-share-log" style="color: #70d8ff"><%=time_cmt%></span>
                                 </div>
                                 <div class="comment-share-desc">
-                                    <p>Thanks for making this, super helpful happi happi happi happi happi happi happi happi happi happi happi happi happi happi happihappi happi happi</p>
-                                </div>
+                                    <p><%=content_cmt%></p>
+                                    <img src="<%=img_cmt%>" alt=""/>                                </div>
                                 <div class="comment-share-data">
                                     <div class="comment-share-likes">
                                         <div class="comment-share-likes-up">
                                             <img src="https://rvs-comment-module.vercel.app/Assets/Up.svg" alt="">
-                                            <span>2</span>
+                                            <span><%=num_like_cmt%></span>
                                         </div>
-                                        <div class="comment-share-likes-down">
+                                        <!--                                        <div class="comment-likes-down">
                                             <img src="https://rvs-comment-module.vercel.app/Assets/Down.svg" alt="">
-                                            <span></span>
-                                        </div>
+                                            <span><%//num_dislike_cmt%></span>
+                                        </div>-->
                                     </div>
                                     <div class="comment-share-reply">
                                         <a href="#!">Reply</a>
@@ -408,8 +371,8 @@
             </section>
         </main>
         <div class="write-comment-share col-12" >
-            <div class="col-1" ><img src="https://i.pinimg.com/564x/67/08/ce/6708ce18672409459dbdabf30d661c15.jpg"></div>
-            <div class="input-group col-10" >
+
+            <div class="input-group col-11" >
                 <input id="writecomment-share" style="width: 100%" value="" class="form-control" type="text" name="text-1542372332072" id="text-1542372332072" required="required" placeholder="Write comment-share.......">
                 <label for="text-1542372332072">Write comment-share........</label>
                 <div class="req-mark">!</div>
