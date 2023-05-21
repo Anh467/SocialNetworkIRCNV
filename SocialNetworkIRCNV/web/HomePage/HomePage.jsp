@@ -1,3 +1,6 @@
+<%@page import="model.PostShare"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="model.PostUser"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -109,7 +112,7 @@
 
 
             .container{
-                
+
                 background:#eee;
                 display:flex;
                 left: 0;
@@ -331,6 +334,7 @@
                 margin-left:8px;
             }
         </style>
+        
     </head>
 
     <body>
@@ -341,7 +345,7 @@
             </div>
 
             <div class="nav-middle">
-                <a href="#" class="active">
+                <a href="post" class="active">
                     <i class="fa fa-home"></i>
                 </a>
 
@@ -385,12 +389,12 @@
                         <i class="fa fa-user-friends"></i>
                         <p>Friends</p>
                     </li>
-                    
+
                     <li>
                         <i class="fas fa-comments"></i>
                         <p>Inbox</p>
                     </li>
-                    
+
                 </ul>
 
                 <div class="footer-links">
@@ -415,7 +419,7 @@
                     </div>
 
                     <div class="post-bottom" >
-                        
+
                         <div class="action" style="color:  #00abfd;">
                             <i class="fa fa-image"></i>
                             <span>Photo/Video</span>
@@ -426,13 +430,78 @@
                         </div>
                     </div>
                 </div>
-
-
+                <jsp:include page="/post" />
+                 <jsp:include page="/comment" />  
+                 <jsp:include page="/postshare" />  
+                 <jsp:include page="/commentshare"/>  
+                <%
+                    ArrayList<PostUser> std = (ArrayList<PostUser>) request.getAttribute("ListPost");
+                    std.toString();
+                    System.out.println("length: " + std.size() + std.toString());
+                    for (int i = 0; i < std.size(); i++) {%>
                 <div>
-                    <%@include file="../BlockPost/BlockPost.jsp" %>
+                    <%try {%>
+                    <jsp:include page="../BlockPost/BlockPost.jsp">
+                        <jsp:param name="img_pro" value="<%=std.get(i).getImgUser()%>" />
+
+                        <jsp:param name="uName" value="<%= std.get(i).getFullNameUser()%>" />
+
+                        <jsp:param name="time" value="<%=std.get(i).getTimePost()%>" />
+
+                        <jsp:param name="Public" value="<%=std.get(i).isPublic()%>" />
+
+                        <jsp:param name="content" value="<%=std.get(i).getContent()%>" />
+                        <jsp:param name="img_post" value="<%=std.get(i).getImagePost()%>" />
+                        <jsp:param name="num_like" value="<%=std.get(i).getNumInterface()%>" />
+                        <jsp:param name="num_cmt" value="<%=std.get(i).getNumComment()%>" />
+                        <jsp:param name="num_share" value="<%=std.get(i).getNumShare()%>" />
+                    </jsp:include>
+                    <%} catch (Exception e) {
+                             
+                         }%>
                 </div>
+                <%}%>
+                
+                
+                
                 <div class="post">
-                    <%@include file="../BlockShare/BlockPostShare.jsp" %>
+                    <%
+                    ArrayList<PostShare> sh = (ArrayList<PostShare>) request.getAttribute("ListPostShare");
+                    std.toString();
+                    for (int i = 0; i < std.size(); i++) {%>
+                <div>
+                    <%try {%>
+                    <jsp:include page="../BlockShare/BlockPostShare.jsp">
+                        <jsp:param name="img_pros" value="<%=sh.get(i).getImg_UserShare()%>" />
+
+                        <jsp:param name="name_users" value="<%= sh.get(i).getNameShare()%>" />
+
+                        <jsp:param name="timePosts" value="<%=sh.get(i).getTimePost()%>" />
+
+                        <jsp:param name="Publics" value="<%=sh.get(i).isPublic()%>" />
+
+                        <jsp:param name="Contents" value="<%=sh.get(i).getContent()%>" />
+                        <jsp:param name="img_post" value="<%=sh.get(i).getImg_postshare()%>" />
+                        
+                        <jsp:param name="img_pro" value="<%=sh.get(i).getImgUserDown()%>" />
+
+                        <jsp:param name="name_user" value="<%= sh.get(i).getNameUserDown()%>" />
+
+                        <jsp:param name="timePost" value="<%=sh.get(i).getTimePostDown()%>" />
+
+                        <jsp:param name="Content" value="<%=sh.get(i).getContentDown()%>" />
+                        
+                        
+                        
+                        <jsp:param name="num_like" value="<%=sh.get(i).getNumInterface()%>" />
+                        <jsp:param name="num_cmt" value="<%=sh.get(i).getNumComment()%>" />
+                        <jsp:param name="num_share" value="<%=sh.get(i).getNumShare()%>" />
+                    </jsp:include>
+                    <%} catch (Exception e) {
+                             
+                         }%>
+                </div>
+                <%}%>
                 </div>
 
 
