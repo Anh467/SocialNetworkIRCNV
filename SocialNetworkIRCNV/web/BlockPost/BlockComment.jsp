@@ -15,29 +15,7 @@
             
             
             @import url("https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap");
-            .post .post-bottom, .post .counter{
-                box-shadow: 1px solid #ddd;
-                display:flex;
-                justify-content: space-between;
-                padding:0 10%;
-                font-size: 18px;
-                font-family: sans-serif;
-
-            }
-            .post .counter{
-                padding: 10px 10%;
-                color: #00587c;
-            }
-            .post .post-bottom .action{
-                padding:10px;
-                border-radius:10px;
-                transition: .3s ease-in;
-                cursor: pointer;
-            }
-
-            .post .post-bottom .action:hover{
-                background:#eee;
-            }
+            
             * {
                 margin: 0;
                 padding: 0;
@@ -85,7 +63,7 @@
                 column-gap: 20px;
             }
             main section.comment-module ul li .comment .comment-img {
-                width: 6%;
+                width: 9%;
             }
             main section.comment-module ul li .comment .comment-img img {
                 width: 50px;
@@ -214,22 +192,23 @@
                 }
             }
             .write-comment{
-                margin: 20px;
+                margin: 10px 0 10px 10px;
                 width: 100%;
                 display: inline-flex;
                 text-align: center;
                 align-items: center;
             }
-            .write-comment img{
+            .comment-img{
                 width: 50px;
                 height: 50px;
                 border-radius: 50%;
+                overflow:hidden;
             }
             .input-group {
                 margin: 15px;
                 
                 display: block;
-                width: 74%;
+                width: 79%;
                 height: 55px;
                 border: solid 1px #00abfd;
                 background-color: #ffffff;
@@ -257,7 +236,7 @@
                 background-color: rgba(255, 255, 255, 0);
                 top: 0;
                 height: 55px;
-                width: 74%;
+                width: 79%;
                 padding: 0 53px;
                 box-sizing: border-box;
                 z-index: 3;
@@ -313,33 +292,17 @@
         </style>
     </head>
     <body>
+        <%
+            
+            String time_cmt = request.getParameter("time_cmt");
+            String n_user_cmt = request.getParameter("n_user_cmt");
+            String content_cmt = request.getParameter("content_cmt");
+            String num_like_cmt = request.getParameter("num_like_cmt");
+            String num_dislike_cmt = request.getParameter("num_dislike_cmt");
+            String img_cmt = request.getParameter("img_cmt");
+            String img_user = request.getParameter("img_user");
+        %>
         
-        <div class="post">
-            <div class="counter">
-                <div class="count-like">
-                    <span>1000 Like</span>
-                </div>
-                <div class="count-cmt">
-                    <span>1 Commnet</span>
-                </div>
-            </div>
-            <div class="post-bottom" style=" width: 90%; color:  #00abfd; border-top: 1px #00587c solid; margin-left: 5%; padding: 0 5%;">
-                <div class="action">
-                    <i class="far fa-thumbs-up"></i>
-                    <span>Like</span>
-                </div>
-                <div class="action">
-                    <a href="#writecomment" style="text-decoration: none; color:  #00abfd;">
-                        <i class="far fa-comment"></i>
-                        <span>Comment</span>
-                    </a>
-                </div>
-                <div class="action">
-                    <i class="fa fa-share"></i>
-                    <span>Share</span>
-                </div>
-            </div>
-        </div>
         <main>
             <section class="comment-module">
                 <ul>
@@ -347,26 +310,27 @@
                     <li>
                         <div class="comment">
                             <div class="comment-img">
-                                <img src="https://i.pinimg.com/564x/00/96/dc/0096dc386bbeca215bc5f42deef14d6a.jpg" alt="ảnh" style="border-radius: 50%;">
+                                <img src="<%=img_user%>" alt="ảnh" style="width: 100%;">
                             </div>
                             <div class="comment-content">
                                 <div class="comment-details">
-                                    <h4 class="comment-name" style="color: #003140; margin-top: 7px;">andrew231</h4>
-                                    <span class="comment-log" style="color: #70d8ff">20 hours ago</span>
+                                    <h4 class="comment-name" style="color: #003140; margin-top: 7px;"><%=n_user_cmt%></h4>
+                                    <span class="comment-log" style="color: #70d8ff"><%=time_cmt%></span>
                                 </div>
                                 <div class="comment-desc">
-                                    <p>Thanks for making this, super helpful happi happi happi happi happi happi happi happi happi happi happi happi happi happi happihappi happi happi</p>
+                                    <p><%=content_cmt%></p>
+                                    <img src="<%=img_cmt%>" alt=""/>
                                 </div>
                                 <div class="comment-data">
                                     <div class="comment-likes">
                                         <div class="comment-likes-up">
                                             <img src="https://rvs-comment-module.vercel.app/Assets/Up.svg" alt="">
-                                            <span>2</span>
+                                            <span><%=num_like_cmt%></span>
                                         </div>
-                                        <div class="comment-likes-down">
+<!--                                        <div class="comment-likes-down">
                                             <img src="https://rvs-comment-module.vercel.app/Assets/Down.svg" alt="">
-                                            <span></span>
-                                        </div>
+                                            <span><%//num_dislike_cmt%></span>
+                                        </div>-->
                                     </div>
                                     <div class="comment-reply">
                                         <a href="#!">Reply</a>
@@ -410,14 +374,13 @@
                 </ul>
             </section>
         </main>
-        <div class="write-comment col-12" >
-            <div class="col-1" ><img src="https://i.pinimg.com/564x/67/08/ce/6708ce18672409459dbdabf30d661c15.jpg"></div>
+        <div class="write-comment col-12">
             <div class="input-group col-10" >
                 <input id="writecomment" style="width: 100%" value="" class="form-control" type="text" name="text-1542372332072" id="text-1542372332072" required="required" placeholder="Write comment.......">
                 <label for="text-1542372332072">Write comment........</label>
                 <div class="req-mark">!</div>
             </div>    
-            <div class="col-1"><a href=""><i class="material-icons" style="font-size:48px;color:#00abfd">send</i></a></div> 
+            <div class="col-2"><a href=""><i class="material-icons" style="font-size:48px;color:#00abfd">send</i></a></div> 
         </div>
     </body>
 </html>
