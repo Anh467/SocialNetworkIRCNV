@@ -9,13 +9,32 @@ package model;
  * @author 84384
  */
 public class PostUser extends Post{
-    private String ImagePost;
+    private String ImagePost, FullNameUser, ImgUser;
     private int NumShare;
 
-    public PostUser(String ImagePost, int NumShare, String PostID, String UserID, String Content, String timePost, int NumInterface, int NumComment, boolean Public) {
+    public PostUser(String PostID, String UserID, String Content, String ImagePost, String timePost, int NumInterface,
+              int NumComment, int NumShare, boolean Public, String FullNameUser, String ImgUser) {
         super(PostID, UserID, Content, timePost, NumInterface, NumComment, Public);
         this.ImagePost = ImagePost;
         this.NumShare = NumShare;
+        this.ImgUser = ImgUser;
+        this.FullNameUser = FullNameUser;
+    }
+
+    public String getFullNameUser() {
+        return FullNameUser;
+    }
+
+    public void setFullNameUser(String FullNameUser) {
+        this.FullNameUser = FullNameUser;
+    }
+
+    public String getImgUser() {
+        return ImgUser;
+    }
+
+    public void setImgUser(String ImgUser) {
+        this.ImgUser = ImgUser;
     }
 
     public PostUser() {
@@ -38,7 +57,10 @@ public class PostUser extends Post{
     }
 
     
-
+    @Override
+    public String toString() {
+        return "PostUser{" +"ImagePost=" + super.getPostID()+ super.isPublic() + super.getContent() + ImagePost + ", NumShare=" + NumShare + '}';
+    }
     
     
 }
