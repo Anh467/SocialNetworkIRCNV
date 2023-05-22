@@ -13,6 +13,13 @@ public  class Person {
     private String UserID, FullName, Address, Mail, PhoneNumber, DOB;
     private boolean Gender;
 
+    public Person(String FullName, String Mail, String DOB, boolean Gender) {
+        this.FullName = FullName;
+        this.Mail = Mail;
+        this.DOB = DOB;
+        this.Gender = Gender;
+    }
+
     public Person() {
     }
 
@@ -26,6 +33,13 @@ public  class Person {
         this.Gender = Gender;
     }
 
+    public Person(String FullName, String Mail, String DOB) {
+        this.FullName = FullName;
+        this.Mail = Mail;
+        this.DOB = DOB;
+    }
+
+    
     public String getUserID() {
         return UserID;
     }

@@ -15,6 +15,10 @@ public class User extends Person{
     public User() {
     }
 
+    public User(String FullName, String Mail, String DOB, boolean Gender) {
+        super(FullName, Mail, DOB, Gender);
+    }
+
     public User(String Nation, String imgUser) {
         this.Nation = Nation;
         this.imgUser = imgUser;

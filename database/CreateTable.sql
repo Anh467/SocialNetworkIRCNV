@@ -1,15 +1,15 @@
-﻿--create database trash4334
+﻿CreateTable.sql
+﻿--create database SocialNetwork
 --------------------------------------------------------------UserInfor------------------------------------------------------------------
-Create table UserInfor(
+CREATE TABLE UserInfor(
 	ID INT IDENTITY(1,1) NOT NULL,
-	UserID AS 'UID' + RIGHT('00000000' + CAST(ID AS VARCHAR(8)), 8) persisted PRIMARY KEY,
-	Account varchar(155) unique,
-	Password varchar(155),
+	UserID AS 'UID' + RIGHT('00000000' + CAST(ID AS VARCHAR(8)), 8) PERSISTED PRIMARY KEY,
+	Account VARCHAR(155) UNIQUE,
+	Password VARCHAR(155),
 	FullName NVARCHAR(255),
 	Address NVARCHAR(255),
 	Mail VARCHAR(255),
 	PhoneNumber VARCHAR(15),
-	CHECK (PhoneNumber LIKE '%[^0-9]%'),
 	Dob DATE,
 	Gender BIT,
 	-- 0: girl
@@ -30,14 +30,14 @@ Create table UserInfor(
 
 
 --------------------------------------------------------------DBO.POST------------------------------------------------------------------
-Create table POST(
+CREATE TABLE POST(
 	ID INT IDENTITY(1,1) NOT NULL,
-	PostID AS 'PID' + RIGHT('00000000' + CAST(ID AS VARCHAR(8)), 8) persisted PRIMARY KEY,
-	UserID varchar(11),
-	constraint fk_user_id_dboPOST foreign key (UserID) references dbo.UserInfor(UserID),
-	Content nvarchar(max),
-	ImagePost nvarchar(255),
-	TimePost datetime DEFAULT getDate(),
+	PostID AS 'PID' + RIGHT('00000000' + CAST(ID AS VARCHAR(8)), 8) PERSISTED PRIMARY KEY,
+	UserID VARCHAR(11),
+	CONSTRAINT fk_user_id_dboPOST FOREIGN KEY (UserID) REFERENCES dbo.UserInfor(UserID),
+	Content NVARCHAR(MAX),
+	ImagePost NVARCHAR(255),
+	TimePost DATETIME DEFAULT GETDATE(),
 	NumInterface INT DEFAULT 0,
 	NumComment INT DEFAULT 0,
 	NumShare INT DEFAULT 0, 
@@ -47,15 +47,15 @@ Create table POST(
 
 
 --------------------------------------------------------------DBO.COMMENT------------------------------------------------------------------
-Create table COMMENT(
+CREATE TABLE COMMENT(
 	ID INT IDENTITY(1,1) NOT NULL,
-	CmtID AS 'CID' + RIGHT('00000000' + CAST(ID AS VARCHAR(8)), 8) persisted PRIMARY KEY,
-	UserID varchar(11),
-	constraint fk_user_id_dboCOMMENT foreign key (UserID) references dbo.UserInfor(UserID),
-	PostID varchar(11),
-	constraint fk_post_id_dboCOMMENT foreign key (PostID) references dbo.POST(PostID),
-	Content nvarchar(max),
-	TimeComment datetime DEFAULT getDate(),
+	CmtID AS 'CID' + RIGHT('00000000' + CAST(ID AS VARCHAR(8)), 8) PERSISTED PRIMARY KEY,
+	UserID VARCHAR(11),
+	CONSTRAINT fk_user_id_dboCOMMENT FOREIGN KEY (UserID) REFERENCES dbo.UserInfor(UserID),
+	PostID VARCHAR(11),
+	CONSTRAINT fk_post_id_dboCOMMENT FOREIGN KEY (PostID) REFERENCES dbo.POST(PostID),
+	Content NVARCHAR(MAX),
+	TimeComment DATETIME DEFAULT GETDATE(),
 	ImageComment varchar(255),
 	NumInterface INT DEFAULT 0,
 )
@@ -127,4 +127,9 @@ Create table COMMENTSHARE(
 	TimeComment datetime DEFAULT getDate(),
 	ImageComment varchar(255),
 	NumInterface INT DEFAULT 0,
+)
+
+CREATE TABLE MAIL(
+	Mail VARCHAR(255) PRIMARY KEY NOT NULL,
+	code CHAR(10),
 )
