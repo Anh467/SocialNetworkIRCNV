@@ -10,7 +10,7 @@ package model;
  */
 public class User extends Person{
 
-    private String Nation, imgUser;
+    private String Nation, imgUser, coverImg;
 
     public User() {
     }
@@ -22,6 +22,7 @@ public class User extends Person{
     public User(String Nation, String imgUser) {
         this.Nation = Nation;
         this.imgUser = imgUser;
+        
     }
 
     public User(String Nation, String imgUser, String UserID, String FullName, String Address, String Mail, String PhoneNumber, String DOB, boolean Gender) {
@@ -30,6 +31,13 @@ public class User extends Person{
         this.imgUser = imgUser;
     }
 
+    public User(String Nation, String imgUser, String coverImg, String UserID, String FullName, String Address, String Mail, String PhoneNumber, String DOB, boolean Gender) {
+        super(UserID, FullName, Address, Mail, PhoneNumber, DOB, Gender);
+        this.Nation = Nation;
+        this.imgUser = imgUser;
+        this.coverImg = coverImg;
+    }
+    
     public String getNation() {
         return Nation;
     }
@@ -45,5 +53,14 @@ public class User extends Person{
     public void setImgUser(String imgUser) {
         this.imgUser = imgUser;
     }
+
+    public String getCoverImg() {
+        return coverImg;
+    }
+
+    public void setCoverImg(String coverImg) {
+        this.coverImg = coverImg;
+    }
+    
     
 }
