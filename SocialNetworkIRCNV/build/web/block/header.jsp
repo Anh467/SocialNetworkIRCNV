@@ -3,13 +3,15 @@
     Created on : May 25, 2023, 4:24:50 PM
     Author     : van12
 --%>
-
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@page import="model.User"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
-<html>
+<html lang="vi">
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="UTF-8">
+    <head>
+        
         <title>JSP Page</title>
         <style>
             nav{
@@ -104,8 +106,8 @@
         </style>
     </head>
     <body>
-        <% String id= (String) session.getAttribute("id");
-            if(id== null || id.equals("")){
+        <% String id = (String) session.getAttribute("id");
+            if (id == null || id.equals("")) {
                 response.sendRedirect("http://localhost:8080/SocialNetworkIRCNV/Authen/login.jsp");
                 return;
             }
@@ -124,6 +126,7 @@
             <% User user = (User) request.getAttribute("user");
                 if (user != null) {
             %>
+            <%=user.getFullName()%>
             <div class="nav-right">
                 <span class="profile">
                     <a href="${pageContext.request.contextPath}/PersonalPage/ProfileInfo.jsp    ">
@@ -160,7 +163,7 @@
             <div class="nav-right">
                 <span class="profile">
                     <a href="${pageContext.request.contextPath}/Authen/login.jsp">
-                       <i class="fa-solid fa-user"></i>
+                        <i class="fa-solid fa-user"></i>
                     </a>
                 </span>
 
@@ -173,7 +176,7 @@
                 <a href="#">
                     <i class="fa fa-bell"></i>
                 </a>
-                
+
 
                 <a href="#">
                     <i class="fas fa-ellipsis-h"></i>

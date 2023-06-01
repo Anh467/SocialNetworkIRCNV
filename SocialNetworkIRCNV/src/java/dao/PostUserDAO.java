@@ -4,6 +4,7 @@
  */
 package dao;
 
+import controller.Text;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -136,8 +137,9 @@ public class PostUserDAO {
             ps.setString(1, id);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                post.add(new PostUser(rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getInt(7), rs.getInt(8),
-                        rs.getInt(9), rs.getBoolean(10), rs.getString(11), rs.getString(12)));
+                post.add(new PostUser(rs.getString(2), rs.getString(3), rs.getNString(4), rs.getString(5), rs.getString(6), rs.getInt(7), rs.getInt(8),
+                        rs.getInt(9), rs.getBoolean(10), rs.getNString(11), rs.getString(12)));
+                System.out.println("Name: "+rs.getNString(11));
             }
             rs.close();
             ps.close();

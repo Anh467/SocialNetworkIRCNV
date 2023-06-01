@@ -1,10 +1,10 @@
+<%@page import="controller.Text"%>
 <%@page import="model.Comment"%>
 <%@page import="java.util.ArrayList"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="vi">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -147,12 +147,15 @@
               rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     </head>
-
     <body>
+        Nguyễn Anh Việt
         <%
             String post_id = request.getParameter("post_id");
             String img_pro = request.getParameter("img_pro");
+            
+            //String name_user =text.changeUTF8(request.getParameter("uName"));
             String name_user = request.getParameter("uName");
+            
             String timePost = request.getParameter("time");
             String Public = request.getParameter("Public").equalsIgnoreCase("true") ? "Public" : "Private";
             String Content = request.getParameter("content");
@@ -160,6 +163,7 @@
             String num_like = request.getParameter("num_like");
             String num_cmt = request.getParameter("num_cmt");
             String num_share = request.getParameter("num_share");
+            request.setAttribute("img_post", img_post);
         %>
         <div class="post" style="margin: 0px; " id="<%=post_id%>">
             <div class="post-top">
@@ -174,11 +178,11 @@
                 </div>
                 <i class=" dropdown fas fa-ellipsis-h">
                     <div >
-                        
+
                         <div class="dropdown-content">
                             <a href="#" onclick="deletePost('<%=post_id%>')">Delete</a>
                             <a href="#" onclick="">Modify</a>
-                            
+
                         </div>
                     </div>
                 </i>
@@ -186,7 +190,9 @@
 
             <div class="post-content" style="text-align: center;">
                 <p style="text-align: left;"><%=Content%></p>
-                <img src="${pageContext.request.contextPath}/<%=img_post%>"style="margin: 0 auto; width: 100%"/>
+                <c:if test="${img_post!=null && img_post!=''}">
+                    <img src="${pageContext.request.contextPath}/<%=img_post%>"style="margin: 0 auto; width: 100%"/>
+                </c:if>
             </div>
             <div class="counter">
                 <div class="count-like">
@@ -217,11 +223,7 @@
                     <span>Share</span>
                 </div>
             </div>
-
-
-
-        </div>  
-                
+        </div>                  
     </body>
 
 </html>

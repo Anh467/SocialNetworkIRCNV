@@ -5,6 +5,7 @@
 package action;
 
 import controller.ControlData;
+import controller.Text;
 import java.util.Date;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -64,32 +65,36 @@ public class NewPost extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             try {
-
+                Text text= new Text();
                 //
                 HttpSession session = request.getSession();
                 String id = (String) session.getAttribute("id");
-                String content = request.getParameter("content");
+                
+                String content = text.changeUTF8(request.getParameter("content"));
                 String isPublic = request.getParameter("privacy");
                 //get path image
                 Part part = request.getPart("photo");
-
-                //khởi tạo controldata
-                ControlData data = new ControlData(part, getServletContext());
-                // save to db
-                String PostID = addNewPost(id, content, data.getFilename(), isPublic);
-                //khowri tao cho viec bai post
-                data.createInitForPost(PostID);
-                //create folder
-                data.creatFolder();
-                // save image
-                data.SaveImage();
-                System.out.println("path: " + data.getRealPath());
+                String PostID = "";
+                if (part != null && part.getSubmittedFileName()!=null) {
+                    //khởi tạo controldata
+                    ControlData data = new ControlData(part, getServletContext());
+                    // save to db
+                    PostID = addNewPost(id, content, data.getFilename(), isPublic);
+                    //khowri tao cho viec bai post
+                    data.createInitForPost(PostID);
+                    //create folder
+                    data.creatFolder();
+                    // save image
+                    data.SaveImage();
+                    System.out.println("path: " + data.getRealPath());
+                }
+                else PostID = addNewPost(id, content, "", isPublic);
                 //respone
 //                String publicpost = isPublic.endsWith("1") ? "Public" : "Private";
                 User user = new dao.UserDAO().getUserByID(id);
                 PostUser postUser = new dao.PostUserDAO().getPost(PostID);
 //                String pathImg = "http://localhost:8080/SocialNetworkIRCNV/data/post/" + postUser.getImagePost();
-                out.println("<div class=\"post\" style=\"margin: 0px;\" id=\""+postUser.getPostID()+"\">\n"
+                out.println("<div class=\"post\" style=\"margin: 0px;\" id=\"" + postUser.getPostID() + "\">\n"
                         + "            <div class=\"post-top\">\n"
                         + "                <div class=\"dp\" >\n"
                         + "                    <img src='/SocialNetworkIRCNV/" + user.getImgUser() + "' alt=\"\" style=\"width: 100%;\" >\n"
@@ -103,7 +108,7 @@ public class NewPost extends HttpServlet {
                         + "                    <div >\n"
                         + "                        \n"
                         + "                        <div class=\"dropdown-content\">\n"
-                        + "                            <a href=\"#\" onclick=\"deletePost('"+postUser.getPostID()+"')\">Delete</a>\n"
+                        + "                            <a href=\"#\" onclick=\"deletePost('" + postUser.getPostID() + "')\">Delete</a>\n"
                         + "                            <a href=\"#\" onclick=\"\">Modify</a>\n"
                         + "                            \n"
                         + "                        </div>\n"

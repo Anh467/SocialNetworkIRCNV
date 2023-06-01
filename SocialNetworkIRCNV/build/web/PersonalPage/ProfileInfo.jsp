@@ -1,16 +1,18 @@
+<%@page import="controller.Text"%>
 <%@page import="model.PostUser"%>
 <%@page import="java.util.ArrayList"%>
+
 <!DOCTYPE html>
 <!--
 Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
 Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
 -->
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <%@page import="model.User"%>
 <%@page import="dao.UserDAO"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html>
+<html lang="vi">
     <head>
         <title>TODO supply a title</title>
         <meta charset="UTF-8">
@@ -324,8 +326,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
 
         <div class ="profile-container ">
 
-            <img src="/SocialNetworkIRCNV/<%=user.getCoverImg()%>" class="cover-img"/> <!-- ảnh bìa -->
-            <!-- Phần đầu -->
+            <img src="/SocialNetworkIRCNV/<%=user.getCoverImg()%>" class="cover-img"/> <!-- ?nh b�a -->
+            <!-- Ph?n ??u -->
             <div class = "profile-details">
                 <div class ="pd-left">
                     <div class ="pd-row">
@@ -351,7 +353,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
             </div>
 
 
-            <!-- Phần bên trái của trang (bao gồm introduce và bạn bè... -->
+            <!-- Ph?n b�n tr�i c?a trang (bao g?m introduce v� b?n b�... -->
             <div class ="profile-info ">
                 <div class ="info-col ">
                     <div class ="profile-intro">
@@ -381,7 +383,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                     </div>
                 </div>
 
-                <!-- Up bài -->
+                <!-- Up b�i -->
                 <div class ="post-col" style="width: 100%;">
                     <div class ="write-post-container">
                         <div class ="user-profile">
@@ -406,9 +408,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
 
 
 
-                    <!-- Bài Post -->
+                    <!-- B�i Post -->
                     <div class ="post-container"  id="post">
-                       
+
                         <!--                        <div class = "post-row">
                                                     <div class = "user-profile">
                                                         <img src="image/ava.jpg">
@@ -437,16 +439,19 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                         <jsp:include page="/post" />
                         <jsp:include page="/comment"  />  
                         <%
+                            Text text = new Text();
                             ArrayList<PostUser> std = (ArrayList<PostUser>) request.getAttribute("ListPost");
 
-                            for (int i = 0; i < std.size(); i++) {%>
+                            for (int i = 0; i < std.size(); i++) {
+                                %>
+
                         <div>
                             <%try {%>
                             <jsp:include page="../BlockPost/BlockPost.jsp">
                                 <jsp:param name="post_id" value="<%=std.get(i).getPostID()%>" />
                                 <jsp:param name="img_pro" value="<%=std.get(i).getImgUser()%>" />
 
-                                <jsp:param name="uName" value="<%= std.get(i).getFullNameUser()%>" />
+                                <jsp:param name="uName" value="<%=std.get(i).getFullNameUser()%>" />
 
                                 <jsp:param name="time" value="<%=std.get(i).getTimePost()%>" />
 
@@ -472,7 +477,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                 document.getElementById('fileInput').addEventListener('change', function (event) {
                     var file = event.target.files[0];
 
-                    // Tạo đối tượng FileReader để đọc tệp tin
+                    // T?o ??i t??ng FileReader ?? ??c t?p tin
                     var reader = new FileReader();
                     reader.onload = function (e) {
                         var previewImage = document.getElementById('previewImage');
@@ -505,7 +510,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                             document.getElementById("post-input-container").innerHTML = "<textarea id='NewPostTextarea' rows ='3' placeholder='Whats on your mind?'></textarea> <img id='previewImage' src='#' alt='Preview Image' style='display: none'><input type='file' name='photo' id='fileInput'>";
                         },
                         error: function (xhr) {
-                            console.log("Đã xảy ra lỗi: ");
+                            console.log("?� x?y ra l?i: ");
                         }
                     });
                 }
@@ -527,7 +532,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                             }
                         },
                         error: function (xhr) {
-                            console.log("Đã xảy ra lỗi: ");
+                            console.log("?� x?y ra l?i: ");
                         }
                     });
                 }

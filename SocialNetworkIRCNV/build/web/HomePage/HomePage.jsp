@@ -3,7 +3,7 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="model.PostUser"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 
     <head>
         <meta charset="UTF-8">
