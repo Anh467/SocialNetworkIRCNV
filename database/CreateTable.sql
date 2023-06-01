@@ -1,7 +1,5 @@
-﻿--CreateTable.sql
-﻿--create database SocialNetwork
+﻿
 --------------------------------------------------------------UserInfor------------------------------------------------------------------
-
 CREATE TABLE UserInfor(
 	ID INT IDENTITY(1,1) NOT NULL,
 	UserID AS 'UID' + RIGHT('00000000' + CAST(ID AS VARCHAR(8)), 8) PERSISTED PRIMARY KEY,

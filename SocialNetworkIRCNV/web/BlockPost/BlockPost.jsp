@@ -148,7 +148,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     </head>
     <body>
-        Nguyễn Anh Việt
+        
         <%
             String post_id = request.getParameter("post_id");
             String img_pro = request.getParameter("img_pro");
@@ -165,7 +165,7 @@
             String num_share = request.getParameter("num_share");
             request.setAttribute("img_post", img_post);
         %>
-        <div class="post" style="margin: 0px; " id="<%=post_id%>">
+        <div class="post" style="margin: 10px; " id="<%=post_id%>">
             <div class="post-top">
                 <p style="display: none"><%=post_id%></p>
                 <div class="dp" >

@@ -126,7 +126,7 @@
             <% User user = (User) request.getAttribute("user");
                 if (user != null) {
             %>
-            <%=user.getFullName()%>
+          
             <div class="nav-right">
                 <span class="profile">
                     <a href="${pageContext.request.contextPath}/PersonalPage/ProfileInfo.jsp    ">

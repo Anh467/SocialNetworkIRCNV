@@ -410,32 +410,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
 
                     <!-- Bài Post -->
                     <div class ="post-container"  id="post">
-
-                        <!--                        <div class = "post-row">
-                                                    <div class = "user-profile">
-                                                        <img src="image/ava.jpg">
-                                                        <div>
-                                                            <p>IRCN V</p>
-                                                            <span>May 15 2023, 20:56pm</span>
-                                                        </div>
-                                                    </div>
-                                                    <a href =""><i class ="fas fa-ellipsis-v"></i></a>
-                                                </div>
-                                                <p class ="post-text" >aaaaaaaaaaaaaa</p>
-                                                <img src ="image/ava.jpg" class ="post-img">
-                                                <div style = "padding-top: 10px;">
-                                                    <div class = post-row>
-                                                        <div class = "activity-icons">
-                                                            <div> <i class="icon far fa-thumbs-up"></i> Like</div>
-                                                            <div> <i class="icon far fa-comment"></i> Comment</div>
-                                                            <div> <i class="icon fa fa-share"></i> Share</div>
-                                                        </div>
-                                                        <div class="post-profile-icon">
-                                                            <img src="https://picsum.photos/300/300/?random"><i class ="fas fa-caret-down"></i> </small>
-                                                        </div>
-                                                    </div>
-                                                </div>-->
-
                         <jsp:include page="/post" />
                         <jsp:include page="/comment"  />  
                         <%
@@ -445,7 +419,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                             for (int i = 0; i < std.size(); i++) {
                                 %>
 
-                        <div>
+                        <div id="showpost">
                             <%try {%>
                             <jsp:include page="../BlockPost/BlockPost.jsp">
                                 <jsp:param name="post_id" value="<%=std.get(i).getPostID()%>" />
@@ -469,7 +443,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                         </div>
                         <%}%>
                     </div>
-                    <img src="../image/Screenshot 2023-05-23 194732.png" alt="alt" style="width: 100%"/>
+                   
                 </div>
             </div>
 

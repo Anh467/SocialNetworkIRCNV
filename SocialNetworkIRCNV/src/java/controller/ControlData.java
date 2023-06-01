@@ -51,18 +51,18 @@ public class ControlData {
         return filename;
     }
 
-    public String getProjectRootPath() {
-        return projectRootPath;
-    }
 
-    public ControlData(Part part, String realPath, String realPathBuild, String filename, String projectRootPath) {
-        this.part = part;
-        this.realPath = realPath;
-        this.realPathBuild = realPathBuild;
-        this.filename = filename;
-        this.projectRootPath = projectRootPath;
-    }
+//
+//    public ControlData(Part part, String realPath, String realPathBuild, String filename, String projectRootPath) {
+//        this.part = part;
+//        this.realPath = realPath;
+//        this.realPathBuild = realPathBuild;
+//        this.filename = filename;
+//        this.projectRootPath = projectRootPath;
+//    }
 
+    // truyen Part cua <input type= 'file'>
+    // ServletContext context lay tu getServletContext() co san trong servlet
     public ControlData(Part part, ServletContext context) {
         this.part = part;
         this.filename = Path.of(part.getSubmittedFileName()).getFileName().toString();

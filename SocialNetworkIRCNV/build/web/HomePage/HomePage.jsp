@@ -419,7 +419,7 @@
                     std.toString();
                     System.out.println("length: " + std.size() + std.toString());
                     for (int i = 0; i < std.size(); i++) {%>
-                <div id="showpost">
+                <div id="showpost" >
                     <%try {%>
                     <jsp:include page="../BlockPost/BlockPost.jsp">
                         <jsp:param name="post_id" value="<%=std.get(i).getPostID()%>" />
@@ -446,7 +446,7 @@
 
 
                 <div class="post" id="post">
-                    
+
                     <%
                         ArrayList<PostShare> sh = (ArrayList<PostShare>) request.getAttribute("ListPostShare");
                         std.toString();

@@ -120,6 +120,7 @@
 		WHERE ShareID= (SELECT ShareID FROM Deleted)
 	END;
 	GO
+
 	CREATE TRIGGER insert_comment_of_POSTSHARE
 	ON dbo.COMMENTSHARE AFTER INSERT 
 	AS
@@ -129,12 +130,86 @@
 		WHERE ShareID= (SELECT ShareID FROM Inserted)
 	END;
 -- new path for image
+	
 	GO
     CREATE TRIGGER Add_Path_For_Post
-	ON dbo.POST AFTER INSERT 
+	ON dbo.POST AFTER INSERT
 	AS
 	BEGIN
+		
 		UPDATE dbo.POST
-		SET ImagePost= 'web/data/post/'+PostID+'/'+ImagePost
+		SET ImagePost= CASE
+            WHEN ImagePost= '' THEN ''
+			else
+			ImagePost
+			end
 		WHERE PostID= (SELECT PostID FROM INSERTed)
 	END
+	GO
+   CREATE TRIGGER Add_Path_For_UPDATE_Post
+	ON dbo.POST AFTER UPDATE
+	AS
+	BEGIN
+		IF UPDATE(ImagePost) 
+			BEGIN
+			UPDATE p
+			SET ImagePost = CASE
+					WHEN p.ImagePost = '' THEN ''
+					ELSE 'data/post/'+p.PostID+'/'+p.ImagePost
+				END
+			FROM dbo.POST p
+			INNER JOIN INSERTED i ON p.PostID = i.PostID
+		END
+	END
+	--data/user/UID00000001/background/img.jfif
+	--data/user/UID00000001/avatar/img.jfif
+
+	GO
+    CREATE TRIGGER Add_Path_For_Update_user
+	ON dbo.UserInfor AFTER UPDATE 
+	AS
+	BEGIN
+	IF UPDATE(ImageUser) 
+		BEGIN
+			UPDATE p
+			SET p.ImageUser = CASE
+					WHEN p.ImageUser = '' THEN ''
+					ELSE 'data/user/'+p.UserID+'/avatar/'+p.ImageUser
+				END
+			FROM dbo.UserInfor p
+			INNER JOIN INSERTED i ON p.UserID = i.UserID
+		END
+	IF UPDATE(ImageBackGround) 
+		BEGIN
+			UPDATE p
+			SET p.ImageBackGround = CASE
+					WHEN p.ImageBackGround = '' THEN ''
+					ELSE 'data/user/'+p.UserID+'/background/'+p.ImageBackGround
+				END
+			FROM dbo.UserInfor p
+			INNER JOIN INSERTED i ON p.UserID = i.UserID
+		END
+	END
+	
+INSERT INTO dbo.POST
+(
+    UserID,
+    Content,
+    ImagePost,
+    TimePost,
+    NumInterface,
+    NumComment,
+    NumShare,
+    PublicPost
+)
+VALUES
+(   NULL,    -- UserID - varchar(11)
+    NULL,    -- Content - nvarchar(max)
+    'abcd',    -- ImagePost - nvarchar(255)
+    DEFAULT, -- TimePost - datetime
+    DEFAULT, -- NumInterface - int
+    DEFAULT, -- NumComment - int
+    DEFAULT, -- NumShare - int
+    NULL     -- PublicPost - bit
+    )
+	
