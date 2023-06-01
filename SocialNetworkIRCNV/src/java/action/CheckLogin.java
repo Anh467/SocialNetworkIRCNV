@@ -76,7 +76,7 @@ public class CheckLogin extends HttpServlet {
             cookie.setHttpOnly(true);
             response.addCookie(cookie);
         }
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("HomePage/HomePage.jsp");
     }
 
     /**

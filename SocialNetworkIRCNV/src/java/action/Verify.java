@@ -91,8 +91,12 @@ public class Verify extends HttpServlet {
             return;
         }
 
-        String code = api.createNewMail(mail, name);
-        new controller.Send().sendEmail(mail, "VERIFY CODE", "hello user " + name + " this is your mail code: " + code);
+        String code = api.createNewMail(mail);
+        try {
+            new controller.GMAIL().sendMailCheckSignUp(mail, name, code);
+        } catch (Exception e) {
+        }
+        
 
         request.getRequestDispatcher("Authen/verify.jsp").forward(request, response);
         return;

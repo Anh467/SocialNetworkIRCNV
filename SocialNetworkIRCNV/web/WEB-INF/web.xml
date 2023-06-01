@@ -16,8 +16,16 @@
         <filter-name>Authorization</filter-name>
         <url-pattern>/admin.jsp</url-pattern>
         <url-pattern>/user.jsp</url-pattern>
-        <!--<url-pattern>/vistor.jsp</url-pattern>-->
+        <url-pattern>/vistor.jsp</url-pattern>
     </filter-mapping>
+    <servlet>
+        <servlet-name>CreateNewPost</servlet-name>
+        <servlet-class>action.CreateNewPost</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CreateNewPost</servlet-name>
+        <url-pattern>/CreateNewPost</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

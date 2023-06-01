@@ -13,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import model.User;
 
 /**
@@ -51,9 +52,11 @@ public class GetInfor extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
         UserDAO dao = new UserDAO();
-        User user = dao.getUserByID("UID00000001");
+        HttpSession session= request.getSession();
+        String id= (String) session.getAttribute("id");
+        User user = dao.getUserByID(id);
         System.out.print(user.getFullName());
-        request.setAttribute("abc", user);
+        request.setAttribute("user", user);
     }
 
     /**

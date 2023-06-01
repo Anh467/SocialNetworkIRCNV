@@ -22,7 +22,7 @@ public class PostShareDAO {
      */
     Connection cnn = new connection.connection().getConnection();
 
-    public ArrayList<PostShare> GetAllPostShare() {
+    public ArrayList<PostShare> getAllPostShare() {
         ArrayList<PostShare> postshare = new ArrayList<>();
         String query = "SELECT dbo.POST.UserID, \n"
                 + "		(SELECT FullName FROM dbo.POST INNER JOIN dbo.UserInfor ON UserInfor.UserID = POST.UserID)[nameuserdown],\n"
@@ -62,7 +62,7 @@ public class PostShareDAO {
         return postshare;
     }
 
-    public ArrayList<Comment> GetCommentShare() {
+    public ArrayList<Comment> getCommentShare() {
         ArrayList<Comment> cmt = new ArrayList<>();
         String query = "SELECT ImageUser, FullName, CmtID, \n"
                 + "		dbo.COMMENTSHARE.Content, dbo.COMMENTSHARE.NumInterface, TimeComment, ImageComment\n"

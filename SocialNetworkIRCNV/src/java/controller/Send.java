@@ -18,8 +18,9 @@ import javax.mail.internet.MimeMessage;
  * @author 84384
  */
 public class Send {
-
-    final String user = "vietnade160170@fpt.edu.vn";
+    final String ID_client= "287957659464-ha3c5chugeljfab0fnmg6228ni5lopej.apps.googleusercontent.com";
+    final String Code_secret_du_client= "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";
+    final String user = "hoangyen25012005@gmail.com";
     final String pass = "nguyenanhviet";
 
     public void sendEmail(String emailTo, String emailSubject, String emailContent) {
@@ -57,7 +58,18 @@ public class Send {
         }
 
     }
-
+    public void sendMailCheckSignUp(String mail, String name, String code){
+        String emailSubject= "VERIFY CODE FOR SIGNUP";
+        String emailContent= "hello user " + name + " thank you for your enjoy us \n this is your mail code: " + code;
+        sendEmail(mail, emailSubject, emailContent);
+    }
+    
+    public void sendMailForgotPass(String mail, String name, String code){
+        String emailSubject= "VERIFY CODE FOR CONFIRM";
+        String emailContent= "hello user " + name + " this is reset password code: " + code;
+        sendEmail(mail, emailSubject, emailContent);
+    }
+    
     public void sendEmail(ArrayList<String> emailTo, String emailSubject, String emailContent) {
         Properties prop = new Properties();
         prop.put("mail.smtp.host", "smtp.gmail.com");

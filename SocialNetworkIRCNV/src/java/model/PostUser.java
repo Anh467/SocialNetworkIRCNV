@@ -20,7 +20,16 @@ public class PostUser extends Post{
         this.ImgUser = ImgUser;
         this.FullNameUser = FullNameUser;
     }
-
+    public PostUser(String PostID, String UserID, String Content, String ImagePost, String timePost, int NumInterface,
+              int NumComment, int NumShare, boolean Public) {
+        super(PostID, UserID, Content, timePost, NumInterface, NumComment, Public);
+        this.ImagePost = ImagePost;
+        this.NumShare = NumShare;
+    }
+    public PostUser(String UserID, String Content, String ImagePost, String Public){
+        super(UserID, Content,Public);
+        this.ImagePost= ImagePost;
+    }
     public String getFullNameUser() {
         return FullNameUser;
     }

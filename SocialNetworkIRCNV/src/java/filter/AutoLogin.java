@@ -128,9 +128,9 @@ public class AutoLogin implements Filter {
             }
         } catch (Exception e) {
         }
-        
-        if(session.getAttribute("id")!=null){
-            rp.sendRedirect("../index.jsp");
+        String id=(String) session.getAttribute("id");
+        if(id!=null && !id.equals("")){
+            rp.sendRedirect("../HomePage/HomePage.jsp");
                         return;
         }
         Throwable problem = null;

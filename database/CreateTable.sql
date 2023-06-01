@@ -1,6 +1,7 @@
-﻿CreateTable.sql
+﻿--CreateTable.sql
 ﻿--create database SocialNetwork
 --------------------------------------------------------------UserInfor------------------------------------------------------------------
+
 CREATE TABLE UserInfor(
 	ID INT IDENTITY(1,1) NOT NULL,
 	UserID AS 'UID' + RIGHT('00000000' + CAST(ID AS VARCHAR(8)), 8) PERSISTED PRIMARY KEY,
@@ -87,10 +88,10 @@ CREATE TABLE CHATCONTENT(
 	ID INT IDENTITY(1,1) NOT NULL,
 	ChatID AS 'ChatID' + RIGHT('000000000000' + CAST(ID AS VARCHAR(12)), 12) PERSISTED PRIMARY KEY,
 	UserID1 VARCHAR(11),
-	constraint fk_user_id1_dboCHATCONTENT foreign key (UserID1) references dbo.UserInfor(UserID),
-	UserID2 varchar(11),
-	constraint fk_user_id2_dboCHATCONTENT foreign key (UserID2) references dbo.UserInfor(UserID),
-	check (UserID1>UserID2),
+	CONSTRAINT fk_user_id1_dboCHATCONTENT FOREIGN KEY (UserID1) REFERENCES dbo.UserInfor(UserID),
+	UserID2 VARCHAR(11),
+	CONSTRAINT fk_user_id2_dboCHATCONTENT FOREIGN KEY (UserID2) REFERENCES dbo.UserInfor(UserID),
+	CHECK (UserID1>UserID2),
 	Mess NVARCHAR(500),
 	ofUser1 BIT,
 	--ofUser1 đúng thì đây sẽ là đoạn chat của user1
@@ -104,28 +105,28 @@ CREATE TABLE CHATCONTENT(
 
 CREATE TABLE POSTSHARE(
 ID INT IDENTITY(1,1) NOT NULL,
-	ShareID AS 'SID' + RIGHT('00000000' + CAST(ID AS VARCHAR(8)), 8) persisted PRIMARY KEY,
-	UserID varchar(11),
-	constraint fk_user_id_dboPOSTSHARE foreign key (UserID) references dbo.UserInfor(UserID),
-	PostID varchar(11),
-	constraint fk_post_id_dboPOSTSHARE foreign key (PostID) references dbo.POST(PostID),
-	Content nvarchar(max),
-	TimeShare DATETIME DEFAULT getDate(),
+	ShareID AS 'SID' + RIGHT('00000000' + CAST(ID AS VARCHAR(8)), 8) PERSISTED PRIMARY KEY,
+	UserID VARCHAR(11),
+	CONSTRAINT fk_user_id_dboPOSTSHARE FOREIGN KEY (UserID) REFERENCES dbo.UserInfor(UserID),
+	PostID VARCHAR(11),
+	CONSTRAINT fk_post_id_dboPOSTSHARE FOREIGN KEY (PostID) REFERENCES dbo.POST(PostID),
+	Content NVARCHAR(MAX),
+	TimeShare DATETIME DEFAULT GETDATE(),
 	NumInterface INT DEFAULT 0,
 	NumComment INT DEFAULT 0,
 	PublicPost BIT,
 )
 
-Create table COMMENTSHARE(
+CREATE TABLE COMMENTSHARE(
 	ID INT IDENTITY(1,1) NOT NULL,
-	CmtID AS 'CID' + RIGHT('00000000' + CAST(ID AS VARCHAR(8)), 8) persisted PRIMARY KEY,
-	UserID varchar(11),
-	constraint fk_user_id_dboCOMMENTSHARE foreign key (UserID) references dbo.UserInfor(UserID),
-	ShareID varchar(11),
-	constraint fk_post_id_dboCOMMENTSHARE FOREIGN key (ShareID) references dbo.POSTSHARE(ShareID),
-	Content nvarchar(max),
-	TimeComment datetime DEFAULT getDate(),
-	ImageComment varchar(255),
+	CmtID AS 'CID' + RIGHT('00000000' + CAST(ID AS VARCHAR(8)), 8) PERSISTED PRIMARY KEY,
+	UserID VARCHAR(11),
+	CONSTRAINT fk_user_id_dboCOMMENTSHARE FOREIGN KEY (UserID) REFERENCES dbo.UserInfor(UserID),
+	ShareID VARCHAR(11),
+	CONSTRAINT fk_post_id_dboCOMMENTSHARE FOREIGN KEY (ShareID) REFERENCES dbo.POSTSHARE(ShareID),
+	Content NVARCHAR(MAX),
+	TimeComment DATETIME DEFAULT GETDATE(),
+	ImageComment VARCHAR(255),
 	NumInterface INT DEFAULT 0,
 )
 
@@ -133,3 +134,4 @@ CREATE TABLE MAIL(
 	Mail VARCHAR(255) PRIMARY KEY NOT NULL,
 	code CHAR(10),
 )
+

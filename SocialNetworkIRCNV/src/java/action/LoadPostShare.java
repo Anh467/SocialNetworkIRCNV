@@ -52,8 +52,8 @@ public class LoadPostShare extends HttpServlet {
         processRequest(request, response);
         PostShareDAO post = new PostShareDAO();
         
-        ArrayList<PostShare> puser = post.GetAllPostShare();
-        System.out.println("Hello"+ post.GetAllPostShare().size());
+        ArrayList<PostShare> puser = post.getAllPostShare();
+        System.out.println("Hello"+ post.getAllPostShare().size());
         request.setAttribute("ListPostShare", puser);
     }
 

@@ -207,4 +207,69 @@ END;
 	UPDATE dbo.USERRELATION
 	SET U2RequestU1= 1
 	WHERE UserID1= 'UID00000002' AND UserID2= 'UID00000001'
-    
+--check exist account or mail
+    SELECT UserID
+	FROM dbo.UserInfor
+	WHERE Account='viet080702' AND Mail='van123872000@gmail.com'
+	
+	
+
+	UPDATE dbo.UserInfor
+	SET Password='$argon2i$v=19$m=65536,t=28,p=1$oTUZGQEATK6oSsrqmuqM/w$eCqPQkite3+l8SdsXsQlj792lvM80FBAdz0qE88Di6U'
+	WHERE Account='viet080702'
+
+--get personal post
+
+SELECT ImagePost, NumShare, PostID, UserID, Content, TimePost, NumInterface, NumComment, PublicPost
+FROM dbo.POST
+WHERE POST.UserID= 'UID00000002'
+ORDER BY TimePost
+
+
+SELECT POST.ID, PostID, POST.UserID, Content,
+		ImagePost, TimePost, NumInterface, NumComment, 
+		NumShare, PublicPost, FullName, ImageUser
+	FROM dbo.POST INNER JOIN dbo.UserInfor
+	on POST.UserID = UserInfor.UserID
+                where POST.UserID= 'UID00000002'
+                ORDER BY POST.TimePost
+
+---- add new Post
+DECLARE @InsertedIDs TABLE (PostID VARCHAR(11));
+	INSERT INTO dbo.POST
+(
+    UserID,
+    Content,
+    ImagePost,
+    TimePost,
+    NumInterface,
+    NumComment,
+    NumShare,
+    PublicPost
+)
+OUTPUT Inserted.PostID INTO @InsertedIDs
+VALUES
+(   'UID00000002' ,    -- UserID - varchar(11)
+    'adf' ,    -- Content - nvarchar(max)
+    'img.png' ,    -- ImagePost - nvarchar(255)
+    DEFAULT, -- TimePost - datetime
+    DEFAULT, -- NumInterface - int
+    DEFAULT, -- NumComment - int
+    DEFAULT, -- NumShare - int
+    1    -- PublicPost - bit
+    );
+SELECT PostID FROM @InsertedIDs;
+
+--get post
+SELECT PostID, UserID, Content, ImagePost, TimePost, NumInterface, NumComment, NumShare, PublicPost
+FROM dbo.POST
+WHERE PostID='PID00000002'
+
+
+--delete post
+SELECT *
+FROM dbo.POST
+WHERE PostID= 'PID00000001' AND UserID= 'UID00000002'
+
+DELETE FROM dbo.POST
+WHERE PostID= 'PID00000002' AND UserID= 'asdf'

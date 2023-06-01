@@ -52,7 +52,7 @@ public class LoadCommentShare extends HttpServlet {
         processRequest(request, response);
         PostShareDAO post = new PostShareDAO();
 
-        ArrayList<Comment> cmtuser = post.GetCommentShare();
+        ArrayList<Comment> cmtuser = post.getCommentShare();
         System.out.println("Hello");
         request.setAttribute("ListCmtShare", cmtuser);
     }

@@ -119,12 +119,22 @@
 		SET NumComment= NumComment -1
 		WHERE ShareID= (SELECT ShareID FROM Deleted)
 	END;
-	go
+	GO
 	CREATE TRIGGER insert_comment_of_POSTSHARE
 	ON dbo.COMMENTSHARE AFTER INSERT 
-	as
+	AS
 	BEGIN
 		UPDATE dbo.POSTSHARE
 		SET NumComment= NumComment +1
 		WHERE ShareID= (SELECT ShareID FROM Inserted)
 	END;
+-- new path for image
+	GO
+    CREATE TRIGGER Add_Path_For_Post
+	ON dbo.POST AFTER INSERT 
+	AS
+	BEGIN
+		UPDATE dbo.POST
+		SET ImagePost= 'web/data/post/'+PostID+'/'+ImagePost
+		WHERE PostID= (SELECT PostID FROM INSERTed)
+	END

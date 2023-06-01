@@ -52,7 +52,7 @@ public class LoadComment extends HttpServlet {
         processRequest(request, response);
         PostUserDAO post = new PostUserDAO();
 
-        ArrayList<Comment> cmtuser = post.GetComment();
+        ArrayList<Comment> cmtuser = post.getComment();
         System.out.println("Hello");
         request.setAttribute("ListCmt", cmtuser);
     }

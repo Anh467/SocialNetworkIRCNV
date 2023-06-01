@@ -62,7 +62,7 @@
                                 <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
                             </ol>
                             <div class="carousel-inner" role="listbox">
-                                <div class="carousel-item active">
+                                <div class="carousel-item">
                                     <img class="d-block img-fluid" src="https://static.pexels.com/photos/33972/pexels-photo.jpg" alt="First slide">
                                     <div class="carousel-caption d-none d-md-block">
                                         <div class="banner-text">

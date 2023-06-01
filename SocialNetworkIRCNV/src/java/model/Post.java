@@ -26,7 +26,12 @@ public class Post {
         this.NumComment = NumComment;
         this.Public = Public;
     }
-
+    
+    public Post(String UserID, String Content,String Public){
+        this.UserID= UserID;
+        this.Content= Content;
+        this.Public= this.Public;
+    }
     public Post() {
     }
 

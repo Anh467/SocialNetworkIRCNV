@@ -90,6 +90,40 @@ public class AccountDAO {
 
     String checkLogin = "SELECT UserID, Password FROM dbo.UserInfor\n"
             + "WHERE Account= ?";
+    String checkExistMail = " SELECT FullName\n"
+            + "	FROM dbo.UserInfor\n"
+            + "	WHERE Account= ? AND Mail= ?";
+    String resetPass = "	UPDATE dbo.UserInfor\n"
+            + "	SET Password= ?\n"
+            + "	WHERE Account= ? ";
+
+    public void resetPass(String user, String pass) {
+        try {
+            PreparedStatement ps= cnn.prepareStatement(resetPass);
+            ps.setString(1, new controller.Argon().convertArgon2(pass).trim());
+            ps.setString(2, user);
+            
+            ps.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("dao.AccountDAO.resetPass()");
+        }
+        
+    }
+
+    public String checkExistMail(String user, String mail) {
+        try {
+            PreparedStatement ps = cnn.prepareStatement(checkExistMail);
+            ps.setString(1, user);
+            ps.setString(2, mail);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                return rs.getString(1);
+            }
+        } catch (Exception e) {
+            System.out.println("dao.AccountDAO.checkExistMail()");
+        }
+        return null;
+    }
 
     public boolean checkMailCode(String mail, String code) {
         try {
@@ -128,10 +162,11 @@ public class AccountDAO {
             ps.setString(1, user);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                String hash= rs.getString(2);
-                if(new controller.Argon().checkArgon2(hash, pass))
+                String hash = rs.getString(2);
+                if (new controller.Argon().checkArgon2(hash, pass)) {
                     return rs.getString(1);
-                System.out.println("hash: "+hash+"\n"+ "pass: "+ rs.getString(1)+ "\n"+ rs.getString(1));
+                }
+                System.out.println("hash: " + hash + "\n" + "pass: " + rs.getString(1) + "\n" + rs.getString(1));
                 return null;
             }
         } catch (Exception e) {
@@ -174,13 +209,13 @@ public class AccountDAO {
         return false;
     }
 
-    public String createNewMail(String mail, String name) {
+    public String createNewMail(String mail) {
         try {
             String code = new controller.Rand().getStringNum(6);
             PreparedStatement ps = cnn.prepareStatement(createSendMailCode);
             ps.setString(1, mail.trim());
             ps.setString(2, code.trim());
-            new controller.Send().sendEmail(mail, "MAIL CODE", "This is your mail code for user " + name + ": " + code);
+            //new controller.Send().sendEmail(mail, "MAIL CODE", "This is your mail code for user " + name + ": " + code);
             ps.execute();
             return code;
         } catch (Exception e) {

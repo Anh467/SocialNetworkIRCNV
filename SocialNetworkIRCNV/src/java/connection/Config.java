@@ -11,7 +11,7 @@ import java.sql.ResultSet;
 
 public class Config {
 
-    public String databaseName = "SocialNetwork";
+    public String databaseName = "ShopBook";
     public String user = "viet080702";
     public String password = "nguyenanhviet";
     public String serverName = "MSI\\SQLEXPRESS:1433";

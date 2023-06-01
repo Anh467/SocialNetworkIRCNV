@@ -13,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import model.PostUser;
 
 /**
@@ -55,9 +56,10 @@ public class LoadPost extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PostUserDAO post = new PostUserDAO();
-        
-        ArrayList<PostUser> puser = post.GetAllPost();
-        System.out.println("Hello"+ post.GetAllPost().size());
+        HttpSession session= request.getSession();
+        String id= (String) session.getAttribute("id");
+        ArrayList<PostUser> puser = post.getAllPost(id);
+//        System.out.println("Hello"+ post.getAllPost().size());
         request.setAttribute("ListPost", puser);
     }
 
