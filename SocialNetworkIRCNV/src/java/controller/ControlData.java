@@ -17,11 +17,17 @@ import javax.servlet.http.Part;
  * @author van12
  */
 public class ControlData {
+    // duong dan se duoc luu vao db
     String pathForDb;
+    // dau vao file
     Part part;
+    // duong dan toi src anh thong qua build
     String realPath;
+    // duong dan toi src anh thong qua build
     String realPathBuild;
+    // ten file
     String filename;
+    // duong dan toi project
     String projectRootPath;
 //    public String getRootProject(ServletContext context) {
 //
@@ -31,9 +37,9 @@ public class ControlData {
 //        return projectPath.substring(0, lastIndexOfWeb);
 //    }
 
-    public ControlData() {
-
-    }
+//    public ControlData() {
+//
+//    }
 
     public Part getPart() {
         return part;
@@ -103,7 +109,7 @@ public class ControlData {
             Files.createDirectories(Path.of(this.realPathBuild));
         }
     }
-
+// luu anh vao den src/ den build den src
     public void SaveImage() throws Exception {
         //part.write(realPath + "\\" + filename);
         //part.write(realPathBuild + "\\" + filename);

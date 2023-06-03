@@ -499,7 +499,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                             if (data.trim() === "false") {
                                 alert("Can't delete other user post " + PostID);
                             } else {
-                                alert("true " + PostID);
+                            //    alert("true " + PostID);
                                 if (post) {
                                     post.setAttribute('style', 'display: none');
                                 }

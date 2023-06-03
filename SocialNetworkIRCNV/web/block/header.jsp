@@ -163,7 +163,9 @@
             <div class="nav-right">
                 <span class="profile">
                     <a href="${pageContext.request.contextPath}/Authen/login.jsp">
-                        <i class="fa-solid fa-user"></i>
+                        <i class="fa-solid fa-user">
+                            <img src="https://e7.pngegg.com/pngimages/178/595/png-clipart-user-profile-computer-icons-login-user-avatars-monochrome-black.png" alt="alt" style="width: 100%;"/>
+                        </i>
                     </a>
                 </span>
 

@@ -6,11 +6,13 @@
 <html lang="vi">
 
     <head>
+        <link rel="icon" href="/SocialNetworkIRCNV/data/img/logo.jpg" type="image/i-con">
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="shortcut icon" href="./images/logo.png" type="image/x-icon">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://kit.fontawesome.com/24c45437f2.js" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
               integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
               crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -453,7 +455,7 @@
                         for (int i = 0; i < std.size(); i++) {%>
                     <div>
                         <%try {%>
-                        <jsp:include page="../BlockShare/BlockPostShare.jsp">
+                        <jsp:include page="/SocialNetworkIRCNV/BlockShare/BlockPostShare.jsp">
                             <jsp:param name="post_id" value="<%=std.get(i).getPostID()%>" />
                             <jsp:param name="img_pros" value="<%=sh.get(i).getImg_UserShare()%>" />
 

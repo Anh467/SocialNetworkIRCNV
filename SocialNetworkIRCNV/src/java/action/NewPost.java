@@ -65,17 +65,17 @@ public class NewPost extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             try {
-                Text text= new Text();
+                Text text = new Text();
                 //
                 HttpSession session = request.getSession();
                 String id = (String) session.getAttribute("id");
-                
+
                 String content = text.changeUTF8(request.getParameter("content"));
                 String isPublic = request.getParameter("privacy");
                 //get path image
                 Part part = request.getPart("photo");
                 String PostID = "";
-                if (part != null && part.getSubmittedFileName()!=null) {
+                if (part != null && part.getSubmittedFileName() != null) {
                     //khởi tạo controldata
                     ControlData data = new ControlData(part, getServletContext());
                     // save to db
@@ -87,8 +87,9 @@ public class NewPost extends HttpServlet {
                     // save image
                     data.SaveImage();
                     System.out.println("path: " + data.getRealPath());
+                } else {
+                    PostID = addNewPost(id, content, "", isPublic);
                 }
-                else PostID = addNewPost(id, content, "", isPublic);
                 //respone
 //                String publicpost = isPublic.endsWith("1") ? "Public" : "Private";
                 User user = new dao.UserDAO().getUserByID(id);
