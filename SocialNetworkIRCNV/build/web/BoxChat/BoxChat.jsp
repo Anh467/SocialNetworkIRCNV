@@ -154,13 +154,16 @@
 
         </style>
     </head>
-
-    <body onload="startLoadData()">
+    <body >
         <div class="container">
             <div class="sidebar">
                 <ul class="friend-list">
                     <%
                         BoxChatFriend data = (BoxChatFriend) session.getAttribute("boxChatFriendData");
+                        if(data!=null){
+                    %>
+                    <input id="UserID" value="<%=data.getUserID()%>" style="display: none;  ">    
+                    <%}
                         for (FriendAndLastChat last : data.getList()) {
                             String friendName = last.getFriendID();
                             String lastMessage = last.getLastChat();
@@ -190,7 +193,7 @@
             <div class="chat-container">
                 <div class="chat-header">
                     <div class="avatar"></div>
-                    <div class="friend-name"><%=FriendId%></div>
+                    <div class="friendID" id="friendID"><%=FriendId%></div>
                 </div>
                 <div class="chat-messages" id="chat-messages">
                     <%
@@ -225,18 +228,18 @@
         </div>
         <script>
             document.getElementById('send-button').addEventListener('click', function () {
-                sendMessage();
+                sendMessagever1();
             });
 
             document.getElementById('chat-input').addEventListener('keydown', function (event) {
                 if (event.key === 'Enter') {
                     event.preventDefault();
-                    sendMessage();
+                    sendMessagever1();
                 }
             });
 
-            function sendMessage() {
-                var friendId = document.getElementById('friendId').innerText;
+            function sendMessagever1() {
+                var friendId = document.getElementById('friendID').textContent;
                 var messageInput = document.getElementById('chat-input');
                 var message = messageInput.value.trim();
                 if (message !== '') {
@@ -244,7 +247,7 @@
                         $.ajax({
                             url: 'SavaChat', // Đường dẫn đến file xử lý lưu tin nhắn (cần tạo file luu-tin-nhan.php)
                             method: 'POST',
-                            data: {message: message,friendId: friendId},
+                            data: {message: message, friendId: friendId},
                             success: function (response) {
                                 // Xử lý phản hồi từ server (nếu cần)
                                 var chatMessages = document.querySelector('.chat-messages');
@@ -260,10 +263,46 @@
                     }
                 }
             }
-
-            function startLoadData() {
-            }
+//            var websocket = new WebSocket("ws://localhost:8080/WebSocketVer2/chatRoomServer");
+//            websocket.onopen = function (message) {
+//                processOpen(message);
+//            };
+//            websocket.onmessage = function (message) {
+//                processMessage(message);
+//            };
+//            websocket.onclose = function (message) {
+//                processClose(message);
+//            };
+//            websocket.onerror = function (message) {
+//                processError(message);
+//            };
+//
+//            function processOpen(message) {
+//                textAreaMessage.value += "Server connect... \n";
+//            }
+//            function processMessage(message) {
+//                console.log(message);
+//                textAreaMessage.value += message.data + " \n";
+//            }
+//            function processClose(message) {
+//                textAreaMessage.value += "Server Disconnect... \n";
+//            }
+//            function processError(message) {
+//                textAreaMessage.value += "Error... " + message + " \n";
+//            }
+//
+//            function sendMessage() {
+//                if (typeof websocket != 'undefined' && websocket.readyState == WebSocket.OPEN) {
+//                    var data = {
+//                        message: chat-input.value,
+//                        userID: userID.value
+//                    };
+//
+//                    websocket.send(JSON.stringify(data));
+//                }
+//            }
         </script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     </body>
 
 </html>

@@ -197,14 +197,21 @@ public final class BoxChat_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\n");
       out.write("        </style>\n");
       out.write("    </head>\n");
-      out.write("\n");
-      out.write("    <body>\n");
+      out.write("    <body >\n");
       out.write("        <div class=\"container\">\n");
       out.write("            <div class=\"sidebar\">\n");
       out.write("                <ul class=\"friend-list\">\n");
       out.write("                    ");
 
                         BoxChatFriend data = (BoxChatFriend) session.getAttribute("boxChatFriendData");
+                        if(data!=null){
+                    
+      out.write("\n");
+      out.write("                    <input id=\"UserID\" value=\"");
+      out.print(data.getUserID());
+      out.write("\" style=\"display: none;  \">    \n");
+      out.write("                    ");
+}
                         for (FriendAndLastChat last : data.getList()) {
                             String friendName = last.getFriendID();
                             String lastMessage = last.getLastChat();
@@ -236,13 +243,16 @@ public final class BoxChat_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("            </div>\n");
       out.write("            ");
 FriendBoxChat box = (FriendBoxChat) session.getAttribute("friendBoxChatData");
-                String FriendId= box.getFriendID();
+                String FriendId = "";
+                if (box != null) {
+                    FriendId = box.getFriendID();
+                }
             
       out.write("\n");
       out.write("            <div class=\"chat-container\">\n");
       out.write("                <div class=\"chat-header\">\n");
       out.write("                    <div class=\"avatar\"></div>\n");
-      out.write("                    <div class=\"friend-name\">");
+      out.write("                    <div class=\"friendID\" id=\"friendID\">");
       out.print(FriendId);
       out.write("</div>\n");
       out.write("                </div>\n");
@@ -262,7 +272,7 @@ FriendBoxChat box = (FriendBoxChat) session.getAttribute("friendBoxChatData");
       out.print(ChatID);
       out.write("</q>");
 
-                                    if (who) {
+                        if (who) {
                         
       out.write("\n");
       out.write("                        <div class=\"user\">\n");
@@ -282,8 +292,8 @@ FriendBoxChat box = (FriendBoxChat) session.getAttribute("friendBoxChatData");
                         
       out.write("</div>");
 
-                                        }
-                                    }
+                                }
+                            }
       out.write("\n");
       out.write("                    <!-- Tin nhắn trong box chat sẽ được đổ vào đây -->\n");
       out.write("                </div>\n");
@@ -295,30 +305,81 @@ FriendBoxChat box = (FriendBoxChat) session.getAttribute("friendBoxChatData");
       out.write("        </div>\n");
       out.write("        <script>\n");
       out.write("            document.getElementById('send-button').addEventListener('click', function () {\n");
-      out.write("                sendMessage();\n");
+      out.write("                sendMessagever1();\n");
       out.write("            });\n");
       out.write("\n");
       out.write("            document.getElementById('chat-input').addEventListener('keydown', function (event) {\n");
       out.write("                if (event.key === 'Enter') {\n");
       out.write("                    event.preventDefault();\n");
-      out.write("                    sendMessage();\n");
+      out.write("                    sendMessagever1();\n");
       out.write("                }\n");
       out.write("            });\n");
       out.write("\n");
-      out.write("            function sendMessage() {\n");
+      out.write("            function sendMessagever1() {\n");
+      out.write("                var friendId = document.getElementById('friendID').textContent;\n");
       out.write("                var messageInput = document.getElementById('chat-input');\n");
       out.write("                var message = messageInput.value.trim();\n");
       out.write("                if (message !== '') {\n");
       out.write("                    if (message.trim() !== '') {\n");
-      out.write("                        var chatMessages = document.querySelector('.chat-messages');\n");
-      out.write("                        chatMessages.innerHTML += '<div class=\"user\">' + message + '</div>';\n");
-      out.write("                        chatMessages.innerHTML += '<div class=\"user friend\">' + message + '</div>';\n");
-      out.write("                        chatMessages.scrollTop = chatMessages.scrollHeight;\n");
-      out.write("                        messageInput.value = '';\n");
+      out.write("                        $.ajax({\n");
+      out.write("                            url: 'SavaChat', // Đường dẫn đến file xử lý lưu tin nhắn (cần tạo file luu-tin-nhan.php)\n");
+      out.write("                            method: 'POST',\n");
+      out.write("                            data: {message: message, friendId: friendId},\n");
+      out.write("                            success: function (response) {\n");
+      out.write("                                // Xử lý phản hồi từ server (nếu cần)\n");
+      out.write("                                var chatMessages = document.querySelector('.chat-messages');\n");
+      out.write("                                chatMessages.innerHTML += '<div class=\"user\">' + message + '</div>';\n");
+      out.write("                                chatMessages.innerHTML += '<div class=\"user friend\">' + message + '</div>';\n");
+      out.write("                                chatMessages.scrollTop = chatMessages.scrollHeight;\n");
+      out.write("                                messageInput.value = '';\n");
+      out.write("                            },\n");
+      out.write("                            error: function () {\n");
+      out.write("                                // Xử lý khi có lỗi xảy ra trong quá trình gửi tin nhắn\n");
+      out.write("                            }\n");
+      out.write("                        });\n");
       out.write("                    }\n");
       out.write("                }\n");
       out.write("            }\n");
+      out.write("//            var websocket = new WebSocket(\"ws://localhost:8080/WebSocketVer2/chatRoomServer\");\n");
+      out.write("//            websocket.onopen = function (message) {\n");
+      out.write("//                processOpen(message);\n");
+      out.write("//            };\n");
+      out.write("//            websocket.onmessage = function (message) {\n");
+      out.write("//                processMessage(message);\n");
+      out.write("//            };\n");
+      out.write("//            websocket.onclose = function (message) {\n");
+      out.write("//                processClose(message);\n");
+      out.write("//            };\n");
+      out.write("//            websocket.onerror = function (message) {\n");
+      out.write("//                processError(message);\n");
+      out.write("//            };\n");
+      out.write("//\n");
+      out.write("//            function processOpen(message) {\n");
+      out.write("//                textAreaMessage.value += \"Server connect... \\n\";\n");
+      out.write("//            }\n");
+      out.write("//            function processMessage(message) {\n");
+      out.write("//                console.log(message);\n");
+      out.write("//                textAreaMessage.value += message.data + \" \\n\";\n");
+      out.write("//            }\n");
+      out.write("//            function processClose(message) {\n");
+      out.write("//                textAreaMessage.value += \"Server Disconnect... \\n\";\n");
+      out.write("//            }\n");
+      out.write("//            function processError(message) {\n");
+      out.write("//                textAreaMessage.value += \"Error... \" + message + \" \\n\";\n");
+      out.write("//            }\n");
+      out.write("//\n");
+      out.write("//            function sendMessage() {\n");
+      out.write("//                if (typeof websocket != 'undefined' && websocket.readyState == WebSocket.OPEN) {\n");
+      out.write("//                    var data = {\n");
+      out.write("//                        message: chat-input.value,\n");
+      out.write("//                        userID: userID.value\n");
+      out.write("//                    };\n");
+      out.write("//\n");
+      out.write("//                    websocket.send(JSON.stringify(data));\n");
+      out.write("//                }\n");
+      out.write("//            }\n");
       out.write("        </script>\n");
+      out.write("        <script src=\"https://code.jquery.com/jquery-3.6.0.min.js\"></script>\n");
       out.write("    </body>\n");
       out.write("\n");
       out.write("</html>\n");

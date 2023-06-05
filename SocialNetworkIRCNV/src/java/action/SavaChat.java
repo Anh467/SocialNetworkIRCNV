@@ -4,8 +4,10 @@
  */
 package action;
 
+import dao.AddAChatDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -74,11 +76,12 @@ public class SavaChat extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String message = request.getParameter("message");
-        String friendID = request.getParameter("friendId:");
+        String friendID = request.getParameter("friendId");
 
         HttpSession session = request.getSession();
         String userId = (String) session.getAttribute("id");
-        
+        AddAChatDAO e = new AddAChatDAO();
+        e.SaveTODB(userId, friendID, message);
     }
 
     /**

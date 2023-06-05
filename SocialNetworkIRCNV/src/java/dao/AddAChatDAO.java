@@ -24,7 +24,7 @@ public class AddAChatDAO {
         String u1 = UserID;
         String u2 = FriendID;
         boolean check = true;
-        if (u1.equalsIgnoreCase(u2)) {
+        if (u1.compareTo(u2)<0) {
             String user = u1;
             u1 = u2;
             u2 = user;
@@ -48,7 +48,7 @@ public class AddAChatDAO {
             ps.setString(2, u2);
             ps.setString(3, Mess);
             ps.setBoolean(4, check);
-            ps.executeQuery();
+            ps.executeUpdate();
             return true;
         } catch (Exception e) {
             System.err.println("model.API.SaveChatBox");
