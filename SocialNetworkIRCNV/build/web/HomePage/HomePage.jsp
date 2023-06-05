@@ -346,6 +346,7 @@
     <body>
         <header>
             <%@include file="../block/header.jsp" %>
+            
         </header>
 
         <%            //String id = (String) session.getAttribute("id");

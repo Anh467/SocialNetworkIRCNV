@@ -11,7 +11,7 @@
     <head>
         <meta charset="UTF-8">
     <head>
-        
+
         <title>JSP Page</title>
         <style>
             nav{
@@ -121,12 +121,10 @@
                 <input type="text" placeholder="Search Mediabook..">
             </div>
             <jsp:include page = "/GetInfor"></jsp:include>
-
-
             <% User user = (User) request.getAttribute("user");
                 if (user != null) {
             %>
-          
+
             <div class="nav-right">
                 <span class="profile">
                     <a href="${pageContext.request.contextPath}/PersonalPage/ProfileInfo.jsp    ">
@@ -136,7 +134,7 @@
 
 
 
-                <a href="#">
+                    <a href="../BoxChat/GetFriendAndBoxChat">
                     <i class="fas fa-comments"></i>
                 </a>
 

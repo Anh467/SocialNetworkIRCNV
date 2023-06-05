@@ -45,7 +45,7 @@ public class PostStatisticsDAO {
             return list;
 
         } catch (Exception e) {
-            System.err.println("model.API.CheckLogin");
+            System.err.println("model.API.PostStatistics");
             e.printStackTrace();
         }
         return null;
