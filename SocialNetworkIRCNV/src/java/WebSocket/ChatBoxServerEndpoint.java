@@ -13,6 +13,7 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
+import org.json.JSONObject;
 
 @ServerEndpoint(value = "/chatRoomServer")
 public class ChatBoxServerEndpoint {
@@ -36,14 +37,22 @@ public class ChatBoxServerEndpoint {
         JsonObject jsonObject = jsonElement.getAsJsonObject();
         String chatMessage = jsonObject.get("message").getAsString();
         String userID = jsonObject.get("userID").getAsString();
+        String friendID = jsonObject.get("friendID").getAsString();
 
-        if (userID == null) {
-            userSession.getUserProperties().put("username", message);
-            userSession.getBasicRemote().sendText("System: you are connectd as  " + message);
-        } else {
+        String username = (String) userSession.getUserProperties().get("username");
+        if (username == null) {
+            userSession.getUserProperties().put("username", userID);
+        } 
             for (Session session : users) {
-                session.getBasicRemote().sendText(userID + ": " + message);
-            }
+                String sessionId = (String) session.getUserProperties().get("username");
+                if (sessionId != null && (sessionId.equals(userID) || sessionId.equals(friendID))) {
+                    JSONObject data = new JSONObject();
+                    data.put("userId", userID);
+                    data.put("message", chatMessage);
+
+                    // Gửi dữ liệu từ handleMessage tới client thông qua WebSocket
+                    session.getBasicRemote().sendText(data.toString());
+                }
         }
     }
 

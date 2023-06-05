@@ -154,15 +154,15 @@
 
         </style>
     </head>
-    <body >
+    <body onload="sendMessage()">
         <div class="container">
             <div class="sidebar">
                 <ul class="friend-list">
                     <%
                         BoxChatFriend data = (BoxChatFriend) session.getAttribute("boxChatFriendData");
-                        if(data!=null){
+                        if (data != null) {
                     %>
-                    <input id="UserID" value="<%=data.getUserID()%>" style="display: none;  ">    
+                    <p id="UserID" class="userID"><%=data.getUserID()%></p>
                     <%}
                         for (FriendAndLastChat last : data.getList()) {
                             String friendName = last.getFriendID();
@@ -237,7 +237,7 @@
                     sendMessagever1();
                 }
             });
-
+            var chatMessages = document.querySelector('.chat-messages');
             function sendMessagever1() {
                 var friendId = document.getElementById('friendID').textContent;
                 var messageInput = document.getElementById('chat-input');
@@ -249,10 +249,7 @@
                             method: 'POST',
                             data: {message: message, friendId: friendId},
                             success: function (response) {
-                                // Xử lý phản hồi từ server (nếu cần)
-                                var chatMessages = document.querySelector('.chat-messages');
-                                chatMessages.innerHTML += '<div class="user">' + message + '</div>';
-                                chatMessages.innerHTML += '<div class="user friend">' + message + '</div>';
+                                sendMessage();
                                 chatMessages.scrollTop = chatMessages.scrollHeight;
                                 messageInput.value = '';
                             },
@@ -263,44 +260,63 @@
                     }
                 }
             }
-//            var websocket = new WebSocket("ws://localhost:8080/WebSocketVer2/chatRoomServer");
-//            websocket.onopen = function (message) {
-//                processOpen(message);
-//            };
-//            websocket.onmessage = function (message) {
-//                processMessage(message);
-//            };
-//            websocket.onclose = function (message) {
-//                processClose(message);
-//            };
-//            websocket.onerror = function (message) {
-//                processError(message);
-//            };
-//
-//            function processOpen(message) {
-//                textAreaMessage.value += "Server connect... \n";
-//            }
-//            function processMessage(message) {
-//                console.log(message);
-//                textAreaMessage.value += message.data + " \n";
-//            }
-//            function processClose(message) {
-//                textAreaMessage.value += "Server Disconnect... \n";
-//            }
-//            function processError(message) {
-//                textAreaMessage.value += "Error... " + message + " \n";
-//            }
-//
-//            function sendMessage() {
-//                if (typeof websocket != 'undefined' && websocket.readyState == WebSocket.OPEN) {
-//                    var data = {
-//                        message: chat-input.value,
-//                        userID: userID.value
-//                    };
-//
-//                    websocket.send(JSON.stringify(data));
-//                }
-//            }
+            var websocket = new WebSocket("ws://localhost:8080/SocialNetworkIRCNV/chatRoomServer");
+
+            websocket.onopen = function (message) {
+                processOpen(message);
+            };
+            websocket.onmessage = function (message) {
+                processMessage(message);
+            };
+            websocket.onclose = function (message) {
+                processClose(message);
+            };
+            websocket.onerror = function (message) {
+                processError(message);
+            };
+
+            function processOpen(message) {
+                chatMessages.value += "Server connect... \n";
+            }
+            function processMessage(message) {
+                var data = JSON.parse(message.data);
+                var userId = data.userId;
+                var message = data.message;
+                var userIdElement = document.querySelector('.userID');
+                if (message.trim() !== "") {
+                    if (userId === userIdElement.textContent) {
+                        chatMessages.innerHTML += '<div class="user">' + message + '</div>';
+                    } else {
+                        chatMessages.innerHTML += '<div class="user friend">' + message + '</div>';
+                    }
+                }
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            function processClose(message) {
+                chatMessages.value += "Server Disconnect... \n";
+            }
+            function processError(message) {
+                chatMessages.value += "Error... " + message + " \n";
+            }
+
+            function sendMessage() {
+                if (typeof websocket != 'undefined' && websocket.readyState == WebSocket.OPEN) {
+                    var messageInput = document.getElementById('chat-input');
+
+                    var userIdElement = document.querySelector('.userID');
+                    var userId = userIdElement.textContent;
+
+                    var friendIdElement = document.getElementById('friendID');
+                    var friendId = friendIdElement.innerHTML;
+                    var data = {
+                        message: messageInput.value,
+                        userID: userId,
+                        friendID: friendId
+                    };
+
+                    websocket.send(JSON.stringify(data));
+                }
+            }
         </script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     </body>
