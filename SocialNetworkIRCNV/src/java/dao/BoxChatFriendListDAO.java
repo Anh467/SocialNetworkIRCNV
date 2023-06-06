@@ -26,14 +26,17 @@ public class BoxChatFriendListDAO {
     }
 
     public FriendBoxChat getBoxChat(String userID, String FriendID) {
-        if (FriendID==null || FriendID.isBlank()) {
+        if (FriendID == null || FriendID.isBlank()) {
             return null;
         }
         FriendBoxChat box = new FriendBoxChat(userID, FriendID);
         try {
-            PreparedStatement ps = cnn.prepareStatement("SELECT * FROM dbo.CHATCONTENT\n"
-                    + "WHERE CHATCONTENT.UserID1=? AND CHATCONTENT.UserID2=?\n"
-                    + "ORDER BY CHATCONTENT.CreateAt ASC");
+            PreparedStatement ps = cnn.prepareStatement("SELECT CHATCONTENT.ChatID, U1.Account AS UserID1, U2.Account AS UserID2, CHATCONTENT.Mess, CHATCONTENT.ofUser1\n"
+                    + "FROM dbo.CHATCONTENT\n"
+                    + "JOIN dbo.UserInfor U1 ON CHATCONTENT.UserID1 = U1.UserID\n"
+                    + "JOIN dbo.UserInfor U2 ON CHATCONTENT.UserID2 = U2.UserID\n"
+                    + "WHERE U1.UserID = ? AND U2.UserID = ?\n"
+                    + "ORDER BY CHATCONTENT.CreateAt ASC;");
             String user1 = userID, user2 = FriendID;
             if (user1.compareToIgnoreCase(user2) < 0) {
                 String user = user1;
@@ -44,19 +47,32 @@ public class BoxChatFriendListDAO {
             ps.setString(2, user2);
 
             ResultSet rs = ps.executeQuery();
-            int i=0;
+            int i = 0;
+            String FriendName = null;
             while (rs.next()) {
-                String chatID = rs.getString(2);
-                String u1 = rs.getString(3);
-                String mess = rs.getString(5);
-                boolean first = rs.getBoolean(6);
-                
+                String chatID = rs.getString(1);
+                String mess = rs.getString(4);
+                boolean first = rs.getBoolean(5);
                 boolean ofYou = userID.equals(user2) ^ first;
-                                //T T => F=Friend
+                if (FriendName == null) {
+                    if (ofYou ^ first) {
+                        FriendName = rs.getString(2);
+//                        TT=>3
+//                        TF=>2
+//                        FT=>2
+//                        FF=>3
+                    } else {
+                        FriendName = rs.getString(3);
+                    }
+                }
+
+                //T T => F=Friend
                 box.getList().put(i, mess);
                 box.getListWho().put(i, ofYou);
                 box.getListChatID().put(i++, chatID);
+
             }
+            box.setFriendName(FriendName);
             return box;
 
         } catch (Exception e) {

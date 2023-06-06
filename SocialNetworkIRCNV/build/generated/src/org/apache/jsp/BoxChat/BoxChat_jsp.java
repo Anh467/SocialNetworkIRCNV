@@ -3,6 +3,7 @@ package org.apache.jsp.BoxChat;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
+import dao.BoxChatFriendListDAO;
 import java.util.Hashtable;
 import model.FriendBoxChat;
 import model.FriendAndLastChat;
@@ -45,6 +46,7 @@ public final class BoxChat_jsp extends org.apache.jasper.runtime.HttpJspBase
       _jspx_out = out;
       _jspx_resourceInjector = (org.glassfish.jsp.api.ResourceInjector) application.getAttribute("com.sun.appserv.jsp.resource.injector");
 
+      out.write("\n");
       out.write("\n");
       out.write("\n");
       out.write("\n");
@@ -197,19 +199,23 @@ public final class BoxChat_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\n");
       out.write("        </style>\n");
       out.write("    </head>\n");
-      out.write("    <body >\n");
+      out.write("    <body onload=\"sendMessage()\">\n");
       out.write("        <div class=\"container\">\n");
       out.write("            <div class=\"sidebar\">\n");
       out.write("                <ul class=\"friend-list\">\n");
       out.write("                    ");
 
-                        BoxChatFriend data = (BoxChatFriend) session.getAttribute("boxChatFriendData");
+                        String UID = (String) session.getAttribute("id");
+                        String FID = request.getParameter("Friendid");
+                        BoxChatFriendListDAO e = new BoxChatFriendListDAO();
+                        BoxChatFriend data = e.getData(UID);
+                        FriendBoxChat box = e.getBoxChat(UID, FID);
                         if (data != null) {
                     
       out.write("\n");
-      out.write("                    <input id=\"UserID\" value=\"");
+      out.write("                    <p id=\"UserID\" class=\"userID\">");
       out.print(data.getUserID());
-      out.write("\" style=\"display: none;  \">    \n");
+      out.write("</p>\n");
       out.write("                    ");
 }
                         for (FriendAndLastChat last : data.getList()) {
@@ -217,7 +223,8 @@ public final class BoxChat_jsp extends org.apache.jasper.runtime.HttpJspBase
                             String lastMessage = last.getLastChat();
                     
       out.write("\n");
-      out.write("                    <a href=\"GetFriendAndBoxChat?Friendid=");
+      out.write("                    <!--GetFriendAndBoxChat-->\n");
+      out.write("                    <a href=\"BoxChat.jsp?Friendid=");
       out.print(friendName);
       out.write("\">\n");
       out.write("                        <li class=\"friend-item\">\n");
@@ -242,7 +249,7 @@ public final class BoxChat_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\n");
       out.write("            </div>\n");
       out.write("            ");
-FriendBoxChat box = (FriendBoxChat) session.getAttribute("friendBoxChatData");
+
                 String FriendId = "";
                 if (box != null) {
                     FriendId = box.getFriendID();
@@ -326,6 +333,7 @@ FriendBoxChat box = (FriendBoxChat) session.getAttribute("friendBoxChatData");
       out.write("                            method: 'POST',\n");
       out.write("                            data: {message: message, friendId: friendId},\n");
       out.write("                            success: function (response) {\n");
+      out.write("                                sendMessage();\n");
       out.write("                                chatMessages.scrollTop = chatMessages.scrollHeight;\n");
       out.write("                                messageInput.value = '';\n");
       out.write("                            },\n");
@@ -336,7 +344,8 @@ FriendBoxChat box = (FriendBoxChat) session.getAttribute("friendBoxChatData");
       out.write("                    }\n");
       out.write("                }\n");
       out.write("            }\n");
-      out.write("            var websocket = new WebSocket(\"ws://localhost:8080/WebSocketVer2/chatRoomServer\");\n");
+      out.write("            var websocket = new WebSocket(\"ws://localhost:8080/SocialNetworkIRCNV/chatRoomServer\");\n");
+      out.write("\n");
       out.write("            websocket.onopen = function (message) {\n");
       out.write("                processOpen(message);\n");
       out.write("            };\n");
@@ -357,15 +366,15 @@ FriendBoxChat box = (FriendBoxChat) session.getAttribute("friendBoxChatData");
       out.write("                var data = JSON.parse(message.data);\n");
       out.write("                var userId = data.userId;\n");
       out.write("                var message = data.message;\n");
-      out.write("\n");
-      out.write("                if (userId === userID.value) {\n");
-      out.write("                    chatMessages.innerHTML += '<div class=\"user\">' + message + '</div>';\n");
-      out.write("                } else {\n");
-      out.write("                    chatMessages.innerHTML += '<div class=\"user friend\">' + message + '</div>';\n");
+      out.write("                var userIdElement = document.querySelector('.userID');\n");
+      out.write("                if (message.trim() !== \"\") {\n");
+      out.write("                    if (userId === userIdElement.textContent) {\n");
+      out.write("                        chatMessages.innerHTML += '<div class=\"user\">' + message + '</div>';\n");
+      out.write("                    } else {\n");
+      out.write("                        chatMessages.innerHTML += '<div class=\"user friend\">' + message + '</div>';\n");
+      out.write("                    }\n");
       out.write("                }\n");
       out.write("                chatMessages.scrollTop = chatMessages.scrollHeight;\n");
-      out.write("                messageInput.value = '';\n");
-      out.write("\n");
       out.write("            }\n");
       out.write("            function processClose(message) {\n");
       out.write("                chatMessages.value += \"Server Disconnect... \\n\";\n");
@@ -376,10 +385,17 @@ FriendBoxChat box = (FriendBoxChat) session.getAttribute("friendBoxChatData");
       out.write("\n");
       out.write("            function sendMessage() {\n");
       out.write("                if (typeof websocket != 'undefined' && websocket.readyState == WebSocket.OPEN) {\n");
+      out.write("                    var messageInput = document.getElementById('chat-input');\n");
+      out.write("\n");
+      out.write("                    var userIdElement = document.querySelector('.userID');\n");
+      out.write("                    var userId = userIdElement.textContent;\n");
+      out.write("\n");
+      out.write("                    var friendIdElement = document.getElementById('friendID');\n");
+      out.write("                    var friendId = friendIdElement.innerHTML;\n");
       out.write("                    var data = {\n");
-      out.write("                        message: chat - input.value,\n");
-      out.write("                        userID: userID.value,\n");
-      out.write("                        friendID: friendID.value\n");
+      out.write("                        message: messageInput.value,\n");
+      out.write("                        userID: userId,\n");
+      out.write("                        friendID: friendId\n");
       out.write("                    };\n");
       out.write("\n");
       out.write("                    websocket.send(JSON.stringify(data));\n");

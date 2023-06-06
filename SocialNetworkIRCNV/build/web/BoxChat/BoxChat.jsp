@@ -4,6 +4,7 @@
     Author     : TCNJK
 --%>
 
+<%@page import="dao.BoxChatFriendListDAO"%>
 <%@page import="java.util.Hashtable"%>
 <%@page import="model.FriendBoxChat"%>
 <%@page import="model.FriendAndLastChat"%>
@@ -159,16 +160,21 @@
             <div class="sidebar">
                 <ul class="friend-list">
                     <%
-                        BoxChatFriend data = (BoxChatFriend) session.getAttribute("boxChatFriendData");
+                        String UID = (String) session.getAttribute("id");
+                        String FID = request.getParameter("Friendid");
+                        BoxChatFriendListDAO e = new BoxChatFriendListDAO();
+                        BoxChatFriend data = e.getData(UID);
+                        FriendBoxChat box = e.getBoxChat(UID, FID);
                         if (data != null) {
                     %>
-                    <p id="UserID" class="userID"><%=data.getUserID()%></p>
+                    <p id="UserID" class="userID" style="display: none;"><%=data.getUserID()%></p>
                     <%}
                         for (FriendAndLastChat last : data.getList()) {
                             String friendName = last.getFriendID();
                             String lastMessage = last.getLastChat();
                     %>
-                    <a href="GetFriendAndBoxChat?Friendid=<%=friendName%>">
+                    <!--GetFriendAndBoxChat-->
+                    <a href="BoxChat.jsp?Friendid=<%=friendName%>">
                         <li class="friend-item">
                             <div class="friend">
                                 <div class="friend-avatar"></div>
@@ -184,16 +190,19 @@
                 </ul>
 
             </div>
-            <%FriendBoxChat box = (FriendBoxChat) session.getAttribute("friendBoxChatData");
+            <%
                 String FriendId = "";
+                String FriendName="";
                 if (box != null) {
                     FriendId = box.getFriendID();
+                    FriendName= box.getFriendName();
                 }
             %>
             <div class="chat-container">
                 <div class="chat-header">
                     <div class="avatar"></div>
-                    <div class="friendID" id="friendID"><%=FriendId%></div>
+                    <div class="friendID" id="friendID" style="display: none;"><%=FriendId%></div>
+                    <div class="FriendName" id="FriendName" ><%=FriendName%></div>
                 </div>
                 <div class="chat-messages" id="chat-messages">
                     <%

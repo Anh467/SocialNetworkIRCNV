@@ -67,6 +67,7 @@ public class GetFriendAndBoxChat extends HttpServlet {
         BoxChatFriendListDAO e= new BoxChatFriendListDAO();
         BoxChatFriend data = e.getData(userId);
         FriendBoxChat box =e.getBoxChat(userId, FriendId);
+        
         session.setAttribute("boxChatFriendData", data);
         session.setAttribute("friendBoxChatData", box);
 

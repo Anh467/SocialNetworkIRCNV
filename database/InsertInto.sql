@@ -71,10 +71,10 @@ WHERE T.Ranking = 1
 ORDER BY T.CreateAt DESC;
 
 
-SELECT * FROM dbo.CHATCONTENT
+a.ChatID,a.UserID1,a.UserID2,a.Mess,a.ofUser1
+SELECT CHATCONTENT.ChatID,CHATCONTENT.UserID1,CHATCONTENT.UserID2,CHATCONTENT.Mess,CHATCONTENT.ofUser1 FROM dbo.CHATCONTENT
 WHERE CHATCONTENT.UserID1='UID00000005' AND CHATCONTENT.UserID2='UID00000004'
-ORDER BY CHATCONTENT.CreateAt ASC 
-
+ORDER BY CHATCONTENT.CreateAt ASC
 INSERT INTO dbo.CHATCONTENT
 (
     UserID1,
@@ -83,8 +83,16 @@ INSERT INTO dbo.CHATCONTENT
     ofUser1
 )
 VALUES
-(   '',       -- UserID1 - varchar(11)
-    '',       -- UserID2 - varchar(11)
-    N'',      -- Mess - nvarchar(500)
-    NULL     -- ofUser1 - bit
+(   'UID00000005',       -- UserID1 - varchar(11)
+    'UID00000004',       -- UserID2 - varchar(11)
+    N'abcca',      -- Mess - nvarchar(500)
+    0     -- ofUser1 - bit
     )
+
+
+SELECT CHATCONTENT.ChatID, U1.Account AS UserID1, U2.Account AS UserID2, CHATCONTENT.Mess, CHATCONTENT.ofUser1
+FROM dbo.CHATCONTENT
+JOIN dbo.UserInfor U1 ON CHATCONTENT.UserID1 = U1.UserID
+JOIN dbo.UserInfor U2 ON CHATCONTENT.UserID2 = U2.UserID
+WHERE U1.UserID = 'UID00000005' AND U2.UserID = 'UID00000004'
+ORDER BY CHATCONTENT.CreateAt ASC;

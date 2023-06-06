@@ -11,7 +11,7 @@ import java.util.Hashtable;
  * @author TCNJK
  */
 public class FriendBoxChat {
-    String UserID,friendID;
+    String UserID,friendID,FriendName;
     Hashtable<Integer, String> listChatID;
     Hashtable<Integer, String> list;
     Hashtable<Integer, Boolean> listWho;
@@ -21,6 +21,14 @@ public class FriendBoxChat {
         list= new Hashtable<>();
         listWho= new Hashtable<>();
         listChatID = new Hashtable<>();
+    }
+
+    public String getFriendName() {
+        return FriendName;
+    }
+
+    public void setFriendName(String FriendName) {
+        this.FriendName = FriendName;
     }
 
    
