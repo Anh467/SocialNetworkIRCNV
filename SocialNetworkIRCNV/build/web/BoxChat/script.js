@@ -1,23 +1,90 @@
 document.getElementById('send-button').addEventListener('click', function () {
-    sendMessage();
+    sendMessagever1();
 });
 
 document.getElementById('chat-input').addEventListener('keydown', function (event) {
     if (event.key === 'Enter') {
         event.preventDefault();
-        sendMessage();
+        sendMessagever1();
     }
 });
-
-function sendMessage() {
+var chatMessages = document.querySelector('.chat-messages');
+function sendMessagever1() {
+    var friendId = document.getElementById('friendID').textContent;
     var messageInput = document.getElementById('chat-input');
     var message = messageInput.value.trim();
     if (message !== '') {
         if (message.trim() !== '') {
-            var chatMessages = document.querySelector('.chat-messages');
-            chatMessages.innerHTML += '<div class="user">' + message + '</div>';
-            chatMessages.innerHTML += '<div class="user friend">' + message + '</div>';
-            chatMessages.scrollTop = chatMessages.scrollHeight;
+            $.ajax({
+                url: 'SavaChat', // Đường dẫn đến file xử lý lưu tin nhắn (cần tạo file luu-tin-nhan.php)
+                method: 'POST',
+                data: {message: message, friendId: friendId},
+                success: function (response) {
+                    sendMessage();
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                    messageInput.value = '';
+                },
+                error: function () {
+                    // Xử lý khi có lỗi xảy ra trong quá trình gửi tin nhắn
+                }
+            });
         }
+    }
+}
+var websocket = new WebSocket("ws://localhost:8080/SocialNetworkIRCNV/chatRoomServer");
+
+websocket.onopen = function (message) {
+    processOpen(message);
+};
+websocket.onmessage = function (message) {
+    processMessage(message);
+};
+websocket.onclose = function (message) {
+    processClose(message);
+};
+websocket.onerror = function (message) {
+    processError(message);
+};
+
+function processOpen(message) {
+    chatMessages.value += "Server connect... \n";
+}
+function processMessage(message) {
+    var data = JSON.parse(message.data);
+    var userId = data.userId;
+    var message = data.message;
+    var userIdElement = document.querySelector('.userID');
+    if (message.trim() !== "") {
+        if (userId === userIdElement.textContent) {
+            chatMessages.innerHTML += '<div class="user">' + message + '</div>';
+        } else {
+            chatMessages.innerHTML += '<div class="user friend">' + message + '</div>';
+        }
+    }
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+function processClose(message) {
+    chatMessages.value += "Server Disconnect... \n";
+}
+function processError(message) {
+    chatMessages.value += "Error... " + message + " \n";
+}
+
+function sendMessage() {
+    if (typeof websocket != 'undefined' && websocket.readyState == WebSocket.OPEN) {
+        var messageInput = document.getElementById('chat-input');
+
+        var userIdElement = document.querySelector('.userID');
+        var userId = userIdElement.textContent;
+
+        var friendIdElement = document.getElementById('friendID');
+        var friendId = friendIdElement.innerHTML;
+        var data = {
+            message: messageInput.value,
+            userID: userId,
+            friendID: friendId
+        };
+
+        websocket.send(JSON.stringify(data));
     }
 }
