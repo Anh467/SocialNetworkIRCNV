@@ -47,27 +47,33 @@ websocket.onerror = function (message) {
 };
 
 function processOpen(message) {
-    chatMessages.value += "Server connect... \n";
+    console.log('Server connect... ');
 }
 function processMessage(message) {
     var data = JSON.parse(message.data);
     var userId = data.userId;
     var message = data.message;
+
+    var friendIdElement = document.getElementById('friendID');
+    var friendId = friendIdElement.innerHTML;
+
     var userIdElement = document.querySelector('.userID');
     if (message.trim() !== "") {
         if (userId === userIdElement.textContent) {
             chatMessages.innerHTML += '<div class="user">' + message + '</div>';
         } else {
-            chatMessages.innerHTML += '<div class="user friend">' + message + '</div>';
+            if (friendId === userId){
+                chatMessages.innerHTML += '<div class="user friend">' + message + '</div>';
+            }
         }
     }
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 function processClose(message) {
-    chatMessages.value += "Server Disconnect... \n";
+    console.log('Server Disconnect...');
 }
 function processError(message) {
-    chatMessages.value += "Error... " + message + " \n";
+    console.log('Error...');
 }
 
 function sendMessage() {
