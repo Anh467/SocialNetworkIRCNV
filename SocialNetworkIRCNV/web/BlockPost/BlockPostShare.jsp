@@ -1,0 +1,115 @@
+
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" href="./images/logo.png" type="image/x-icon">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+              integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+              crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <title>share Share</title>
+
+    </head>
+    <body>
+        <%
+            String UserIDownPost = request.getParameter("UserIDownPost");
+            String nameUserDown = request.getParameter("nameUserDown");
+            String imgUserDown = request.getParameter("imgUserDown");
+
+            String timePostDown = request.getParameter("timePostDown");
+            String contentDown = request.getParameter("contentDown");
+            String PostID = request.getParameter("PostID");
+            String IDshare = request.getParameter("IDshare");
+            String UserID = request.getParameter("UserID");
+
+            String NameShare = request.getParameter("NameShare");
+            String img_UserShare = request.getParameter("img_UserShare");
+            String Content = request.getParameter("Content");
+
+            String timePost = request.getParameter("timePost");
+            String NumInterface = request.getParameter("NumInterface");
+            String NumComment = request.getParameter("NumComment");
+            String Public = request.getParameter("Public").equals("1") ? "Public" : "Private";
+            String img_post = request.getParameter("img_post");
+
+        %>
+        <div class="share"  style="margin: 10px; width: 700px;" id="<%=IDshare%>">
+            <div class="share-head">
+                <div class="dp" >
+                    <img src="/SocialNetworkIRCNV/<%=img_UserShare%>" alt="" style="width: 100%;" >
+                </div>
+                <div class="share-info">
+                    <p class="name" style="color: #003140"><%=NameShare%></p>
+                    <span class="time" style="color: #70d8ff"><%=timePost%></span>
+                    <span class="time" style="color: #003140"><%=Public%></span>
+                </div>
+                <i class=" dropdown fas fa-ellipsis-h">
+                    <div >
+
+                        <div class="dropdown-content">
+                            <a href="#" onclick="deletePost('<%=IDshare%>', 'Share')">Delete</a>
+                            <a href="#" onclick="modifyPost('<%=IDshare%>', '<%=img_UserShare%>', '<%=NameShare%>', '<%=timePost%>',
+                                            '<%=Public%>', '<%=Content.trim()%>', '${pageContext.request.contextPath}/<%=img_post%>')">Modify</a>
+                        </div>
+                    </div>
+                </i>
+
+            </div>
+            <div class="share-content">
+                <%=Content%>
+            </div>
+            <div class="share-body">
+                <div class="share-top" >
+                    <div class="dp" >
+                        <img src="/SocialNetworkIRCNV/<%=imgUserDown%>" alt="" style="width: 100%;" >
+                    </div>
+                    <div class="share-info">
+                        <p class="name" style="color: #003140"><%=nameUserDown%></p>
+                        <span class="time" style="color: #70d8ff"><%=timePostDown%></span>
+                    </div>
+
+                </div>
+
+                <div class="share-content" style="text-align: center;" >
+                    <p style="text-align: left;"><%=contentDown%></p>
+                    <img style="max-width: 100%" src="/SocialNetworkIRCNV/<%=img_post%>" />
+                </div>
+            </div> 
+
+            <div class="counter">
+                <div class="count-like">
+                    <span><%=NumInterface%></span>
+                </div>
+                <div class="count-cmt">
+                    <span><%=NumComment%></span>
+                </div>
+                <div class="count-share">
+                    <span><%=NumComment%></span>
+                </div>
+            </div>
+            <div class="share-bottom" style=" width: 90%; color:  #00abfd; border-top: 1px #00587c solid; margin-left: 5%; padding: 0 5%;">
+                <div class="action">
+                    <i class="far fa-thumbs-up"></i>
+                    <span>Like</span>
+                </div>
+                <div class="action">
+                    <a href="#writecomment-share" style="text-decoration: none; color:  #00abfd;">
+                        <i class="far fa-comment"></i>
+                        <span>Comment</span>
+                    </a>
+                </div>
+                <div class="action" onclick="SharePost('<%=PostID%>', '/SocialNetworkIRCNV/<%=imgUserDown%>', '<%=UserIDownPost%>', '<%=Content%>', '/SocialNetworkIRCNV/<%=img_post%>')">
+                    <i class=" dropdown fa fa-share">
+                        <span>Share</span>
+                    </i>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>

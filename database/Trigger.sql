@@ -191,25 +191,4 @@
 		END
 	END
 	
-INSERT INTO dbo.POST
-(
-    UserID,
-    Content,
-    ImagePost,
-    TimePost,
-    NumInterface,
-    NumComment,
-    NumShare,
-    PublicPost
-)
-VALUES
-(   NULL,    -- UserID - varchar(11)
-    NULL,    -- Content - nvarchar(max)
-    'abcd',    -- ImagePost - nvarchar(255)
-    DEFAULT, -- TimePost - datetime
-    DEFAULT, -- NumInterface - int
-    DEFAULT, -- NumComment - int
-    DEFAULT, -- NumShare - int
-    NULL     -- PublicPost - bit
-    )
-	
+

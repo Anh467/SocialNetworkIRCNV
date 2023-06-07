@@ -93,7 +93,7 @@ public class Verify extends HttpServlet {
 
         String code = api.createNewMail(mail);
         try {
-            new controller.GMAIL().sendMailCheckSignUp(mail, name, code);
+            new controller.Send().sendMailCheckSignUp(mail, name, code);
         } catch (Exception e) {
         }
         
@@ -138,7 +138,7 @@ public class Verify extends HttpServlet {
             cookie.setHttpOnly(true);
             response.addCookie(cookie);
         }
-        request.getRequestDispatcher("index.jsp").forward(request, response);
+        request.getRequestDispatcher("/SocialNetworkIRCNVHomePage/HomePage.jsp").forward(request, response);
     }
 
     /**

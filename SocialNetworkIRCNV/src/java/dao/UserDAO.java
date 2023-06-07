@@ -55,15 +55,83 @@ public class UserDAO {
             ps.setString(1, userId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                return new User(rs.getString(8), rs.getString(9),
+                return new User(rs.getNString(8), rs.getString(9),
                         rs.getString(10), rs.getString(1),
-                        rs.getString(2), rs.getString(3),
+                        rs.getNString(2), rs.getString(3),
                         rs.getString(4), rs.getString(5),
                         rs.getString(6), rs.getBoolean(7));
             }
         } catch (Exception e) {
         }
         return null;
+    }
+
+    public void updateInfo(User user) {
+        String query = "update UserInfor set \n"
+                + "FullName =  ? ,\n"
+                + "Address =  ? ,\n"
+                + "Mail = ? ,\n"
+                + "PhoneNumber = ? ,\n"
+                + "Dob = ? ,\n"
+                + "Gender = ? ,\n"
+                + "Nation =      ? \n"
+                //                + "ImageUser = ? ,\n"
+                //                + "ImageBackGround = ? \n"
+                + "where UserID = ? ;";
+//        String query1 = "update UserInfor set \n"
+//                + "FullName = N'NgocAndepccccctraicc',\n"
+//                + "Address =N'DaNang',\n"
+//                + "Mail ='ngocan2002@gmail.com',\n"
+//                + "PhoneNumber = '0945227000',\n"
+//                + "Dob = '02-12-2002',\n"
+//                + "Gender = 0,\n"
+//                + "Nation =N'Hue',\n"
+//                + "ImageUser = '',\n"
+//                + "ImageBackGround = ''\n"
+//                + "where UserID = 'UID00000001';";
+        try {
+            PreparedStatement ps = cnn.prepareStatement(query);
+            ps.setNString(1, user.getFullName());
+            ps.setNString(2, user.getAddress());
+            ps.setString(3, user.getMail());
+            ps.setString(4, user.getPhoneNumber());
+            ps.setString(5, user.getDOB());
+            ps.setBoolean(6, user.isGender());
+            ps.setNString(7, user.getNation());
+//            ps.setString(8, user.getImgUser());
+//            ps.setString(9, user.getCoverImg());
+            ps.setString(8, user.getUserID());
+            ps.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("dao.UserDAO.updateInfo()");
+            e.printStackTrace();
+        }
+    }
+
+    public void updateAvatar(String filename, String UserID) {
+        String query = "update UserInfor set ImageUser =  ? where UserID = ? ";
+        try {
+            PreparedStatement ps = cnn.prepareStatement(query);
+            ps.setString(1, filename);
+            ps.setString(2, UserID);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("dao.UserDAO.updateAvatar()");
+            e.printStackTrace();
+        }
+    }
+
+    public void updateBackground(String filename, String UserID) {
+        String query = "update UserInfor set ImageBackGround =  ? where UserID = ? ";
+        try {
+            PreparedStatement ps = cnn.prepareStatement(query);
+            ps.setString(1, filename);
+            ps.setString(2, UserID);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("dao.UserDAO.updateBackground()");
+            e.printStackTrace();
+        }
     }
 
 }

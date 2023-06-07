@@ -25,11 +25,24 @@ public class PostUserDAO {
     public PostUserDAO() {
         cnn = new connection.connection().getConnection();
     }
+    String updatePost = "Update POST\n"
+            + "		set Content= ? , ImagePost= ? , PublicPost= ? \n"
+            + "		where PostID= ? ";
+
+    String updatePostWithoutImg = "Update POST\n"
+            + "		set Content= ? , PublicPost= ? \n"
+            + "		where PostID= ? ";
+
     String deletePost = "DELETE FROM dbo.POST\n"
             + "WHERE PostID= ? AND UserID= ?";
+    String deletePostShare = "DELETE dbo.POSTSHARE\n"
+            + "WHERE ShareID= ? AND UserID= ?";
     String checkExistPostUser = "SELECT *\n"
             + "FROM dbo.POST\n"
             + "WHERE PostID= ? AND UserID= ? ";
+    String checkExistPostShareUser = "SELECT *\n"
+            + "FROM dbo.POSTSHARE\n"
+            + "WHERE ShareID= ? AND UserID= ? ";
     String newPost = "DECLARE @InsertedIDs TABLE (PostID VARCHAR(11));\n"
             + "	INSERT INTO dbo.POST\n"
             + "(\n"
@@ -57,14 +70,78 @@ public class PostUserDAO {
     String getPost = "SELECT PostID, UserID, Content, ImagePost, TimePost, NumInterface, NumComment, NumShare, PublicPost\n"
             + "FROM dbo.POST\n"
             + "WHERE PostID= ? ";
-    
-    public boolean checkExistPostUser(String PostID, String UserID){
+    String createPostShare = "DECLARE @InsertedIDs TABLE (ShareID VARCHAR(11));\n"
+            + "	INSERT INTO dbo.POSTSHARE\n"
+            + "	(\n"
+            + "	    UserID,\n"
+            + "	    PostID,\n"
+            + "	    Content,\n"
+            + "	    TimeShare,\n"
+            + "	    NumInterface,\n"
+            + "	    NumComment,\n"
+            + "	    PublicPost\n"
+            + "	)\n"
+            + "	OUTPUT Inserted.ShareID INTO @InsertedIDs\n"
+            + "	VALUES\n"
+            + "	(   ? ,    -- UserID - varchar(11)\n"
+            + "	    ? ,    -- PostID - varchar(11)\n"
+            + "	    ? ,    -- Content - nvarchar(max)\n"
+            + "	    DEFAULT, -- TimeShare - datetime\n"
+            + "	    DEFAULT, -- NumInterface - int\n"
+            + "	    DEFAULT, -- NumComment - int\n"
+            + "	    ?     -- PublicPost - bit\n"
+            + "	    )\n"
+            + "SELECT ShareID FROM @InsertedIDs;";
+
+    public void updatePost(String PostID, String UserID, String Content, String imgPost, String Public) {
+        try {
+            PreparedStatement ps = cnn.prepareStatement(updatePost);
+            ps.setString(1, Content);
+            ps.setString(2, imgPost);
+            ps.setBoolean(3, Public.equals("Public") ? true : false);
+            ps.setString(4, PostID);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("dao.PostUserDAO.deletePost()");
+            e.printStackTrace();
+        }
+
+    }
+
+    public void updatePost(String PostID, String UserID, String Content, String Public) {
+        try {
+            PreparedStatement ps = cnn.prepareStatement(updatePostWithoutImg);
+            ps.setString(1, Content);
+            ps.setBoolean(2, Public.equals("Public") ? true : false);
+            ps.setString(3, PostID);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("dao.PostUserDAO.deletePost()");
+            e.printStackTrace();
+        }
+
+    }
+
+    public void createPostShare(String UserID, String PostID, String Content, String PublicPost) {
+        try {
+            PreparedStatement ps = cnn.prepareStatement(createPostShare);
+            ps.setString(1, UserID);
+            ps.setString(2, PostID);
+            ps.setString(3, Content);
+            ps.setBoolean(4, PublicPost.equalsIgnoreCase("Public") ? true : false);
+        } catch (Exception e) {
+            System.out.println("dao.PostUserDAO.createPostShare()");
+            e.printStackTrace();
+        }
+    }
+
+    public boolean checkExistPostUser(String PostID, String UserID) {
         try {
             PreparedStatement ps = cnn.prepareStatement(checkExistPostUser);
             ps.setString(1, PostID);
             ps.setString(2, UserID);
-            ResultSet rs= ps.executeQuery();
-            while (rs.next()) {                
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
                 return true;
             }
         } catch (Exception e) {
@@ -73,8 +150,43 @@ public class PostUserDAO {
         }
         return false;
     }
+
+    public boolean checkExistPosSharetUser(String PostID, String UserID) {
+        try {
+            PreparedStatement ps = cnn.prepareStatement(checkExistPostShareUser);
+            ps.setString(1, PostID);
+            ps.setString(2, UserID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                return true;
+            }
+        } catch (Exception e) {
+            System.out.println("dao.PostUserDAO.checkExistPostUser()");
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean deletePostShare(String PostID, String UserID) {
+        if (!checkExistPosSharetUser(PostID, UserID)) {
+            return false;
+        }
+        try {
+            PreparedStatement ps = cnn.prepareStatement(deletePostShare);
+            ps.setString(1, PostID);
+            ps.setString(2, UserID);
+            ps.execute();
+        } catch (Exception e) {
+            System.out.println("dao.PostUserDAO.deletePost()");
+            e.printStackTrace();
+        }
+        return true;
+    }
+
     public boolean deletePost(String PostID, String UserID) {
-        if(!checkExistPostUser(PostID, UserID)) return false;
+        if (!checkExistPostUser(PostID, UserID)) {
+            return false;
+        }
         try {
             PreparedStatement ps = cnn.prepareStatement(deletePost);
             ps.setString(1, PostID);
@@ -101,6 +213,25 @@ public class PostUserDAO {
             }
         } catch (Exception e) {
             System.out.println("dao.PostUserDAO.newPost()");
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String newPostShare(String UserID, String PostID, String Content, String PublicPost) {
+        try {
+            Connection cnn = new connection.connection().getConnection();
+            PreparedStatement ps = cnn.prepareStatement(createPostShare);
+            ps.setString(1, UserID);
+            ps.setString(2, PostID);
+            ps.setNString(3, Content);
+            ps.setString(4, PublicPost);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                return rs.getString(1);
+            }
+        } catch (Exception e) {
+            System.out.println("dao.PostUserDAO.newPostShare()");
             e.printStackTrace();
         }
         return null;
@@ -139,7 +270,7 @@ public class PostUserDAO {
             while (rs.next()) {
                 post.add(new PostUser(rs.getString(2), rs.getString(3), rs.getNString(4), rs.getString(5), rs.getString(6), rs.getInt(7), rs.getInt(8),
                         rs.getInt(9), rs.getBoolean(10), rs.getNString(11), rs.getString(12)));
-                System.out.println("Name: "+rs.getNString(11));
+                System.out.println("Name: " + rs.getNString(11));
             }
             rs.close();
             ps.close();

@@ -4,6 +4,8 @@
  */
 package action;
 
+
+import controller.Send;
 import dao.AccountDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -62,6 +64,7 @@ public class ForgotPass extends HttpServlet {
         String user = request.getParameter("user");
         AccountDAO api = new AccountDAO();
         String name = api.checkExistMail(user, mail);
+        
         if (name == null) {
             request.setAttribute("mail", mail);
             request.setAttribute("user", user);
@@ -71,7 +74,8 @@ public class ForgotPass extends HttpServlet {
         }
         String code = api.createNewMail(mail);
         try {
-            new controller.GMAIL().sendMailForgotPass(mail, name, code);
+            new Send().sendEmail("vietnade160170@fpt.edu.vn", "hehe", "hello");
+            new Send().sendMailForgotPass(mail, name, code);
         } catch (Exception e) {
         }
         

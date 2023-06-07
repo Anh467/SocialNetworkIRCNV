@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
+import model.PostShare;
 import model.PostUser;
 import model.User;
 
@@ -59,8 +60,18 @@ public class NewPost extends HttpServlet {
         return new dao.PostUserDAO().newPost(UserID, Content, ImagePost, PublicPost);
     }
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    public String addNewPostShare(String UserID, String PostID, String Content, String PublicPost) {
+        if (PublicPost == null) {
+            PublicPost = "1";
+        } else if (PublicPost.equalsIgnoreCase("Public")) {
+            PublicPost = "1";
+        } else {
+            PublicPost = "0";
+        }
+        return new dao.PostUserDAO().newPostShare(UserID, PostID, Content, PublicPost);
+    }
+
+    public void createNewPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
@@ -95,7 +106,7 @@ public class NewPost extends HttpServlet {
                 User user = new dao.UserDAO().getUserByID(id);
                 PostUser postUser = new dao.PostUserDAO().getPost(PostID);
 //                String pathImg = "http://localhost:8080/SocialNetworkIRCNV/data/post/" + postUser.getImagePost();
-                out.println("<div class=\"post\" style=\"margin: 0px;\" id=\"" + postUser.getPostID() + "\">\n"
+                out.println("<div class=\"post\" style=\"margin: 0px; border-radius: 10px; background: white;\" id=\"" + postUser.getPostID() + "\">\n"
                         + "            <div class=\"post-top\">\n"
                         + "                <div class=\"dp\" >\n"
                         + "                    <img src='/SocialNetworkIRCNV/" + user.getImgUser() + "' alt=\"\" style=\"width: 100%;\" >\n"
@@ -120,7 +131,7 @@ public class NewPost extends HttpServlet {
                         + "\n"
                         + "            <div class=\"post-content\" style=\"text-align: center;\">\n"
                         + "                <p style=\"text-align: left;\">" + postUser.getContent() + "</p>\n"
-                        + "                <img src='/SocialNetworkIRCNV/" + postUser.getImagePost() + "' style=\"width: 100%;margin: 0 auto;\"/>\n"
+                        + "                <img src='/SocialNetworkIRCNV/" + postUser.getImagePost() + "' style=\"max-width: 100%;margin: 0 auto;\"/>\n"
                         + "            </div>\n"
                         + "            <div class=\"counter\">\n"
                         + "                <div class=\"count-like\">\n"
@@ -158,6 +169,150 @@ public class NewPost extends HttpServlet {
                 request.getRequestDispatcher("nonice.jsp").forward(request, response);
             }
         }
+    }
+
+    public void createNewPostShare(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try ( PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            try {
+                Text text = new Text();
+                //
+                HttpSession session = request.getSession();
+                String id = (String) session.getAttribute("id");
+
+                String content = text.changeUTF8(request.getParameter("content"));
+                System.out.println("content: "+content);
+                String isPublic = request.getParameter("privacy");
+                //get path image
+                String ShareID = "";
+                String PostID = request.getParameter("PostID");
+
+                ShareID = addNewPostShare(id, PostID, content, isPublic);
+                //respone
+//                String publicpost = isPublic.endsWith("1") ? "Public" : "Private";
+                User userOwn = new dao.UserDAO().getUserByID(id);
+                PostShare postShare = new dao.PostDAO().getPostShareByShareID(ShareID);
+                User userShare = new dao.UserDAO().getUserByID(postShare.getUserID());
+
+//                String pathImg = "http://localhost:8080/SocialNetworkIRCNV/data/post/" + postUser.getImagePost();
+                out.println("\n"
+                        + "\n"
+                        + "<%@page contentType=\"text/html\" pageEncoding=\"UTF-8\"%>\n"
+                        + "<!DOCTYPE html>\n"
+                        + "<html>\n"
+                        + "    <head>\n"
+                        + "        <meta charset=\"UTF-8\">\n"
+                        + "        <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n"
+                        + "        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
+                        + "        <link rel=\"shortcut icon\" href=\"./images/logo.png\" type=\"image/x-icon\">\n"
+                        + "        <link href=\"https://fonts.googleapis.com/icon?family=Material+Icons\" rel=\"stylesheet\">\n"
+                        + "        <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css\"\n"
+                        + "              integrity=\"sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==\"\n"
+                        + "              crossorigin=\"anonymous\" referrerpolicy=\"no-referrer\" />\n"
+                        + "        <title>share Share</title>\n"
+                        + "        <link rel=\"stylesheet\" href=\"/SocialNetworkIRCNV/css/postshare.css\">\n"
+                        + "    </head>\n"
+                        + "    <body>\n"
+                        + "        <div class=\"share\" id=\"" + postShare.getIDshare() + "\">\n"
+                        + "            <div class=\"share-head\">\n"
+                        + "                <div class=\"dp\" >\n"
+                        + "                    <img src=\"/SocialNetworkIRCNV/" + userShare.getImgUser() + "\" alt=\"\" style=\"width: 100%;\" >\n"
+                        + "                </div>\n"
+                        + "                <div class=\"share-info\">\n"
+                        + "                    <p class=\"name\" style=\"color: #003140\">" + userShare.getFullName() + "</p>\n"
+                        + "                    <span class=\"time\" style=\"color: #70d8ff\">" + postShare.getTimePost() + "</span>\n"
+                        + "                    <span class=\"time\" style=\"color: #003140\">" + (postShare.isPublic() == true ? "Public" : "Private") + "</span>\n"
+                        + "                </div>\n"
+                        + "                <i class=\" dropdown fas fa-ellipsis-h\">\n"
+                        + "                    <div >\n"
+                        + "\n"
+                        + "                        <div class=\"dropdown-content\">\n"
+                        + "                            <a href=\"#\" onclick=\"deletePost('" + postShare.getIDshare() + "', 'Share')\">Delete</a>\n"
+                        + "                            <a href=\"#\" onclick=\"\">Modify</a>\n"
+                        + "\n"
+                        + "                        </div>\n"
+                        + "                    </div>\n"
+                        + "                </i>\n"
+                        + "\n"
+                        + "            </div>\n"
+                        + "            <div class=\"share-content\">\n"
+                        + "                " + postShare.getContent() + "\n"
+                        + "            </div>\n"
+                        + "            <div class=\"share-body\">\n"
+                        + "                <div class=\"share-top\" >\n"
+                        + "                    <div class=\"dp\" >\n"
+                        + "                        <img src=\"/SocialNetworkIRCNV/" + userOwn.getImgUser() + "\" alt=\"\" style=\"width: 100%;\" >\n"
+                        + "                    </div>\n"
+                        + "                    <div class=\"share-info\">\n"
+                        + "                        <p class=\"name\" style=\"color: #003140\">" + userOwn.getFullName() + "</p>\n"
+                        + "                        <span class=\"time\" style=\"color: #70d8ff\">" + postShare.getTimePostDown() + "</span>\n"
+                        + "                    </div>\n"
+                        + "\n"
+                        + "                </div>\n"
+                        + "\n"
+                        + "                <div class=\"share-content\" style=\"text-align: center;\" >\n"
+                        + "                    <p style=\"text-align: left;\">" + postShare.getContentDown() + "</p>\n"
+                        + "                    <img src=\"/SocialNetworkIRCNV/" + postShare.getImg_post() + "\" />\n"
+                        + "                </div>\n"
+                        + "            </div> \n"
+                        + "\n"
+                        + "            <div class=\"counter\">\n"
+                        + "                <div class=\"count-like\">\n"
+                        + "                    <span>" + postShare.getNumInterface() + "</span>\n"
+                        + "                </div>\n"
+                        + "                <div class=\"count-cmt\">\n"
+                        + "                    <span>" + postShare.getNumComment() + "</span>\n"
+                        + "                </div>\n"
+                        + "            </div>\n"
+                        + "            <div class=\"share-bottom\" style=\" width: 90%; color:  #00abfd; border-top: 1px #00587c solid; margin-left: 5%; padding: 0 5%;\">\n"
+                        + "                <div class=\"action\">\n"
+                        + "                    <i class=\"far fa-thumbs-up\"></i>\n"
+                        + "                    <span>Like</span>\n"
+                        + "                </div>\n"
+                        + "                <div class=\"action\">\n"
+                        + "                    <a href=\"#writecomment-share\" style=\"text-decoration: none; color:  #00abfd;\">\n"
+                        + "                        <i class=\"far fa-comment\"></i>\n"
+                        + "                        <span>Comment</span>\n"
+                        + "                    </a>\n"
+                        + "                </div>\n"
+                        + "                <div class=\"action\" onclick=\"SharePost(" + postShare.getPostID() + ", '/SocialNetworkIRCNV/" + postShare.getImgUserDown() + "','" + userOwn.getFullName() + "' ,'" + postShare.getContentDown() + "' ,'/SocialNetworkIRCNV/" + postShare.getImg_post() + "')\">\n"
+                        + "                    <i class=\" dropdown fa fa-share\">\n"
+                        + "                    </i>\n"
+                        + "                    <span>Share</span>\n"
+                        + "                </div>\n"
+                        + "            </div>\n"
+                        + "\n"
+                        + "        </div>\n"
+                        + "    </body>\n"
+                        + "</html>");
+            } catch (Exception e) {
+                System.out.println("action.Upload.doPost()");
+                e.printStackTrace();
+                request.getRequestDispatcher("nonice.jsp").forward(request, response);
+            }
+        }
+    }
+
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String type = request.getParameter("Type");
+        if (type.equalsIgnoreCase("Post")) {
+            try {
+                createNewPost(request, response);
+            } catch (Exception e) {
+                System.out.println("action.NewPost.processRequest()");
+                e.printStackTrace();
+            }
+        } else if (type.equalsIgnoreCase("Share")) {
+            try {
+                createNewPostShare(request, response);
+            } catch (Exception e) {
+                System.out.println("action.NewPost.processRequest()");
+                e.printStackTrace();
+            }
+        }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

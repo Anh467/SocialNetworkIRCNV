@@ -18,10 +18,11 @@ import javax.mail.internet.MimeMessage;
  * @author 84384
  */
 public class Send {
-    final String ID_client= "287957659464-ha3c5chugeljfab0fnmg6228ni5lopej.apps.googleusercontent.com";
-    final String Code_secret_du_client= "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";
-    final String user = "hoangyen25012005@gmail.com";
-    final String pass = "nguyenanhviet";
+//String user="ircnvsocialnetwork@gmail.com";
+    // String pass= "hnixdtpcfwjedvvt";
+
+    final static String user = "ircnvsocialnetwork@gmail.com";
+    final static String pass = "abvicwbypkycpkal";
 
     public void sendEmail(String emailTo, String emailSubject, String emailContent) {
         Properties prop = new Properties();
@@ -58,18 +59,29 @@ public class Send {
         }
 
     }
-    public void sendMailCheckSignUp(String mail, String name, String code){
-        String emailSubject= "VERIFY CODE FOR SIGNUP";
-        String emailContent= "hello user " + name + " thank you for your enjoy us \n this is your mail code: " + code;
-        sendEmail(mail, emailSubject, emailContent);
+
+    public void sendMailForgotPass(String mail, String name, String code) {
+        try {
+            String emailSubject = "VERIFY CODE FOR CONFIRM";
+            String emailContent = "hello user " + name + " this is reset password code: " + code;
+            sendEmail(mail, emailSubject, emailContent);
+        } catch (Exception e) {
+            System.out.println("controller.GMAIL.sendMailForgotPass()");
+            e.printStackTrace();
+        }
+
     }
-    
-    public void sendMailForgotPass(String mail, String name, String code){
-        String emailSubject= "VERIFY CODE FOR CONFIRM";
-        String emailContent= "hello user " + name + " this is reset password code: " + code;
-        sendEmail(mail, emailSubject, emailContent);
+public void sendMailCheckSignUp(String mail, String name, String code) {
+        try {
+            String emailSubject = "VERIFY CODE FOR SIGNUP";
+            String emailContent = "hello user " + name + " thank you for your enjoy us \n this is your mail code: " + code;
+            sendEmail(mail, emailSubject, emailContent);
+        } catch (Exception e) {
+            System.out.println("controller.GMAIL.sendMailCheckSignUp()");
+            e.printStackTrace();
+        }
+
     }
-    
     public void sendEmail(ArrayList<String> emailTo, String emailSubject, String emailContent) {
         Properties prop = new Properties();
         prop.put("mail.smtp.host", "smtp.gmail.com");
@@ -108,8 +120,7 @@ public class Send {
     }
 
     public static void main(String[] args) {
-        final String user = "vietnade160170@fpt.edu.vn";
-        final String pass = "nguyenanhviet";
+
         Properties prop = new Properties();
         prop.put("mail.smtp.host", "smtp.gmail.com");
         prop.put("mail.smtp.port", "465");
@@ -126,9 +137,9 @@ public class Send {
             }
         });
         //ngocan2002@gmail.com
-        String emailTo = "linhnhde160126@fpt.edu.vn";
+        String emailTo = "van123872000@gmail.com";
         String emailSubject = "chi la 1 chiec mail tao lao";
-        String emailContent = "an yeu viet, viet yeu an <3";
+        String emailContent = "lol";
         try {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(user));

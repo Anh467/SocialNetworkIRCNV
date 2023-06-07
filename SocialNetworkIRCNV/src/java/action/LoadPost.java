@@ -4,9 +4,8 @@
  */
 package action;
 
-import dao.PostUserDAO;
+import dao.PostDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,7 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.PostUser;
+import model.Post;
 
 /**
  *
@@ -55,10 +54,10 @@ public class LoadPost extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        PostUserDAO post = new PostUserDAO();
+        PostDAO post = new PostDAO();
         HttpSession session= request.getSession();
         String id= (String) session.getAttribute("id");
-        ArrayList<PostUser> puser = post.getAllPost(id);
+        ArrayList<Post> puser = post.getPostPersonalPage(id);
 //        System.out.println("Hello"+ post.getAllPost().size());
         request.setAttribute("ListPost", puser);
     }

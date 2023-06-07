@@ -259,6 +259,30 @@ VALUES
     1    -- PublicPost - bit
     );
 SELECT PostID FROM @InsertedIDs;
+---- add new Post share
+DECLARE @InsertedIDs TABLE (ShareID VARCHAR(11));
+	INSERT INTO dbo.POSTSHARE
+	(
+	    UserID,
+	    PostID,
+	    Content,
+	    TimeShare,
+	    NumInterface,
+	    NumComment,
+	    PublicPost
+	)
+	OUTPUT Inserted.ShareID INTO @InsertedIDs
+	VALUES
+	(   'UID00000002',    -- UserID - varchar(11)
+	    'PID00000038',    -- PostID - varchar(11)
+	    'abc',    -- Content - nvarchar(max)
+	    DEFAULT, -- TimeShare - datetime
+	    DEFAULT, -- NumInterface - int
+	    DEFAULT, -- NumComment - int
+	    1     -- PublicPost - bit
+	    )
+SELECT ShareID FROM @InsertedIDs;
+
 
 --get post
 SELECT PostID, UserID, Content, ImagePost, TimePost, NumInterface, NumComment, NumShare, PublicPost
@@ -273,3 +297,87 @@ WHERE PostID= 'PID00000001' AND UserID= 'UID00000002'
 
 DELETE FROM dbo.POST
 WHERE PostID= 'PID00000002' AND UserID= 'asdf'
+
+SELECT PostID, POST.UserID, Content, ImagePost, TimePost, NumInterface, NumComment, NumShare, PublicPost, FullName, ImageUser
+FROM dbo.POST
+INNER JOIN dbo.UserInfor ON UserInfor.UserID = POST.UserID
+WHERE POST.UserID= 'UID00000001'
+
+SELECT c.UserID, c.FullName, c.ImageUser, 
+b.TimePost, b.Content, a.PostID, a.ShareID, a.UserID, 
+d.FullName, d.ImageUser,a.Content,
+a.TimeShare, a.NumInterface, a.NumComment, a.PublicPost
+FROM dbo.POSTSHARE a
+INNER JOIN dbo.POST b ON b.PostID = a.PostID
+INNER JOIN dbo.UserInfor c ON b.UserID= c.UserID
+INNER JOIN dbo.UserInfor d ON d.UserID= a.UserID
+WHERE a.UserID= 'UID00000002'
+
+---get element
+INSERT INTO dbo.POSTSHARE
+(
+    UserID,
+    PostID,
+    Content,
+    TimeShare,
+    NumInterface,
+    NumComment,
+    PublicPost
+)
+VALUES
+(   'UID00000002',    -- UserID - varchar(11)
+    'PID00000019',    -- PostID - varchar(11)
+    'adu',    -- Content - nvarchar(max)
+    DEFAULT, -- TimeShare - datetime
+    DEFAULT, -- NumInterface - int
+    DEFAULT, -- NumComment - int
+    1     -- PublicPost - bit
+    )
+	SELECT *
+	FROM dbo.POSTSHARE
+	WHERE UserID='UID00000001'
+
+SELECT *
+FROM dbo.POSTSHARE
+ORDER BY TimePost
+OFFSET 0  ROWS FETCH NEXT 3 ROWS ONLY
+
+DELETE dbo.POSTSHARE
+WHERE ShareID= ? AND UserID= ?
+
+SELECT *
+FROM dbo.POSTSHARE
+WHERE ShareID= 'SID00000002'AND UserID='UID00000001'
+
+
+-- share post
+
+INSERT INTO dbo.POSTSHARE
+(
+    UserID,
+    PostID,
+    Content,
+    TimeShare,
+    NumInterface,
+    NumComment,
+    PublicPost
+)
+VALUES
+(   'UID00000001' ,    -- UserID - varchar(11)
+    'PID00000043' ,    -- PostID - varchar(11)
+    'adu' ,    -- Content - nvarchar(max)
+    DEFAULT, -- TimeShare - datetime
+    DEFAULT, -- NumInterface - int
+    DEFAULT, -- NumComment - int
+    1      -- PublicPost - bit
+    )
+--getPostShareUser
+SELECT c.UserID, c.FullName, c.ImageUser, 
+            b.TimePost, b.Content, a.PostID, a.ShareID, a.UserID, 
+            d.FullName, d.ImageUser,a.Content,
+            a.TimeShare, a.NumInterface, a.NumComment, a.PublicPost, b.ImagePost
+            FROM dbo.POSTSHARE a
+            INNER JOIN dbo.POST b ON b.PostID = a.PostID
+            INNER JOIN dbo.UserInfor c ON b.UserID= c.UserID
+            INNER JOIN dbo.UserInfor d ON d.UserID= a.UserID
+WHERE a.ShareID= 'SID00000010'

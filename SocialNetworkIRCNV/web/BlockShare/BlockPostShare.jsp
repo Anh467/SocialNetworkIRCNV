@@ -203,36 +203,17 @@
                     </a>
                 </div>
                 <div class="action">
-                    <i class="fa fa-share"></i>
+                    <i class="fa fa-share">
+                        <select class="fas fa-ellipsis-h">
+                            <option >Share Public</option>
+                            <option >Share Private</option>
+                        </select> 
+                    </i>
                     <span>Share</span>
                 </div>
             </div>
         
         </div>
-        <%
-                    ArrayList<Comment> cmts = (ArrayList<Comment>) request.getAttribute("ListCmtShare");
-                    
-                    for (int i = 0; i < cmts.size(); i++) {%>
-                <div class="comment" style="width: 100%">
-                    <%try {%>
-                    <jsp:include page="BlockCommentPostShare.jsp">
-                        <jsp:param name="img_user" value="<%=cmts.get(i).getImgUser()%>" />
-
-                        <jsp:param name="n_user_cmt" value="<%= cmts.get(i).getNameUser()%>" />
-
-                        <jsp:param name="time_cmt" value="<%=cmts.get(i).getTimeCmt()%>" />
-
-                        <jsp:param name="content_cmt" value="<%=cmts.get(i).getContentCmt()%>" />
-                        <jsp:param name="img_cmt" value="<%=cmts.get(i).getImgCmt()%>" />
-                        <jsp:param name="num_like_cmt" value="<%=cmts.get(i).getNumInter()%>" />
-                        
-                </jsp:include>
-                <%} catch (Exception e) {
-                             
-                         }%>
-                </div>
-                <%}%>
-   
-
+        
 </body>
 </html>

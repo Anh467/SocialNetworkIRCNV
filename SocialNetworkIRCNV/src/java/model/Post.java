@@ -10,7 +10,7 @@ import java.util.ArrayList;
  *
  * @author 84384
  */
-public class Post {
+public class Post implements Comparable<Post>{
 
     private String PostID, UserID, Content, timePost;
     private int NumInterface, NumComment;
@@ -89,6 +89,16 @@ public class Post {
 
     public void setPublic(boolean Public) {
         this.Public = Public;
+    }
+
+    @Override
+    public int compareTo(Post o) {
+        return this.timePost.compareTo(o.timePost);
+    }
+
+    @Override
+    public String toString() {
+        return "Post{" + "PostID=" + PostID + ", UserID=" + UserID + ", Content=" + Content + ", timePost=" + timePost + ", NumInterface=" + NumInterface + ", NumComment=" + NumComment + ", Public=" + Public + '}';
     }
 
     

@@ -65,11 +65,13 @@ public class PostUser extends Post{
         this.NumShare = NumShare;
     }
 
-    
     @Override
     public String toString() {
-        return "PostUser{" +"ImagePost=" + super.getPostID()+ super.isPublic() + super.getContent() + ImagePost + ", NumShare=" + NumShare + '}';
+        return super.toString()+"PostUser{" + "ImagePost=" + ImagePost + ", FullNameUser=" + FullNameUser + ", ImgUser=" + ImgUser + ", NumShare=" + NumShare + '}';
     }
+
+    
+    
     
     
 }

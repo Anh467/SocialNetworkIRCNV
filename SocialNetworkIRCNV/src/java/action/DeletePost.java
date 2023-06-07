@@ -31,16 +31,29 @@ public class DeletePost extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-         String PostID= request.getParameter("PostID");
-         System.out.println("PostID: "+PostID);
-        String UserID= (String) request.getSession().getAttribute("id");
-        dao.PostUserDAO api= new dao.PostUserDAO();
+        String PostID = request.getParameter("PostID");
+        String Type = request.getParameter("Type");
+        System.out.println("PostID: " + PostID);
+        String UserID = (String) request.getSession().getAttribute("id");
+        dao.PostUserDAO api = new dao.PostUserDAO();
         try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-             if(!api.deletePost(PostID, UserID))
-                out.print("false");
-             else out.print("true");
+            if (Type.equalsIgnoreCase("Post")) {
+                /* TODO output your page here. You may use following sample code. */
+                if (!api.deletePost(PostID, UserID)) {
+                    out.print("false");
+                } else {
+                    out.print("true");
+                }
+
+            } else if (Type.equalsIgnoreCase("Share")) {
+                if (!api.deletePostShare(PostID, UserID)) {
+                    out.print("false");
+                } else {
+                    out.print("true");
+                }
+            }
         }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -68,7 +81,7 @@ public class DeletePost extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {     
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 

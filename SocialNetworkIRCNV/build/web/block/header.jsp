@@ -11,7 +11,7 @@
     <head>
         <meta charset="UTF-8">
     <head>
-        
+
         <title>JSP Page</title>
         <style>
             nav{
@@ -126,7 +126,7 @@
             <% User user = (User) request.getAttribute("user");
                 if (user != null) {
             %>
-          
+
             <div class="nav-right">
                 <span class="profile">
                     <a href="${pageContext.request.contextPath}/PersonalPage/ProfileInfo.jsp    ">
@@ -136,7 +136,7 @@
 
 
 
-                <a href="#">
+                <a href="../BoxChat/GetFriendAndBoxChat">
                     <i class="fas fa-comments"></i>
                 </a>
 
@@ -185,7 +185,7 @@
                 </a>
 
             </div>
-            <%                }
+            <%}
             %>
         </nav>
     </body>

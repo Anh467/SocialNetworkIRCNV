@@ -8,29 +8,50 @@ package model;
  *
  * @author 84384
  */
-public class PostShare extends Post{
+public class PostShare extends Post {
 //UserIDOwnPost là người chủ của status mà được ng khác share
+
     private String UserIDownPost, nameUserDown, imgUserDown, timePostDown, contentDown,
             NameShare, img_UserShare;
-    private String img_postshare, IDshare;
-    private int NumShare;
+    private String IDshare, img_post;
 
-    public PostShare(String UserIDownPost, String nameUserDown, String imgUserDown, 
-            String timePostDown, String contentDown, String PostID, String IDshare, String UserID, 
-            String NameShare, String img_UserShare, String Content, String img_postshare, 
-            String timePost, int NumInterface, int NumComment, int NumShare, boolean Public) 
-    {
+    public PostShare(String UserIDownPost, String nameUserDown, String imgUserDown,
+            String timePostDown, String contentDown, String PostID, String IDshare, String UserID,
+            String NameShare, String img_UserShare, String Content,
+            String timePost, int NumInterface, int NumComment, boolean Public, String img_post) {
         super(PostID, UserID, Content, timePost, NumInterface, NumComment, Public);
         this.UserIDownPost = UserIDownPost;
-        this.img_postshare= img_postshare;
-        this.nameUserDown=nameUserDown;
-        this.imgUserDown=imgUserDown;
-        this.NameShare=NameShare;
-        this.NumShare=NumShare;
-        this.timePostDown=timePostDown;
-        this.img_UserShare=img_UserShare;
-        this.contentDown=contentDown;
-        this.IDshare=IDshare;
+        this.nameUserDown = nameUserDown;
+        this.imgUserDown = imgUserDown;
+        this.NameShare = NameShare;
+        this.timePostDown = timePostDown;
+        this.img_UserShare = img_UserShare;
+        this.contentDown = contentDown;
+        this.IDshare = IDshare;
+        this.img_post = img_post;
+    }
+
+    public PostShare(String UserIDownPost, String nameUserDown, String imgUserDown,
+            String timePostDown, String contentDown, String PostID, String IDshare, String UserID,
+            String NameShare, String img_UserShare, String Content,
+            String timePost, int NumInterface, int NumComment, boolean Public) {
+        super(PostID, UserID, Content, timePost, NumInterface, NumComment, Public);
+        this.UserIDownPost = UserIDownPost;
+        this.nameUserDown = nameUserDown;
+        this.imgUserDown = imgUserDown;
+        this.NameShare = NameShare;
+        this.timePostDown = timePostDown;
+        this.img_UserShare = img_UserShare;
+        this.contentDown = contentDown;
+        this.IDshare = IDshare;
+    }
+
+    public String getImg_post() {
+        return img_post;
+    }
+
+    public void setImg_post(String img_post) {
+        this.img_post = img_post;
     }
 
     public String getIDshare() {
@@ -89,22 +110,6 @@ public class PostShare extends Post{
         this.img_UserShare = img_UserShare;
     }
 
-    public int getNumShare() {
-        return NumShare;
-    }
-
-    public void setNumShare(int NumShare) {
-        this.NumShare = NumShare;
-    }
-    
-    public String getImg_postshare() {
-        return img_postshare;
-    }
-
-    public void setImg_postshare(String img_postshare) {
-        this.img_postshare = img_postshare;
-    }
-
     public PostShare() {
     }
 
@@ -116,6 +121,9 @@ public class PostShare extends Post{
         this.UserIDownPost = UserIDOwnPost;
     }
 
-   
-    
+    @Override
+    public String toString() {
+        return super.toString() + "PostShare{" + "UserIDownPost=" + UserIDownPost + ", nameUserDown=" + nameUserDown + ", imgUserDown=" + imgUserDown + ", timePostDown=" + timePostDown + "\n, contentDown=" + contentDown + ", NameShare=" + NameShare + ", img_UserShare=" + img_UserShare + ", IDshare=" + IDshare + ", img_post=" +this.img_post+'}';
+    }
+
 }

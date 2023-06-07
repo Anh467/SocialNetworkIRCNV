@@ -85,14 +85,14 @@ public class ControlData {
 
     public void createInitForAvatar(String UserID) {
         this.realPathBuild = projectRootPath + "\\build\\web\\data\\user\\" + UserID + "\\avatar";
-        this.realPath = projectRootPath + "\\web\\data\\post\\" + UserID + "\\avatar";
-        this.pathForDb= "data\\post\\" + UserID + "\\avatar";
+        this.realPath = projectRootPath + "\\web\\data\\user\\" + UserID + "\\avatar";
+        this.pathForDb= "data\\user\\" + UserID + "\\avatar";
     }
 
     public void createInitForBackGround(String UserID) {
         this.realPathBuild = projectRootPath + "\\build\\web\\data\\user\\" + UserID + "\\background";
-        this.realPath = projectRootPath + "\\web\\data\\post\\" + UserID + "\\background";
-        this.pathForDb= "data\\post\\" + UserID + "\\background";
+        this.realPath = projectRootPath + "\\web\\data\\user\\" + UserID + "\\background";
+        this.pathForDb= "data\\user\\" + UserID + "\\background";
     }
 
     //UserID
