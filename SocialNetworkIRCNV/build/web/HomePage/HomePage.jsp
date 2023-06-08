@@ -771,7 +771,7 @@
                 </div>
         <script src="/SocialNetworkIRCNV/js/controlPost.js">
 
-        </script>
+                </script>
 
 
     </body>

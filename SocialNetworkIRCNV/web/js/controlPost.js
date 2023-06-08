@@ -52,6 +52,8 @@ document.getElementById('fileInput4').addEventListener('change', function (event
     };
     reader.readAsDataURL(file);
 });
+
+
 function clearFileInput() {
     document.getElementById('fileInput2').value = "";
     document.getElementById('imgPost').src = "";
@@ -88,16 +90,16 @@ function load(Type) {
         });
     } else {
         var formData = new FormData();
-        
+
         var PostID = document.getElementById("PostIDPostShareModel").innerHTML;
         var content = document.getElementById("contentPostShareModel").value;
         var privacy = document.getElementById("privacyPostShareModel").value;
-        
-        formData.append('PostID',PostID);
-        formData.append('content',content);
-        formData.append('privacy',privacy);
-        formData.append('Type',Type);
-        
+
+        formData.append('PostID', PostID);
+        formData.append('content', content);
+        formData.append('privacy', privacy);
+        formData.append('Type', Type);
+
         $.ajax({
             url: "/SocialNetworkIRCNV/NewPost",
             type: "POST",

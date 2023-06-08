@@ -436,7 +436,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                             <jsp:include page="../BlockPost/BlockPost.jsp">
                                 <jsp:param name="post_id" value="<%=std.get(i).getPostID()%>" />
                                 <jsp:param name="img_pro" value="<%=((PostUser) std.get(i)).getImagePost()%>" />
-                                <jsp:param name="img_user" value="<%=((PostUser) std.get(i)).getFullNameUser()%>"/>
+                                <jsp:param name="img_user" value="<%=((PostUser) std.get(i)).getImgUser()%>"/>
                                 <jsp:param name="uName" value="<%=((PostUser) std.get(i)).getFullNameUser()%>" />
 
                                 <jsp:param name="time" value="<%=std.get(i).getTimePost()%>" />
@@ -717,6 +717,5 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                 <script src="/SocialNetworkIRCNV/js/controlPost.js">
 
                 </script>
-
                 </body>
                 </html>
