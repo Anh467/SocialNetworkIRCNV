@@ -66,13 +66,13 @@ function load(Type) {
         var file = fileInput.files[0];
         var formData = new FormData();
         var content = document.getElementById("NewPostTextarea").value;
-        var privacy = document.getElementById("privacy").value;
+        var privacy = $("#privacy").val();
         var previewImage = document.getElementById('previewImage');
         formData.append('photo', file);
         formData.append('privacy', privacy);
         formData.append('content', content);
         formData.append('Type', Type);
-        formData.append('PostID', PostID);
+        //formData.append('PostID', PostID);
         $.ajax({
             url: "/SocialNetworkIRCNV/NewPost",
             type: "POST",
@@ -91,9 +91,9 @@ function load(Type) {
     } else {
         var formData = new FormData();
 
-        var PostID = document.getElementById("PostIDPostShareModel").innerHTML;
+        var PostID = document.getElementById("PostIDPostShareModel").value;
         var content = document.getElementById("contentPostShareModel").value;
-        var privacy = document.getElementById("privacyPostShareModel").value;
+        var privacy = $("#privacyPostShareModel").val();
 
         formData.append('PostID', PostID);
         formData.append('content', content);
@@ -157,7 +157,7 @@ function SharePost(PostIDown, imgUserDown, name_userDown, contentDown, img_postD
     content.innerHTML = contentDown;
     img_post.src = img_postDown;
     name_use.innerHTML = name_userDown;
-    PostID.innerHTML = PostIDown;
+    PostID.value = PostIDown;
     $('#modalShare').modal('show');
 }
 document.addEventListener('DOMContentLoaded', function () {

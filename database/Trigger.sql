@@ -10,11 +10,11 @@
 			BEGIN
 				UPDATE [dbo].[UserInfor]
 				SET NumFriend = NumFriend + 1
-				WHERE UserID IN (SELECT UserID1 FROM inserted);
+				WHERE UserID IN (SELECT UserID1 FROM deleted);
 
 				UPDATE [dbo].[UserInfor]
 				SET NumFriend = NumFriend + 1
-				WHERE UserID IN (SELECT UserID2 FROM inserted);
+				WHERE UserID IN (SELECT UserID2 FROM deleted);
 			END
 			ELSE
 			BEGIN
@@ -99,7 +99,7 @@
 -- NumInterface: tigger khi huy like va like (casi nay khong can trigger)
 -- trigger neu user1 va user2 dong thoi yeu cau kb cho nhau thi chuyen bit = 1;
 	go
-	CREATE TRIGGER ChangeToFriend
+	/*CREATE TRIGGER ChangeToFriend
 	ON USERRELATION AFTER UPDATE
 	AS
 	BEGIN
@@ -107,8 +107,24 @@
 			UPDATE dbo.USERRELATION
 			SET U1RequestU2= 0, U2RequestU1= 0, isFriend= 1
 			WHERE UserID1= (SELECT UserID1 FROM dbo.USERRELATION) AND UserID2= (SELECT UserID2 FROM dbo.USERRELATION)
-    END;
-
+    END;*/
+	CREATE TRIGGER ChangeToFriend
+	ON USERRELATION AFTER UPDATE
+	AS
+	BEGIN
+		IF EXISTS (
+			SELECT *
+			FROM INSERTED i1
+			WHERE U1RequestU2 = 1 AND U2RequestU1 = 1
+		)
+		BEGIN
+			UPDATE USERRELATION
+			SET isFriend = 1, U1RequestU2= 0, U2RequestU1= 0
+			FROM USERRELATION u
+			JOIN INSERTED i1 ON u.UserID1 = i1.UserID1 AND u.UserID2 = i1.UserID2
+			WHERE i1.U1RequestU2 = 1 AND i1.U2RequestU1 = 1
+		END
+	END;
 -- NumComment: trigger khi comment va xoa comment
 	GO
 	CREATE TRIGGER delete_comment_of_POSTSHARE

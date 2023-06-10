@@ -138,7 +138,7 @@ public class Verify extends HttpServlet {
             cookie.setHttpOnly(true);
             response.addCookie(cookie);
         }
-        request.getRequestDispatcher("/SocialNetworkIRCNVHomePage/HomePage.jsp").forward(request, response);
+        request.getRequestDispatcher("HomePage/HomePage.jsp").forward(request, response);
     }
 
     /**

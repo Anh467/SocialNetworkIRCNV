@@ -19,7 +19,7 @@
         <link rel="stylesheet" href="styles.css"/>
 
     </head>
-    <body onload="sendMessage()">
+    <body onload="sendMessage()" style="margin: 0">
         <header style="width: 96%">
             <%@include file="../block/header.jsp" %>
         </header>
@@ -47,7 +47,7 @@
                         <li class="friend-item">
                             <div class="friendV">
                                 <div class="friend-avatar" style="text-align: center">
-                                    <img style="width: 42px; height: 42px" class="avatar" src="/SocialNetworkIRCNV/<%= friendInfo.getImgUser()%>" alt="alt"/>
+                                    <img style="width: 42px; height: 42px; " class="avatar" src="<%= friendInfo.getImgUser()%>" alt="alt"/>
                                 </div>
                                 <div class="friend-info">
                                     <div class="friend-name"><%= friendInfo.getFullName()%></div>
@@ -77,8 +77,8 @@
             %>
             <div class="chat-container">
                 <div class="chat-header">
-                    <div class="friend-avatar">
-                        <img style="width: 42px; height: 42px" class="avatar" src="/SocialNetworkIRCNV/<%= FriendImg%>" alt="alt"/>
+                    <div class="friend-avatar" style="margin-right: 10px">
+                        <img style="width: 42px; height: 42px;" class="avatar" src="<%= FriendImg%>" alt="alt"/>
 
                     </div>
                     <div class="friendID" id="friendID" style="display: none;"><%=FriendId%></div>

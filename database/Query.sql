@@ -1,4 +1,4 @@
---create database trash1
+﻿--create database trash1
 CREATE TRIGGER trigger_friend
 ON USERRELATION AFTER UPDATE 
 AS
@@ -51,6 +51,7 @@ UPDATE dbo.USERRELATION
 SET isFriend = '0'
 WHERE UserID1= 'UID00000002' AND UserID2= 'UID00000001'
 
+
 INSERT INTO dbo.UserInfor
 (
     Account,
@@ -63,14 +64,15 @@ INSERT INTO dbo.UserInfor
     Gender,
     Nation,
     ImageUser,
+    ImageBackGround,
     NumFriend,
     NumPost,
     TimeCreate,
-    isAdmin
+    RoleID
 )
 VALUES
-(   'abc1',    -- Account - varchar(155)
-    'abc1',    -- Password - varchar(155)
+(   NULL,    -- Account - varchar(155)
+    NULL,    -- Password - varchar(155)
     NULL,    -- FullName - nvarchar(255)
     NULL,    -- Address - nvarchar(255)
     NULL,    -- Mail - varchar(255)
@@ -79,14 +81,34 @@ VALUES
     NULL,    -- Gender - bit
     NULL,    -- Nation - nvarchar(255)
     NULL,    -- ImageUser - nvarchar(255)
-    NULL,    -- NumFriend - int
-    NULL,    -- NumPost - int
+    NULL,    -- ImageBackGround - nvarchar(255)
+    DEFAULT, -- NumFriend - int
+    DEFAULT, -- NumPost - int
     DEFAULT, -- TimeCreate - datetime
-    NULL     -- isAdmin - bit
+    DEFAULT  -- RoleID - varchar(11)
     )
 
-
-
+	INSERT INTO dbo.POST
+	(
+	    UserID,
+	    Content,
+	    ImagePost,
+	    TimePost,
+	    NumInterface,
+	    NumComment,
+	    NumShare,
+	    PrivacyID
+	)
+	VALUES
+	(   NULL,    -- UserID - varchar(11)
+	    NULL,    -- Content - nvarchar(max)
+	    NULL,    -- ImagePost - nvarchar(255)
+	    DEFAULT, -- TimePost - datetime
+	    DEFAULT, -- NumInterface - int
+	    DEFAULT, -- NumComment - int
+	    DEFAULT, -- NumShare - int
+	    DEFAULT  -- PrivacyID - varchar(11)
+	    )
 
 
 CREATE TRIGGER post_INSERT
@@ -381,3 +403,152 @@ SELECT c.UserID, c.FullName, c.ImageUser,
             INNER JOIN dbo.UserInfor c ON b.UserID= c.UserID
             INNER JOIN dbo.UserInfor d ON d.UserID= a.UserID
 WHERE a.ShareID= 'SID00000010'
+-- create if it not exist
+DECLARE @User1 NVARCHAR(11), @User2 NVARCHAR(11);
+SET @User1= N'UID00000002';
+SET @User2= N'UID00000001';
+IF NOT EXISTS(SELECT *
+	FROM dbo.USERRELATION
+	WHERE UserID1= @User1 AND UserID2= @User2)
+	BEGIN
+		INSERT INTO dbo.USERRELATION
+		(
+		    UserID1,
+		    UserID2,
+		    U1RequestU2,
+		    U2RequestU1,
+		    isFriend
+		)
+		VALUES
+		(   @User1,      -- UserID1 - varchar(11)
+		    @User2,      -- UserID2 - varchar(11)
+		    DEFAULT, -- U1RequestU2 - bit
+		    DEFAULT, -- U2RequestU1 - bit
+		    DEFAULT  -- isFriend - bit
+		    )
+	END
+
+-- get user relation
+SELECT U1RequestU2, U2RequestU1, isFriend
+FROM dbo.USERRELATION
+WHERE UserID1= 'UID00000002' AND UserID2= 'UID00000001'
+-- request add friend
+UPDATE dbo.USERRELATION
+SET U1RequestU2 = 1
+WHERE UserID1 = 'UID00000002' AND UserID2 = 'UID00000001'
+UPDATE dbo.USERRELATION
+SET U2RequestU1 = 1
+WHERE UserID1 = 'UID00000002' AND UserID2 = 'UID00000001'
+-- unrequest
+UPDATE dbo.USERRELATION
+SET U1RequestU2 = 0
+WHERE UserID1 = 'UID00000002' AND UserID2 = 'UID00000001'
+UPDATE dbo.USERRELATION
+SET U2RequestU1 = 0
+WHERE UserID1 = 'UID00000002' AND UserID2 = 'UID00000001'
+-- unfriend
+UPDATE dbo.USERRELATION
+SET isFriend= 0
+WHERE UserID1 = 'UID00000002' AND UserID2 = 'UID00000001'
+-- lấy bài post
+	SELECT PostID, POST.UserID, Content, ImagePost, TimePost, NumInterface, NumComment, NumShare, PrivacyName, FullName, ImageUser
+	 FROM dbo.POST
+	 INNER JOIN dbo.UserInfor ON UserInfor.UserID = POST.UserID
+	INNER JOIN dbo.Privacy ON Privacy.PrivacyID = POST.PrivacyID
+	WHERE PostID = 'PID00000018'
+-- lấy bài share 
+	SELECT c.UserID, c.FullName, c.ImageUser, 
+	b.TimePost, b.Content, a.PostID, a.ShareID, a.UserID, 
+	d.FullName, d.ImageUser,a.Content,
+	a.TimeShare, a.NumInterface, a.NumComment, e.PrivacyName, b.ImagePost
+	FROM dbo.POSTSHARE a
+	INNER JOIN dbo.POST b ON b.PostID = a.PostID
+	INNER JOIN dbo.UserInfor c ON b.UserID= c.UserID
+	INNER JOIN dbo.UserInfor d ON d.UserID= a.UserID
+	INNER JOIN dbo.Privacy e ON e.PrivacyID = a.PrivacyID 
+	WHERE a.ShareID= 'SID00000007'
+--hiện bài post
+	GO 
+	DECLARE @Offset INT = 2; -- Số bài post đã hiển thị trước đó = @FetchCount* (offset-1)
+	DECLARE @FetchCount INT = 5; -- Số bài post muốn lấy thêm
+
+	SELECT PostID, TimePost, PrivacyID
+	FROM dbo.POST
+	UNION ALL
+    SELECT ShareID, TimeShare, PrivacyID
+	FROM dbo.POSTSHARE
+	ORDER BY TimePost DESC
+	OFFSET (@Offset-1)* @FetchCount ROWS
+	FETCH NEXT @FetchCount ROWS ONLY;
+	
+-- hiện bài post bản thân
+-- nhâpj id: @id người dùng đang dùng tài khoản
+-- @Offset cụm đang hiện post
+	GO
+	DECLARE @id NVARCHAR(11)= 'UID00000001'
+	DECLARE @Offset INT = 2; -- Số bài post đã hiển thị trước đó = @FetchCount* (offset-1)
+	DECLARE @FetchCount INT = 5; -- Số bài post muốn lấy thêm
+
+	SELECT PostID, TimePost, PrivacyID
+	FROM dbo.POST
+	WHERE UserID= @id
+	UNION ALL
+    SELECT ShareID, TimeShare, PrivacyID
+	FROM dbo.POSTSHARE
+	WHERE UserID= @id
+	ORDER BY TimePost DESC
+	OFFSET (@Offset-1)* @FetchCount ROWS
+	FETCH NEXT @FetchCount ROWS ONLY;
+
+-- hiện bài post nguoi khac người khác 
+-- nhâpj id: @id người dùng đang dùng tài khoản
+-- @uid id người dùng khác
+-- @Offset cụm đang hiện post
+	GO
+	DECLARE @id NVARCHAR(11)= 'UID00000001';
+	DECLARE @uid NVARCHAR(11)= 'UID00000003';
+	DECLARE @u1 NVARCHAR(11), @u2 NVARCHAR(11), @isFriend bit;
+	DECLARE @Offset INT = 1; -- Số bài post đã hiển thị trước đó = @FetchCount* (offset-1)
+	DECLARE @FetchCount INT = 5; -- Số bài post muốn lấy thêm
+	IF (@id > @uid)
+	BEGIN
+		SET @u1 = @id;
+		SET @u2 = @uid;
+	END
+	ELSE
+	BEGIN
+		SET @u2 = @id;
+		SET @u1 = @uid;
+	END
+
+	SET @isFriend= (SELECT isFriend
+	FROM dbo.USERRELATION
+	WHERE UserID1= @u1 AND UserID2=@u2)
+	IF(@isFriend=1)
+		BEGIN
+			SELECT PostID, TimePost, PrivacyID
+			FROM dbo.POST
+			WHERE UserID= @uid AND (PrivacyID='FRIEND' OR PrivacyID='Public')
+			UNION ALL
+			SELECT ShareID, TimeShare, PrivacyID
+			FROM dbo.POSTSHARE
+			WHERE UserID= @uid AND (PrivacyID='FRIEND' OR PrivacyID='Public')
+			ORDER BY TimePost DESC
+			OFFSET (@Offset-1)* @FetchCount ROWS
+			FETCH NEXT @FetchCount ROWS ONLY;
+		end 
+	ELSE 
+		BEGIN
+			SELECT PostID, TimePost, PrivacyID
+			FROM dbo.POST
+			WHERE UserID= @uid  AND (PrivacyID='Public') 
+			UNION ALL
+			SELECT ShareID, TimeShare, PrivacyID
+			FROM dbo.POSTSHARE
+			WHERE UserID= @uid AND (PrivacyID='Public') 
+			ORDER BY TimePost DESC
+			OFFSET (@Offset-1)* @FetchCount ROWS
+			FETCH NEXT @FetchCount ROWS ONLY;
+		End 
+
+	

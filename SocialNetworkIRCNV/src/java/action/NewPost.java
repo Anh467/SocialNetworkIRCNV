@@ -6,6 +6,7 @@ package action;
 
 import controller.ControlData;
 import controller.Text;
+import dao.PostUserDAO;
 import java.util.Date;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -49,28 +50,6 @@ public class NewPost extends HttpServlet {
     //Content
     //ImagePost
     //PublicPost
-    public String addNewPost(String UserID, String Content, String ImagePost, String PublicPost) {
-        if (PublicPost == null) {
-            PublicPost = "1";
-        } else if (PublicPost.equalsIgnoreCase("Public")) {
-            PublicPost = "1";
-        } else {
-            PublicPost = "0";
-        }
-        return new dao.PostUserDAO().newPost(UserID, Content, ImagePost, PublicPost);
-    }
-
-    public String addNewPostShare(String UserID, String PostID, String Content, String PublicPost) {
-        if (PublicPost == null) {
-            PublicPost = "1";
-        } else if (PublicPost.equalsIgnoreCase("Public")) {
-            PublicPost = "1";
-        } else {
-            PublicPost = "0";
-        }
-        return new dao.PostUserDAO().newPostShare(UserID, PostID, Content, PublicPost);
-    }
-
     public void createNewPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
@@ -90,7 +69,7 @@ public class NewPost extends HttpServlet {
                     //khởi tạo controldata
                     ControlData data = new ControlData(part, getServletContext());
                     // save to db
-                    PostID = addNewPost(id, content, data.getFilename(), isPublic);
+                    PostID = new PostUserDAO().newPost(id, content, data.getFilename(), isPublic);
                     //khowri tao cho viec bai post
                     data.createInitForPost(PostID);
                     //create folder
@@ -99,51 +78,51 @@ public class NewPost extends HttpServlet {
                     data.SaveImage();
                     System.out.println("path: " + data.getRealPath());
                 } else {
-                    PostID = addNewPost(id, content, "", isPublic);
+                    PostID = new PostUserDAO().newPost(id, content, "", isPublic);
                 }
                 //respone
 //                String publicpost = isPublic.endsWith("1") ? "Public" : "Private";
                 User user = new dao.UserDAO().getUserByID(id);
                 PostUser postUser = new dao.PostUserDAO().getPost(PostID);
 //                String pathImg = "http://localhost:8080/SocialNetworkIRCNV/data/post/" + postUser.getImagePost();
-                out.println("<div class=\"post\" style=\"margin: 10px; background: white; border-radius: 10px\" id=\""+postUser.getPostID()+"\">\n"
+                out.println("<div class=\"post\" style=\"margin: 10px; background: white; border-radius: 10px\" id=\"" + postUser.getPostID() + "\">\n"
                         + "            <div class=\"post-top\">\n"
-                        + "                <p style=\"display: none\">"+postUser.getPostID()+"</p>\n"
+                        + "                <p style=\"display: none\">" + postUser.getPostID() + "</p>\n"
                         + "                <div class=\"dp\" >\n"
-                        + "                    <img src=\"/SocialNetworkIRCNV/"+user.getImgUser()+"\" alt=\"\" style=\"width: 100%;\" >\n"
+                        + "                    <img src=\"" + user.getImgUser() + "\" alt=\"\" style=\"width: 100%;\" >\n"
                         + "                </div>\n"
                         + "                <div class=\"post-info\">\n"
-                        + "                    <p class=\"name\" style=\"color: #003140\">"+user.getFullName()+"</p>\n"
-                        + "                    <span class=\"time\" style=\"color: #70d8ff\">"+postUser.getTimePost()+"</span>\n"
-                        + "                    <span class=\"time\" style=\"color: #003140\">"+(postUser.isPublic()==true?"Public":"Private")+"</span>\n"
+                        + "                    <p class=\"name\" style=\"color: #003140\">" + user.getFullName() + "</p>\n"
+                        + "                    <span class=\"time\" style=\"color: #70d8ff\">" + postUser.getTimePost() + "</span>\n"
+                        + "                    <span class=\"time\" style=\"color: #003140\">" + (postUser.getPrivacyName()) + "</span>\n"
                         + "                </div>\n"
                         + "                <i class=\" dropdown fas fa-ellipsis-h\">\n"
                         + "                    <div >\n"
                         + "\n"
                         + "                        <div class=\"dropdown-content\">\n"
-                        + "                            <a href=\"#\" onclick=\"deletePost('"+postUser.getPostID()+"', 'Post')\">Delete</a>\n"
-                        + "                            <a href=\"#\" onclick=\"modifyPost('"+postUser.getPostID().trim()+"', '/SocialNetworkIRCNV/"+postUser.getImgUser()+"', '"+user.getFullName().trim()+"', '"+postUser.getTimePost()+"',\n"
-                        + "                                            '"+(postUser.isPublic()==true?"Public":"Private")+"', '"+postUser.getContent().trim()+"', '/SocialNetworkIRCNV/"+postUser.getImagePost()+"')\">Modify</a>\n"
+                        + "                            <a href=\"#\" onclick=\"deletePost('" + postUser.getPostID() + "', 'Post')\">Delete</a>\n"
+                        + "                            <a href=\"#\" onclick=\"modifyPost('" + postUser.getPostID().trim() + "', '" + postUser.getImgUser() + "', '" + user.getFullName().trim() + "', '" + postUser.getTimePost() + "',\n"
+                        + "                                            '" + postUser.getPrivacyName() + "', '" + postUser.getContent().trim() + "', '" + postUser.getImagePost() + "')\">Modify</a>\n"
                         + "                        </div>\n"
                         + "                    </div>\n"
                         + "                </i>\n"
                         + "            </div>\n"
                         + "\n"
                         + "            <div class=\"post-content\" style=\"text-align: center;\">\n"
-                        + "                <p style=\"text-align: left;\">"+postUser.getContent()+"</p>\n"
+                        + "                <p style=\"text-align: left;\">" + postUser.getContent() + "</p>\n"
                         + "                <c:if test=\"${img_post!=null && img_post!=''}\">\n"
-                        + "                    <img src=\"/SocialNetworkIRCNV/"+postUser.getImagePost()+"\"style=\"margin: 0 auto; max-width: 100%\"/>\n"
+                        + "                    <img src=\"" + postUser.getImagePost() + "\"style=\"margin: 0 auto; max-width: 100%\"/>\n"
                         + "                </c:if>\n"
                         + "            </div>\n"
                         + "            <div class=\"counter\">\n"
                         + "                <div class=\"count-like\">\n"
-                        + "                    <span>"+postUser.getNumInterface()+"</span>\n"
+                        + "                    <span>" + postUser.getNumInterface() + "</span>\n"
                         + "                </div>\n"
                         + "                <div class=\"count-cmt\">\n"
-                        + "                    <span>"+postUser.getNumComment()+"</span>\n"
+                        + "                    <span>" + postUser.getNumComment() + "</span>\n"
                         + "                </div>\n"
                         + "                <div class=\"count-share\">\n"
-                        + "                    <span>"+postUser.getNumShare()+"</span>\n"
+                        + "                    <span>" + postUser.getNumShare() + "</span>\n"
                         + "                </div>\n"
                         + "            </div>\n"
                         + "\n"
@@ -159,7 +138,7 @@ public class NewPost extends HttpServlet {
                         + "                        <span>Comment</span>\n"
                         + "                    </a>\n"
                         + "                </div>\n"
-                        + "                <div class=\"action\" onclick=\"SharePost('"+postUser.getPostID()+"', '/SocialNetworkIRCNV/"+postUser.getImgUser()+"', '"+user.getImgUser()+"', '"+postUser.getContent().trim()+"', '/SocialNetworkIRCNV/"+postUser.getImagePost()+"')\">\n"
+                        + "                <div class=\"action\" onclick=\"SharePost('" + postUser.getPostID() + "', '" + postUser.getImgUser() + "', '" + user.getImgUser() + "', '" + postUser.getContent().trim() + "', '" + postUser.getImagePost() + "')\">\n"
                         + "                    <i class=\" dropdown fa fa-share\">\n"
                         + "                    </i>\n"
                         + "                    <span>Share</span>\n"
@@ -191,7 +170,7 @@ public class NewPost extends HttpServlet {
                 String ShareID = "";
                 String PostID = request.getParameter("PostID");
 
-                ShareID = addNewPostShare(id, PostID, content, isPublic);
+                ShareID = new dao.PostUserDAO().newPostShare(id, PostID, content, isPublic);
                 //respone
 //                String publicpost = isPublic.endsWith("1") ? "Public" : "Private";
                 User userOwn = new dao.UserDAO().getUserByID(id);
@@ -200,7 +179,7 @@ public class NewPost extends HttpServlet {
 
 //                String pathImg = "http://localhost:8080/SocialNetworkIRCNV/data/post/" + postUser.getImagePost();
                 out.println("\n"
-                        + "\n"
+                        + " <div id=\"showpost\">\n"
                         + "<%@page contentType=\"text/html\" pageEncoding=\"UTF-8\"%>\n"
                         + "<!DOCTYPE html>\n"
                         + "<html>\n"
@@ -225,7 +204,7 @@ public class NewPost extends HttpServlet {
                         + "                <div class=\"share-info\">\n"
                         + "                    <p class=\"name\" style=\"color: #003140\">" + userShare.getFullName() + "</p>\n"
                         + "                    <span class=\"time\" style=\"color: #70d8ff\">" + postShare.getTimePost() + "</span>\n"
-                        + "                    <span class=\"time\" style=\"color: #003140\">" + (postShare.isPublic() == true ? "Public" : "Private") + "</span>\n"
+                        + "                    <span class=\"time\" style=\"color: #003140\">" + postShare.getPrivacyName() + "</span>\n"
                         + "                </div>\n"
                         + "                <i class=\" dropdown fas fa-ellipsis-h\">\n"
                         + "                    <div >\n"
@@ -288,7 +267,8 @@ public class NewPost extends HttpServlet {
                         + "\n"
                         + "        </div>\n"
                         + "    </body>\n"
-                        + "</html>");
+                        + "</html>"
+                        + "</div>");
             } catch (Exception e) {
                 System.out.println("action.Upload.doPost()");
                 e.printStackTrace();

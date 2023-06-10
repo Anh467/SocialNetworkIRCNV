@@ -1,4 +1,5 @@
 <%@page import="model.PostShare"%>
+<%@page import="model.Privacy"%>
 <%@page import="controller.Text"%>
 <%@page import="model.PostUser"%>
 <%@page import="java.util.ArrayList"%>
@@ -188,11 +189,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
             margin-top: 20px;
         }
         .info-col{
-            flex-basis:36%;
+/*            flex-basis:36%;*/
             margin-right:20px;
         }
         .post-col{
-            flex-basis: 63%;
+/*            flex-basis: 63%;*/
         }
         .profile-intro{
             background: white;
@@ -259,7 +260,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
         }
         .post-container{
             border-radius:10px;
-            padding:20px;
             color:#626262;
             margin:20px 0;
         }
@@ -326,23 +326,23 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
     <body>
 
 
-        
+        <jsp:useBean id="apiPrivacy" class="dao.PrivacyDao"/>
         <header>
             <%@include file="../block/header.jsp" %>
         </header>
 
         <jsp:include page = "/GetInfor"></jsp:include>
-
+        
         <jsp:include page="/post" />
-
+       
         <div class ="profile-container ">
 
-            <img src="/SocialNetworkIRCNV/<%=user.getCoverImg()%>" class="cover-img"/> <!-- ?nh b?a -->
+            <img src="<%=user.getCoverImg()%>"  class="cover-img"/> <!-- ?nh b?a -->
             <!-- Ph?n ??u -->
             <div class = "profile-details">
                 <div class ="pd-left">
                     <div class ="pd-row">
-                        <img src ="/SocialNetworkIRCNV/<%=user.getImgUser()%>" class ="pd-image">
+                        <img src ="<%=user.getImgUser()%>" class ="pd-image">
                         <div class = "profile-name">
                             <h3><a href="" style="text-decoration: none; color:#626262;"><%=user.getFullName()%></a></h3>
                             <p>4 Friends - 0 Follow</p>
@@ -393,17 +393,18 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
 
                     </div>
                 </div>
-
+                
                 <!-- Up bài -->
-                <div class ="post-col" style="width: 100%;">
+                <div class ="post-col " style="width: 100%;">
                     <div class ="write-post-container">
                         <div class ="user-profile">
-                            <img src="/SocialNetworkIRCNV/<%=user.getImgUser()%>" >
+                            <img src="<%=user.getImgUser()%>" >
                             <div>
                                 <p><a href="" style="text-decoration: none; color:#626262;"><%=user.getFullName()%></a> </p>
                                 <select id="privacy" name = "privacy" style="color:#626262;">
-                                    <option style="color:#626262; background-color:#cdf1ff;  ">Public</option>
-                                    <option style="color:#626262;background-color:#cdf1ff;">Private</option>
+                                    <c:forEach items="${apiPrivacy.allPrivacy}" var="ele">
+                                        <option style="color:#626262; background-color:#cdf1ff;  ">${ele.getPrivacyName()}</option>
+                                    </c:forEach>
                                 </select>
                             </div>
                         </div>
@@ -436,12 +437,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                             <jsp:include page="../BlockPost/BlockPost.jsp">
                                 <jsp:param name="post_id" value="<%=std.get(i).getPostID()%>" />
                                 <jsp:param name="img_pro" value="<%=((PostUser) std.get(i)).getImagePost()%>" />
-                                <jsp:param name="img_user" value="<%=((PostUser) std.get(i)).getImgUser()%>"/>
+                                <jsp:param name="img_user" value="<%=user.getImgUser()%>"/>
                                 <jsp:param name="uName" value="<%=((PostUser) std.get(i)).getFullNameUser()%>" />
 
                                 <jsp:param name="time" value="<%=std.get(i).getTimePost()%>" />
 
-                                <jsp:param name="Public" value="<%=std.get(i).isPublic()%>" />
+                                <jsp:param name="Public" value="<%=std.get(i).getPrivacyName()%>" />
 
                                 <jsp:param name="content" value="<%=std.get(i).getContent()%>" />
                                 <jsp:param name="img_post" value="<%=((PostUser) std.get(i)).getImagePost()%>" />
@@ -470,13 +471,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                 <jsp:param name="UserID" value="<%=((PostShare) std.get(i)).getUserID()%>" />
 
                                 <jsp:param name="NameShare" value="<%= ((PostShare) std.get(i)).getNameShare()%>" />
-                                <jsp:param name="img_UserShare" value="<%=((PostShare) std.get(i)).getImg_UserShare()%>" />
+                                <jsp:param name="img_UserShare" value="<%=user.getImgUser()%>" />
                                 <jsp:param name="Content" value="<%=((PostShare) std.get(i)).getContent()%>" />
 
                                 <jsp:param name="timePost" value="<%=((PostShare) std.get(i)).getTimePost()%>" />
                                 <jsp:param name="NumInterface" value="<%=((PostShare) std.get(i)).getNumInterface()%>" />
                                 <jsp:param name="NumComment" value="<%=((PostShare) std.get(i)).getNumComment()%>" />
-                                <jsp:param name="Public" value="<%=((PostShare) std.get(i)).isPublic()%>" />
+                                <jsp:param name="Public" value="<%=((PostShare) std.get(i)).getPrivacyName()%>" />
                                 <jsp:param name="img_post" value="<%=((PostShare) std.get(i)).getImg_post()%>" />
                                 
                             </jsp:include>
@@ -503,7 +504,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                     <form action="/SocialNetworkIRCNV/UpdateInfo" method = "post" enctype="multipart/form-data">
                                         <div class="form-group">
                                             <label for="cover-image" class="col-form-label">Cover Image:</label>
-                                            <img id="previewImage3" src="/SocialNetworkIRCNV/<%=user.getCoverImg()%>" alt="Preview Image" style="width: 100%;
+                                            <img id="previewImage3" src="<%=user.getCoverImg()%>" alt="Preview Image" style="width: 100%;
                                                                                                                                                 border-radius: 3px;
                                                                                                                                                 margin-bottom: 14px;
                                                                                                                                                 object-fit: cover;
@@ -514,11 +515,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
 
                                         <div class="form-group">
                                             <label for="avatar" class="col-form-label">Avatar:</label>
-                                            <img id="previewImage4" src="/SocialNetworkIRCNV/<%=user.getImgUser()%>" alt="Preview Image" style="width: 130px;
-                                                                                                                                                height: 130px;
-                                                                                                                                                margin-right: 30px;
-                                                                                                                                                border-radius: 3px;
-                                                                                                                                                object-fit: cover;">
+                                            <img id="previewImage4" src="<%=user.getImgUser()%>" alt="Preview Image" style="width: 130px;
+                                                                                                                            height: 130px;
+                                                                                                                            margin-right: 30px;
+                                                                                                                            border-radius: 3px;
+                                                                                                                            object-fit: cover;">
                                             <input  type="file" name="avatar" id="fileInput4">
                                         </div>
 
@@ -590,7 +591,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                 <div class="share-head">
                                     <div style="display: flex">
                                         <div class="dp" >
-                                            <img src="/SocialNetworkIRCNV/<%=user.getImgUser()%>" alt="" style="width: 45px;
+                                            <img src="<%=user.getImgUser()%>" alt="" style="width: 45px;
                                                  height: 45px;
                                                  border-radius: 50%;
                                                  margin-right: 10px;
@@ -605,12 +606,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                     <div class="share-content" style="margin-bottom: 20px">
                                         <input id="contentPostShareModel" type="text" name="contentPostShareModel" style="width: 100%">
                                     </div>
-                                    <div>
-                                        <input type="radio" id="privacyPostShareModel" name="privacy" value="Public">
-                                          <label for="Public">Public</label><br>
-                                         <input type="radio" id="privacyPostShareModel" name="privacy" value="Private">
-                                          <label for="Private">Private</label><br>
-                                    </div>
+                                    
+                                    <select id="privacyPostShareModel" name = "privacyPostShareModel" style="color:#626262;">
+                                    <c:forEach items="${apiPrivacy.allPrivacy}" var="ele">
+                                        <option style="color:#626262; background-color:#cdf1ff;  ">${ele.getPrivacyName()}</option>
+                                    </c:forEach>
+                                </select>
                                     <div class="share-body" style="border: 1px solid black">
                                         <div class="share-top"  style="margin-left: 10px">
                                             <div class="dp">
@@ -714,6 +715,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                         </div>
                     </div>
                 </div>
+              </div>
+                                          </div>
                 <script src="/SocialNetworkIRCNV/js/controlPost.js">
 
                 </script>

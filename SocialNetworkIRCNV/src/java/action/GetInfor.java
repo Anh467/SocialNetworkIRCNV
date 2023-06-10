@@ -56,6 +56,8 @@ public class GetInfor extends HttpServlet {
         String id= (String) session.getAttribute("id");
         User user = dao.getUserByID(id);
         System.out.print(user.getFullName());
+        if(user.getImgUser().trim().isEmpty())
+            user.setImgUser("https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg");
         request.setAttribute("user", user);
     }
 

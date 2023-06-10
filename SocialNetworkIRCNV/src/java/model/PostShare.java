@@ -18,30 +18,30 @@ public class PostShare extends Post {
     public PostShare(String UserIDownPost, String nameUserDown, String imgUserDown,
             String timePostDown, String contentDown, String PostID, String IDshare, String UserID,
             String NameShare, String img_UserShare, String Content,
-            String timePost, int NumInterface, int NumComment, boolean Public, String img_post) {
+            String timePost, int NumInterface, int NumComment, String Public, String img_post) {
         super(PostID, UserID, Content, timePost, NumInterface, NumComment, Public);
         this.UserIDownPost = UserIDownPost;
         this.nameUserDown = nameUserDown;
-        this.imgUserDown = imgUserDown;
+        this.imgUserDown = "/SocialNetworkIRCNV/" + imgUserDown;
         this.NameShare = NameShare;
         this.timePostDown = timePostDown;
-        this.img_UserShare = img_UserShare;
+        this.img_UserShare = "/SocialNetworkIRCNV/" + img_UserShare;
         this.contentDown = contentDown;
         this.IDshare = IDshare;
-        this.img_post = img_post;
+        this.img_post = "/SocialNetworkIRCNV/" + img_post;
     }
 
     public PostShare(String UserIDownPost, String nameUserDown, String imgUserDown,
             String timePostDown, String contentDown, String PostID, String IDshare, String UserID,
             String NameShare, String img_UserShare, String Content,
-            String timePost, int NumInterface, int NumComment, boolean Public) {
+            String timePost, int NumInterface, int NumComment, String Public) {
         super(PostID, UserID, Content, timePost, NumInterface, NumComment, Public);
         this.UserIDownPost = UserIDownPost;
         this.nameUserDown = nameUserDown;
-        this.imgUserDown = imgUserDown;
+        this.imgUserDown = "/SocialNetworkIRCNV/" + imgUserDown;
         this.NameShare = NameShare;
         this.timePostDown = timePostDown;
-        this.img_UserShare = img_UserShare;
+        this.img_UserShare = "/SocialNetworkIRCNV/" + img_UserShare;
         this.contentDown = contentDown;
         this.IDshare = IDshare;
     }
@@ -123,7 +123,8 @@ public class PostShare extends Post {
 
     @Override
     public String toString() {
-        return super.toString() + "PostShare{" + "UserIDownPost=" + UserIDownPost + ", nameUserDown=" + nameUserDown + ", imgUserDown=" + imgUserDown + ", timePostDown=" + timePostDown + "\n, contentDown=" + contentDown + ", NameShare=" + NameShare + ", img_UserShare=" + img_UserShare + ", IDshare=" + IDshare + ", img_post=" +this.img_post+'}';
+        return super.toString() + "PostShare{" + "UserIDownPost=" + UserIDownPost + ", nameUserDown=" + nameUserDown + ", imgUserDown=" + imgUserDown + ", timePostDown=" + timePostDown + "\n, contentDown=" + contentDown + ", NameShare=" + NameShare + ", img_UserShare=" + img_UserShare + ", IDshare=" + IDshare + ", img_post=" + this.img_post + '}';
     }
 
+    
 }

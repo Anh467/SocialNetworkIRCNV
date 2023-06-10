@@ -34,14 +34,14 @@
             String timePost = request.getParameter("timePost");
             String NumInterface = request.getParameter("NumInterface");
             String NumComment = request.getParameter("NumComment");
-            String Public = request.getParameter("Public").equals("1") ? "Public" : "Private";
+            String Public = request.getParameter("Public");
             String img_post = request.getParameter("img_post");
 
         %>
         <div class="share"  style="margin: 10px; width: 700px;" id="<%=IDshare%>">
             <div class="share-head">
                 <div class="dp" >
-                    <img src="/SocialNetworkIRCNV/<%=img_UserShare%>" alt="" style="width: 100%;" >
+                    <img src="<%=img_UserShare%>" alt="" style="width: 100%;" >
                 </div>
                 <div class="share-info">
                     <p class="name" style="color: #003140"><%=NameShare%></p>
@@ -54,7 +54,7 @@
                         <div class="dropdown-content">
                             <a href="#" onclick="deletePost('<%=IDshare%>', 'Share')">Delete</a>
                             <a href="#" onclick="modifyPost('<%=IDshare%>', '<%=img_UserShare%>', '<%=NameShare%>', '<%=timePost%>',
-                                            '<%=Public%>', '<%=Content.trim()%>', '${pageContext.request.contextPath}/<%=img_post%>')">Modify</a>
+                                            '<%=Public%>', '<%=Content.trim()%>', '<%=img_post%>')">Modify</a>
                         </div>
                     </div>
                 </i>
@@ -66,7 +66,7 @@
             <div class="share-body">
                 <div class="share-top" >
                     <div class="dp" >
-                        <img src="/SocialNetworkIRCNV/<%=imgUserDown%>" alt="" style="width: 100%;" >
+                        <img src="<%=imgUserDown%>" alt="" style="width: 100%;" >
                     </div>
                     <div class="share-info">
                         <p class="name" style="color: #003140"><%=nameUserDown%></p>
@@ -77,7 +77,7 @@
 
                 <div class="share-content" style="text-align: center;" >
                     <p style="text-align: left;"><%=contentDown%></p>
-                    <img style="max-width: 100%" src="/SocialNetworkIRCNV/<%=img_post%>" />
+                    <img style="max-width: 100%" src="<%=img_post%>" />
                 </div>
             </div> 
 
@@ -103,7 +103,7 @@
                         <span>Comment</span>
                     </a>
                 </div>
-                <div class="action" onclick="SharePost('<%=PostID%>', '/SocialNetworkIRCNV/<%=imgUserDown%>', '<%=UserIDownPost%>', '<%=Content%>', '/SocialNetworkIRCNV/<%=img_post%>')">
+                <div class="action" onclick="SharePost('<%=PostID%>', '<%=imgUserDown%>', '<%=UserIDownPost%>', '<%=Content%>', '<%=img_post%>')">
                     <i class=" dropdown fa fa-share">
                         <span>Share</span>
                     </i>

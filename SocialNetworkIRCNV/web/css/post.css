@@ -83,7 +83,7 @@
 .post .post-content{
     font-size:20px;
     font-weight:normal;
-    padding:10px;
+    padding: 10px;
     max-height: 600px;
 }
 
@@ -91,6 +91,9 @@
     margin:5px 0px;
     max-height: 530px;
 }
+.post .post-content p{
+                margin-left: 20px;
+            }
 .post .counter{
     padding: 10px 10%;
     color: #00587c;

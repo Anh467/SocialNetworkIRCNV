@@ -32,7 +32,7 @@
             String img_user = request.getParameter("img_user");
 
             String timePost = request.getParameter("time");
-            String Public = request.getParameter("Public").equalsIgnoreCase("true") ? "Public" : "Private";
+            String Public = request.getParameter("Public");
             String content = request.getParameter("content");
             String Content1 = content;
             String img_post = request.getParameter("img_post");
@@ -45,7 +45,7 @@
             <div class="post-top">
                 <p style="display: none"><%=post_id%></p>
                 <div class="dp" >
-                    <img src="/SocialNetworkIRCNV/<%=img_user%>" alt="" style="width: 100%;" >
+                    <img src="<%=img_user%>" alt="" style="width: 100%;" >
                 </div>
                 <div class="post-info">
                     <p class="name" style="color: #003140"><%=name_user%></p>
@@ -57,8 +57,8 @@
 
                         <div class="dropdown-content">
                             <a href="#" onclick="deletePost('<%=post_id%>', 'Post')">Delete</a>
-                            <a href="#" onclick="modifyPost('<%=post_id%>', '<%=img_pro%>', '<%=name_user%>', '<%=timePost%>',
-                                            '<%=Public%>', '<%=content.trim()%>', '${pageContext.request.contextPath}/<%=img_post%>')">Modify</a>
+                            <a href="#" onclick="modifyPost('<%=post_id%>', '<%=img_user%>', '<%=name_user%>', '<%=timePost%>',
+                                            '<%=Public%>', '<%=content.trim()%>', '<%=img_post%>')">Modify</a>
                         </div>
                     </div>
                 </i>
@@ -67,7 +67,7 @@
             <div class="post-content" style="text-align: center;">
                 <p style="text-align: left;"><%=content%></p>
                 <c:if test="${img_post!=null && img_post!=''}">
-                    <img src="${pageContext.request.contextPath}/<%=img_post%>"style="margin: 0 auto; max-width: 100%"/>
+                    <img src="<%=img_post%>"style="margin: 0 auto; max-width: 100%"/>
                 </c:if>
             </div>
             <div class="counter">
@@ -94,7 +94,7 @@
                         <span>Comment</span>
                     </a>
                 </div>
-                <div class="action" onclick="SharePost('<%=post_id%>', '/SocialNetworkIRCNV/<%=img_user%>', '<%=name_user%>', '<%=content.trim()%>', '/SocialNetworkIRCNV/<%=img_post%>')">
+                <div class="action" onclick="SharePost('<%=post_id%>', '<%=img_user%>', '<%=name_user%>', '<%=content.trim()%>', '<%=img_post%>')">
                     <i class=" dropdown fa fa-share">
                     </i>
                     <span>Share</span>

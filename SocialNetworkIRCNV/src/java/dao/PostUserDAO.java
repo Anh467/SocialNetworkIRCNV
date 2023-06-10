@@ -26,11 +26,11 @@ public class PostUserDAO {
         cnn = new connection.connection().getConnection();
     }
     String updatePost = "Update POST\n"
-            + "		set Content= ? , ImagePost= ? , PublicPost= ? \n"
+            + "		set Content= ? , ImagePost= ?\n"
             + "		where PostID= ? ";
 
     String updatePostWithoutImg = "Update POST\n"
-            + "		set Content= ? , PublicPost= ? \n"
+            + "		set Content= ? \n"
             + "		where PostID= ? ";
 
     String deletePost = "DELETE FROM dbo.POST\n"
@@ -43,6 +43,8 @@ public class PostUserDAO {
     String checkExistPostShareUser = "SELECT *\n"
             + "FROM dbo.POSTSHARE\n"
             + "WHERE ShareID= ? AND UserID= ? ";
+
+    //------------------------------//
     String newPost = "DECLARE @InsertedIDs TABLE (PostID VARCHAR(11));\n"
             + "	INSERT INTO dbo.POST\n"
             + "(\n"
@@ -53,7 +55,7 @@ public class PostUserDAO {
             + "    NumInterface,\n"
             + "    NumComment,\n"
             + "    NumShare,\n"
-            + "    PublicPost\n"
+            + "    PrivacyID\n"
             + ")\n"
             + "OUTPUT Inserted.PostID INTO @InsertedIDs\n"
             + "VALUES\n"
@@ -64,42 +66,43 @@ public class PostUserDAO {
             + "    DEFAULT, -- NumInterface - int\n"
             + "    DEFAULT, -- NumComment - int\n"
             + "    DEFAULT, -- NumShare - int\n"
-            + "    ?    -- PublicPost - bit\n"
+            + "    ?  -- PrivacyID - varchar(11)\n"
             + "    );\n"
             + "SELECT PostID FROM @InsertedIDs;";
-    String getPost = "SELECT PostID, UserID, Content, ImagePost, TimePost, NumInterface, NumComment, NumShare, PublicPost\n"
-            + "FROM dbo.POST\n"
-            + "WHERE PostID= ? ";
-    String createPostShare = "DECLARE @InsertedIDs TABLE (ShareID VARCHAR(11));\n"
-            + "	INSERT INTO dbo.POSTSHARE\n"
-            + "	(\n"
-            + "	    UserID,\n"
-            + "	    PostID,\n"
-            + "	    Content,\n"
-            + "	    TimeShare,\n"
-            + "	    NumInterface,\n"
-            + "	    NumComment,\n"
-            + "	    PublicPost\n"
-            + "	)\n"
-            + "	OUTPUT Inserted.ShareID INTO @InsertedIDs\n"
-            + "	VALUES\n"
-            + "	(   ? ,    -- UserID - varchar(11)\n"
-            + "	    ? ,    -- PostID - varchar(11)\n"
-            + "	    ? ,    -- Content - nvarchar(max)\n"
-            + "	    DEFAULT, -- TimeShare - datetime\n"
-            + "	    DEFAULT, -- NumInterface - int\n"
-            + "	    DEFAULT, -- NumComment - int\n"
-            + "	    ?     -- PublicPost - bit\n"
-            + "	    )\n"
-            + "SELECT ShareID FROM @InsertedIDs;";
+    String getPost = "SELECT PostID, UserID, Content, ImagePost, TimePost, NumInterface, NumComment, NumShare, PrivacyName\n"
+            + "	FROM dbo.POST\n"
+            + "	INNER JOIN dbo.Privacy ON Privacy.PrivacyID = POST.PrivacyID\n"
+            + "	WHERE PostID= ? ";
+    String createPostShare = "	DECLARE @InsertedIDs TABLE (ShareID VARCHAR(11));\n" +
+"            	INSERT INTO dbo.POSTSHARE\n" +
+"            (\n" +
+"            	    UserID,\n" +
+"            	    PostID,\n" +
+"            	    Content,\n" +
+"            	    TimeShare,\n" +
+"            	    NumInterface,\n" +
+"            	    NumComment,\n" +
+"            	    PrivacyID\n" +
+"            	)\n" +
+"            	OUTPUT Inserted.ShareID INTO @InsertedIDs\n" +
+"            	VALUES\n" +
+"            	(   ? ,    -- UserID - varchar(11)\n" +
+"            	    ? ,    -- PostID - varchar(11)\n" +
+"            	    ? ,    -- Content - nvarchar(max)\n" +
+"            	    DEFAULT, -- TimeShare - datetime\n" +
+"            	    DEFAULT, -- NumInterface - int\n" +
+"            	    DEFAULT, -- NumComment - int\n" +
+"            	    ?  -- PrivacyID - varchar(11)\n" +
+"            	    )\n" +
+"            SELECT ShareID FROM @InsertedIDs;";
 
-    public void updatePost(String PostID, String UserID, String Content, String imgPost, String Public) {
+    public void updatePost(String PostID, String UserID, String Content, String imgPost) {
         try {
             PreparedStatement ps = cnn.prepareStatement(updatePost);
             ps.setString(1, Content);
             ps.setString(2, imgPost);
-            ps.setBoolean(3, Public.equals("Public") ? true : false);
-            ps.setString(4, PostID);
+//            ps.setBoolean(3, Public.equals("Public") ? true : false);
+            ps.setString(3, PostID);
             ps.executeUpdate();
         } catch (Exception e) {
             System.out.println("dao.PostUserDAO.deletePost()");
@@ -108,12 +111,12 @@ public class PostUserDAO {
 
     }
 
-    public void updatePost(String PostID, String UserID, String Content, String Public) {
+    public void updatePost(String PostID, String UserID, String Content) {
         try {
             PreparedStatement ps = cnn.prepareStatement(updatePostWithoutImg);
             ps.setString(1, Content);
-            ps.setBoolean(2, Public.equals("Public") ? true : false);
-            ps.setString(3, PostID);
+//            ps.setBoolean(2, Public.equals("Public") ? true : false);
+            ps.setString(2, PostID);
             ps.executeUpdate();
         } catch (Exception e) {
             System.out.println("dao.PostUserDAO.deletePost()");
@@ -128,7 +131,7 @@ public class PostUserDAO {
             ps.setString(1, UserID);
             ps.setString(2, PostID);
             ps.setString(3, Content);
-            ps.setBoolean(4, PublicPost.equalsIgnoreCase("Public") ? true : false);
+//            ps.setBoolean(4, PublicPost.equalsIgnoreCase("Public") ? true : false);
         } catch (Exception e) {
             System.out.println("dao.PostUserDAO.createPostShare()");
             e.printStackTrace();
@@ -199,14 +202,15 @@ public class PostUserDAO {
         return true;
     }
 
-    public String newPost(String UserID, String Content, String ImagePost, String PublicPost) {
+    public String newPost(String UserID, String Content, String ImagePost, String Privacy) {
         try {
             Connection cnn = new connection.connection().getConnection();
             PreparedStatement ps = cnn.prepareStatement(newPost);
             ps.setString(1, UserID);
             ps.setString(2, Content);
             ps.setString(3, ImagePost);
-            ps.setString(4, PublicPost);
+             ps.setString(4, new dao.PrivacyDao().transToId(Privacy.trim()));
+            //ps.setString(4, PublicPost);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 return rs.getString(1);
@@ -218,14 +222,15 @@ public class PostUserDAO {
         return null;
     }
 
-    public String newPostShare(String UserID, String PostID, String Content, String PublicPost) {
+    public String newPostShare(String UserID, String PostID, String Content, String Privacy) {
         try {
             Connection cnn = new connection.connection().getConnection();
             PreparedStatement ps = cnn.prepareStatement(createPostShare);
             ps.setString(1, UserID);
             ps.setString(2, PostID);
             ps.setNString(3, Content);
-            ps.setString(4, PublicPost);
+            ps.setString(4, new dao.PrivacyDao().transToId(Privacy.trim()));
+            //ps.setString(4, PublicPost);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 return rs.getString(1);
@@ -245,7 +250,7 @@ public class PostUserDAO {
             while (rs.next()) {
                 return new PostUser(rs.getString(1), rs.getString(2), rs.getString(3),
                         rs.getString(4), rs.getString(5), rs.getInt(6),
-                        rs.getInt(7), rs.getInt(8), rs.getBoolean(9));
+                        rs.getInt(7), rs.getInt(8), rs.getString(9));
             }
         } catch (Exception e) {
             System.out.println("dao.PostUserDAO.getPost()");
@@ -257,19 +262,20 @@ public class PostUserDAO {
     public ArrayList<PostUser> getAllPost(String id) {
         ArrayList<PostUser> post = new ArrayList<>();
         String query = "SELECT POST.ID, PostID, POST.UserID, Content,\n"
-                + "		ImagePost, TimePost, NumInterface, NumComment, \n"
-                + "		NumShare, PublicPost, FullName, ImageUser\n"
-                + "	FROM dbo.POST INNER JOIN dbo.UserInfor\n"
-                + "	on POST.UserID = UserInfor.UserID\n"
-                + "                where POST.UserID= ? \n"
-                + "                ORDER BY POST.TimePost DESC";
+                + "                		ImagePost, TimePost, NumInterface, NumComment, \n"
+                + "                		NumShare, PrivacyName, FullName, ImageUser\n"
+                + "	FROM dbo.POST \n"
+                + "	INNER JOIN dbo.UserInfor ON POST.UserID = UserInfor.UserID\n"
+                + "	 INNER JOIN dbo.Privacy ON Privacy.PrivacyID = POST.PrivacyID\n"
+                + "	 where POST.UserID= ? \n"
+                + "	 ORDER BY POST.TimePost DESC";
         try {
             PreparedStatement ps = cnn.prepareStatement(query);
             ps.setString(1, id);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 post.add(new PostUser(rs.getString(2), rs.getString(3), rs.getNString(4), rs.getString(5), rs.getString(6), rs.getInt(7), rs.getInt(8),
-                        rs.getInt(9), rs.getBoolean(10), rs.getNString(11), rs.getString(12)));
+                        rs.getInt(9), rs.getString(10), rs.getNString(11), rs.getString(12)));
                 System.out.println("Name: " + rs.getNString(11));
             }
             rs.close();

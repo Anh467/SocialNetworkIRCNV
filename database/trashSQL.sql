@@ -133,3 +133,115 @@ CREATE TABLE MAIL(
 	Mail VARCHAR(255) PRIMARY KEY NOT NULL,
 	code CHAR(10),
 )
+
+INSERT INTO dbo.POST
+(
+    UserID,
+    Content,
+    ImagePost,
+    TimePost,
+    NumInterface,
+    NumComment,
+    NumShare,
+    PrivacyID
+)
+VALUES
+(   NULL,    -- UserID - varchar(11)
+    NULL,    -- Content - nvarchar(max)
+    NULL,    -- ImagePost - nvarchar(255)
+    DEFAULT, -- TimePost - datetime
+    DEFAULT, -- NumInterface - int
+    DEFAULT, -- NumComment - int
+    DEFAULT, -- NumShare - int
+    DEFAULT  -- PrivacyID - varchar(11)
+    )
+
+	Update POST
+    set Content= ? , ImagePost= ? , PrivacyID= ?
+where PostID= ?;
+
+INSERT INTO dbo.POSTSHARE
+(
+    UserID,
+    PostID,
+    Content,
+    TimeShare,
+    NumInterface,
+    NumComment,
+    PrivacyID
+)
+VALUES
+(   NULL,    -- UserID - varchar(11)
+    NULL,    -- PostID - varchar(11)
+    NULL,    -- Content - nvarchar(max)
+    DEFAULT, -- TimeShare - datetime
+    DEFAULT, -- NumInterface - int
+    DEFAULT, -- NumComment - int
+    DEFAULT  -- PrivacyID - varchar(11)
+    )
+
+	SELECT PostID, UserID, Content, ImagePost, TimePost, NumInterface, NumComment, NumShare, PrivacyName
+	FROM dbo.POST
+	INNER JOIN dbo.Privacy ON Privacy.PrivacyID = POST.PrivacyID
+	WHERE PostID= ?
+
+	SELECT POST.ID, PostID, POST.UserID, Content,
+                		ImagePost, TimePost, NumInterface, NumComment, 
+                		NumShare, PrivacyName, FullName, ImageUser
+	FROM dbo.POST 
+	INNER JOIN dbo.UserInfor ON POST.UserID = UserInfor.UserID
+	 INNER JOIN dbo.Privacy ON Privacy.PrivacyID = POST.PrivacyID
+	 WHERE POST.UserID= ? 
+	 ORDER BY POST.TimePost DESC
+
+	 SELECT PostID, POST.UserID, Content, ImagePost, TimePost, NumInterface, NumComment, NumShare, PrivacyName, FullName, ImageUser
+            FROM dbo.POST
+            INNER JOIN dbo.UserInfor ON UserInfor.UserID = POST.UserID
+			INNER JOIN dbo.Privacy ON Privacy.PrivacyID = POST.PrivacyID
+
+	SELECT c.UserID, c.FullName, c.ImageUser, 
+            b.TimePost, b.Content, a.PostID, a.ShareID, a.UserID, 
+            d.FullName, d.ImageUser,a.Content,
+            a.TimeShare, a.NumInterface, a.NumComment, e.PrivacyName, b.ImagePost
+            FROM dbo.POSTSHARE a
+            INNER JOIN dbo.POST b ON b.PostID = a.PostID
+            INNER JOIN dbo.UserInfor c ON b.UserID= c.UserID
+            INNER JOIN dbo.UserInfor d ON d.UserID= a.UserID
+			INNER JOIN dbo.Privacy e ON e.PrivacyID = a.PrivacyID
+            WHERE a.UserID= ? 
+
+	SELECT PostID, POST.UserID, Content, ImagePost, TimePost, NumInterface, NumComment, NumShare, PrivacyName, FullName, ImageUser
+            FROM dbo.POST
+            INNER JOIN dbo.UserInfor ON UserInfor.UserID = POST.UserID
+			INNER JOIN dbo.Privacy ON Privacy.PrivacyID = POST.PrivacyID
+            WHERE POST.UserID= ? 
+
+	DECLARE @InsertedIDs TABLE (ShareID VARCHAR(11));
+            	INSERT INTO dbo.POSTSHARE
+            (
+            	    UserID,
+            	    PostID,
+            	    Content,
+            	    TimeShare,
+            	    NumInterface,
+            	    NumComment,
+            	    PrivacyID
+            	)
+            	OUTPUT Inserted.ShareID INTO @InsertedIDs
+            	VALUES
+            	(   'UID00000001' ,    -- UserID - varchar(11)
+            	    'PID00000001' ,    -- PostID - varchar(11)
+            	    'ÁDF' ,    -- Content - nvarchar(max)
+            	    DEFAULT, -- TimeShare - datetime
+            	    DEFAULT, -- NumInterface - int
+            	    DEFAULT, -- NumComment - int
+            	    'FRIEND'  -- PrivacyID - varchar(11)
+            	    )
+            SELECT ShareID FROM @InsertedIDs;
+
+			SELECT UserID, FullName, Address, Mail, PhoneNumber, Dob, Gender, Nation, 
+			ImageUser, ImageBackGround FROM  dbo.UserInfor WHERE UserID = 'UID00000003'
+			U2RequestU1
+			U1RequestU2
+
+			

@@ -49,7 +49,8 @@ public class UserDAO {
     }
 
     public User getUserByID(String userId) {
-        String Query = "SELECT UserID, FullName, Address, Mail, PhoneNumber, Dob, Gender, Nation, ImageUser, ImageBackGround FROM  dbo.UserInfor WHERE UserID = ?";
+        String Query = "SELECT UserID, FullName, Address, Mail, PhoneNumber, Dob, Gender, Nation, \n" +
+"			ImageUser, ImageBackGround FROM  dbo.UserInfor WHERE UserID = ? ";
         try {
             PreparedStatement ps = cnn.prepareStatement(Query);
             ps.setString(1, userId);
@@ -62,6 +63,8 @@ public class UserDAO {
                         rs.getString(6), rs.getBoolean(7));
             }
         } catch (Exception e) {
+            System.out.println("dao.UserDAO.getUserByID()");
+            e.printStackTrace();
         }
         return null;
     }

@@ -368,7 +368,7 @@
                         <li>
                             <p class="profile" >
 
-                                <img src="/SocialNetworkIRCNV/<%=user.getImgUser()%>" alt="alt"/>
+                                <img src="<%=user.getImgUser()%>" alt="alt"/>
 
 
                             </p>
@@ -408,7 +408,7 @@
                 <div class="post create">
                     <div class="post-top" style="">
                         <div class="dp">
-                            <img src="/SocialNetworkIRCNV/<%=user.getImgUser()%>" alt="" style="width: 106%;">
+                            <img src="<%=user.getImgUser()%>" alt="" style="width: 106%;">
                         </div>
                         <input type="text" placeholder="What's on your mind, Aashish ?" />
                     </div>
@@ -440,7 +440,7 @@
 
                         <jsp:param name="time" value="<%=std.get(i).getTimePost()%>" />
 
-                        <jsp:param name="Public" value="<%=std.get(i).isPublic()%>" />
+                        <jsp:param name="Public" value="<%=std.get(i).getPrivacyName()%>" />
 
                         <jsp:param name="content" value="<%=std.get(i).getContent()%>" />
                         <jsp:param name="img_post" value="<%=((PostUser) std.get(i)).getImagePost()%>" />
@@ -475,7 +475,7 @@
                         <jsp:param name="timePost" value="<%=((PostShare) std.get(i)).getTimePost()%>" />
                         <jsp:param name="NumInterface" value="<%=((PostShare) std.get(i)).getNumInterface()%>" />
                         <jsp:param name="NumComment" value="<%=((PostShare) std.get(i)).getNumComment()%>" />
-                        <jsp:param name="Public" value="<%=((PostShare) std.get(i)).isPublic()%>" />
+                        <jsp:param name="Public" value="<%=((PostShare) std.get(i)).getPrivacyName()%>" />
                         <jsp:param name="img_post" value="<%=((PostShare) std.get(i)).getImg_post()%>" />
                     </jsp:include>
                         </div>
@@ -558,7 +558,7 @@
                                     <form action="/SocialNetworkIRCNV/UpdateInfo" method = "post" enctype="multipart/form-data">
                                         <div class="form-group">
                                             <label for="cover-image" class="col-form-label">Cover Image:</label>
-                                            <img id="previewImage3" src="/SocialNetworkIRCNV/<%=user.getCoverImg()%>" alt="Preview Image" style="width: 100%;
+                                            <img id="previewImage3" src="<%=user.getCoverImg()%>" alt="Preview Image" style="width: 100%;
                                                                                                                                                 border-radius: 3px;
                                                                                                                                                 margin-bottom: 14px;
                                                                                                                                                 object-fit: cover;
@@ -569,7 +569,7 @@
 
                                         <div class="form-group">
                                             <label for="avatar" class="col-form-label">Avatar:</label>
-                                            <img id="previewImage4" src="/SocialNetworkIRCNV/<%=user.getImgUser()%>" alt="Preview Image" style="width: 130px;
+                                            <img id="previewImage4" src="<%=user.getImgUser()%>" alt="Preview Image" style="width: 130px;
                                                                                                                                                 height: 130px;
                                                                                                                                                 margin-right: 30px;
                                                                                                                                                 border-radius: 3px;
@@ -645,7 +645,7 @@
                                 <div class="share-head">
                                     <div style="display: flex">
                                         <div class="dp" >
-                                            <img src="/SocialNetworkIRCNV/<%=user.getImgUser()%>" alt="" style="width: 45px;
+                                            <img src="<%=user.getImgUser()%>" alt="" style="width: 45px;
                                                  height: 45px;
                                                  border-radius: 50%;
                                                  margin-right: 10px;

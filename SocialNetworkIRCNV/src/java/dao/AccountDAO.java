@@ -41,7 +41,7 @@ public class AccountDAO {
             + "    NumFriend,\n"
             + "    NumPost,\n"
             + "    TimeCreate,\n"
-            + "    isAdmin\n"
+            + "    RoleID\n"
             + ")\n"
             + "VALUES\n"
             + "(   ? ,    -- Account - varchar(155)\n"
@@ -58,7 +58,7 @@ public class AccountDAO {
             + "    DEFAULT, -- NumFriend - int\n"
             + "    DEFAULT, -- NumPost - int\n"
             + "    DEFAULT, -- TimeCreate - datetime\n"
-            + "    DEFAULT  -- isAdmin - bit\n"
+            + "    DEFAULT  -- RoleID - varchar(11)\n"
             + "    )";
     String checkExistAccount = "SELECT *\n"
             + "FROM dbo.UserInfor\n"
@@ -191,7 +191,7 @@ public class AccountDAO {
         return null;
     }
 
-    public boolean createNewUser(String user, String pass, String name, String mail, String dob, String g) {
+    public boolean createNewUser(String user, String pass, String name, String mail, String dob, String getGender) {
         try {
             PreparedStatement ps = cnn.prepareStatement(createNewUser);
             ps.setString(1, user.trim());
@@ -199,7 +199,7 @@ public class AccountDAO {
             ps.setString(3, name.trim());
             ps.setString(4, mail.trim());
             ps.setString(5, dob.trim());
-            ps.setString(6, g.trim());
+            ps.setString(6, getGender.trim());
             ps.execute();
             return true;
         } catch (Exception e) {

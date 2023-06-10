@@ -1,5 +1,21 @@
-﻿
+﻿--CREATE DATABASE SocialMedia
 --------------------------------------------------------------UserInfor------------------------------------------------------------------
+--phan quyen nguoi dung
+CREATE TABLE Role(
+	RoleID VARCHAR(11) PRIMARY KEY NOT NULL,
+	RoleName VARCHAR(30),
+	-- User - User
+	-- Admin - Admin
+	-- Master Admin - Master_Admin
+);
+
+INSERT INTO dbo.Role
+VALUES
+(   'USER', 'User' ),
+(   'ADMIN', 'Admin' ),
+(   'MASTERADMIN', 'Master Admin' );
+
+-- search INSERT INTO dbo.UserInfor
 CREATE TABLE UserInfor(
 	ID INT IDENTITY(1,1) NOT NULL,
 	UserID AS 'UID' + RIGHT('00000000' + CAST(ID AS VARCHAR(8)), 8) PERSISTED PRIMARY KEY,
@@ -19,9 +35,8 @@ CREATE TABLE UserInfor(
 	NumFriend INT DEFAULT 0,
 	NumPost INT DEFAULT 0,
 	TimeCreate DATETIME DEFAULT GETDATE(),
-	isAdmin BIT DEFAULT 0
-	-- 0 khong phai admin
-	-- 1 chinh  la  admin
+	RoleID VARCHAR(11) DEFAULT 'USER',
+	CONSTRAINT fk_RoleID_UserInfor FOREIGN KEY (RoleID) REFERENCES dbo.Role(RoleID),
 );
 
 
@@ -29,6 +44,17 @@ CREATE TABLE UserInfor(
 
 
 --------------------------------------------------------------DBO.POST------------------------------------------------------------------
+--Phaan quyen rieng tu bai post INSERT INTO dbo.POST
+CREATE TABLE Privacy(
+	PrivacyID VARCHAR(11) PRIMARY KEY NOT NULL,
+	PrivacyName VARCHAR(30),
+)
+INSERT INTO dbo.Privacy
+VALUES
+(   'PUBLIC', 'Public'),
+(   'FRIEND', 'Friend'),
+(   'PRIVATE', 'Private');
+
 CREATE TABLE POST(
 	ID INT IDENTITY(1,1) NOT NULL,
 	PostID AS 'PID' + RIGHT('00000000' + CAST(ID AS VARCHAR(8)), 8) PERSISTED PRIMARY KEY,
@@ -40,9 +66,9 @@ CREATE TABLE POST(
 	NumInterface INT DEFAULT 0,
 	NumComment INT DEFAULT 0,
 	NumShare INT DEFAULT 0, 
-	PublicPost BIT,
+	PrivacyID VARCHAR(11) DEFAULT 'PUBLIC',
+	CONSTRAINT fk_PrivacyID_POST FOREIGN KEY (PrivacyID) REFERENCES dbo.Privacy(PrivacyID),
 )
-
 
 
 --------------------------------------------------------------DBO.COMMENT------------------------------------------------------------------
@@ -112,7 +138,8 @@ ID INT IDENTITY(1,1) NOT NULL,
 	TimeShare DATETIME DEFAULT GETDATE(),
 	NumInterface INT DEFAULT 0,
 	NumComment INT DEFAULT 0,
-	PublicPost BIT,
+	PrivacyID VARCHAR(11) DEFAULT 'PUBLIC',
+	CONSTRAINT fk_PrivacyID_POSTSHARE FOREIGN KEY (PrivacyID) REFERENCES dbo.Privacy(PrivacyID),
 )
 
 CREATE TABLE COMMENTSHARE(

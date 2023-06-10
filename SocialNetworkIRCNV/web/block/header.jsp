@@ -130,7 +130,7 @@
             <div class="nav-right">
                 <span class="profile">
                     <a href="${pageContext.request.contextPath}/PersonalPage/ProfileInfo.jsp    ">
-                        <img src="/SocialNetworkIRCNV/<%=user.getImgUser()%>" alt="alt" style="width: 100%;"/>
+                        <img src="<%=user.getImgUser()%>" alt="alt" style="width: 100%;"/>
                     </a>
                 </span>
 

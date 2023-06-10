@@ -7,11 +7,11 @@ public class Comment {
 
     public Comment(String NameUser, String ImgUser, String timeCmt, String contentCmt, int numInter, String ImgCmt, String IDcmt) {
         this.NameUser = NameUser;
-        this.ImgUser = ImgUser;
+        this.ImgUser = "/SocialNetworkIRCNV/"+ImgUser;
         this.timeCmt = timeCmt;
         this.contentCmt = contentCmt;
         this.numInter = numInter;
-        this.ImgCmt=ImgCmt;
+        this.ImgCmt="/SocialNetworkIRCNV/"+ImgCmt;
         this.IDcmt=IDcmt;
     }
 

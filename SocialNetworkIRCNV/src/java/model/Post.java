@@ -14,23 +14,23 @@ public class Post implements Comparable<Post>{
 
     private String PostID, UserID, Content, timePost;
     private int NumInterface, NumComment;
-    private boolean Public;
+    private String PrivacyName;
   
 
-    public Post(String PostID, String UserID, String Content, String timePost, int NumInterface, int NumComment, boolean Public) {
+    public Post(String PostID, String UserID, String Content, String timePost, int NumInterface, int NumComment, String PrivacyName) {
         this.PostID = PostID;
         this.UserID = UserID;
         this.Content = Content;
         this.timePost = timePost;
         this.NumInterface = NumInterface;
         this.NumComment = NumComment;
-        this.Public = Public;
+        this.PrivacyName = PrivacyName;
     }
     
-    public Post(String UserID, String Content,String Public){
+    public Post(String UserID, String Content,String PrivacyName){
         this.UserID= UserID;
         this.Content= Content;
-        this.Public= this.Public;
+        this.PrivacyName= PrivacyName;
     }
     public Post() {
     }
@@ -83,12 +83,12 @@ public class Post implements Comparable<Post>{
         this.NumComment = NumComment;
     }
 
-    public boolean isPublic() {
-        return Public;
+    public String getPrivacyName() {
+        return PrivacyName;
     }
 
-    public void setPublic(boolean Public) {
-        this.Public = Public;
+    public void setPrivacyName(String Public) {
+        this.PrivacyName = Public;
     }
 
     @Override
@@ -98,7 +98,7 @@ public class Post implements Comparable<Post>{
 
     @Override
     public String toString() {
-        return "Post{" + "PostID=" + PostID + ", UserID=" + UserID + ", Content=" + Content + ", timePost=" + timePost + ", NumInterface=" + NumInterface + ", NumComment=" + NumComment + ", Public=" + Public + '}';
+        return "Post{" + "PostID=" + PostID + ", UserID=" + UserID + ", Content=" + Content + ", timePost=" + timePost + ", NumInterface=" + NumInterface + ", NumComment=" + NumComment + ", PrivacyName=" + PrivacyName + '}';
     }
 
     
