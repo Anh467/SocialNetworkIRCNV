@@ -324,7 +324,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
         }
     </style>
     <body>
-
+        <div id="offset" style="display: none"  >1</div>
 
         <jsp:useBean id="apiPrivacy" class="dao.PrivacyDao"/>
         <header>
@@ -421,73 +421,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
 
 
                     <!-- Bài Post -->
-                    <div class ="post-container"  id="post">
-                        <jsp:include page="/post" />
-                        <%
-                            Text text= new Text();
-                            ArrayList<Post> std = (ArrayList<Post>) request.getAttribute("ListPost");
+                    <div class ="post-container"  id="post" style="margin: 0; padding: 0">
 
-                            for (int i = 0; i < std.size(); i++)
-                                if (std.get(i) instanceof PostUser) {
-                        %>
-
-                        
-                            <%try {%>
-                            <div id="showpost">
-                            <jsp:include page="../BlockPost/BlockPost.jsp">
-                                <jsp:param name="post_id" value="<%=std.get(i).getPostID()%>" />
-                                <jsp:param name="img_pro" value="<%=((PostUser) std.get(i)).getImagePost()%>" />
-                                <jsp:param name="img_user" value="<%=user.getImgUser()%>"/>
-                                <jsp:param name="uName" value="<%=((PostUser) std.get(i)).getFullNameUser()%>" />
-
-                                <jsp:param name="time" value="<%=std.get(i).getTimePost()%>" />
-
-                                <jsp:param name="Public" value="<%=std.get(i).getPrivacyName()%>" />
-
-                                <jsp:param name="content" value="<%=std.get(i).getContent()%>" />
-                                <jsp:param name="img_post" value="<%=((PostUser) std.get(i)).getImagePost()%>" />
-                                <jsp:param name="num_like" value="<%=std.get(i).getNumInterface()%>" />
-                                <jsp:param name="num_cmt" value="<%=std.get(i).getNumComment()%>" />
-                                <jsp:param name="num_share" value="<%=((PostUser) std.get(i)).getNumShare()%>" />
-                            </jsp:include>
-                                </div>
-                            <%} catch (Exception e) {
-
-                                }%>
-                        
-                        <%} else if (std.get(i) instanceof PostShare) {%>
-                        
-                            <%try {%>
-                            <div id="showpost">
-                            <jsp:include page="../BlockPost/BlockPostShare.jsp">
-                                <jsp:param name="UserIDownPost" value="<%=((PostShare) std.get(i)).getUserIDownPost()%>" />
-                                <jsp:param name="nameUserDown" value="<%=((PostShare) std.get(i)).getNameUserDown()%>" />
-                                <jsp:param name="imgUserDown" value="<%=((PostShare) std.get(i)).getImgUserDown()%>" />
-
-                                <jsp:param name="timePostDown" value="<%=((PostShare) std.get(i)).getTimePostDown()%>" />
-                                <jsp:param name="contentDown" value="<%=((PostShare) std.get(i)).getContentDown()%>" />
-                                <jsp:param name="PostID" value="<%=((PostShare) std.get(i)).getPostID()%>" />
-                                <jsp:param name="IDshare" value="<%=((PostShare) std.get(i)).getIDshare()%>" />
-                                <jsp:param name="UserID" value="<%=((PostShare) std.get(i)).getUserID()%>" />
-
-                                <jsp:param name="NameShare" value="<%= ((PostShare) std.get(i)).getNameShare()%>" />
-                                <jsp:param name="img_UserShare" value="<%=user.getImgUser()%>" />
-                                <jsp:param name="Content" value="<%=((PostShare) std.get(i)).getContent()%>" />
-
-                                <jsp:param name="timePost" value="<%=((PostShare) std.get(i)).getTimePost()%>" />
-                                <jsp:param name="NumInterface" value="<%=((PostShare) std.get(i)).getNumInterface()%>" />
-                                <jsp:param name="NumComment" value="<%=((PostShare) std.get(i)).getNumComment()%>" />
-                                <jsp:param name="Public" value="<%=((PostShare) std.get(i)).getPrivacyName()%>" />
-                                <jsp:param name="img_post" value="<%=((PostShare) std.get(i)).getImg_post()%>" />
-                                
-                            </jsp:include>
-                            </div>
-                            <% } catch (Exception e) {
-
-                                    }
-                                }%>
-                        
-
+                    </div>
+                    <div id="btnloadmore">
+                        <button onclick="loadMorePost('profileinfo', '<%=id%>', document.getElementById('offset').innerHTML)">load more </button>
                     </div>
                 </div>
                                
@@ -717,8 +655,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                 </div>
               </div>
                                           </div>
-                <script src="/SocialNetworkIRCNV/js/controlPost.js">
+            <script src="/SocialNetworkIRCNV/js/loadpost.js" ></script>
+            <script src="/SocialNetworkIRCNV/js/controlPost.js"></script>
+             <script src="/SocialNetworkIRCNV/PersonalPage/ProfileInfo.js" >
 
-                </script>
+
+            </script>
+                
                 </body>
                 </html>

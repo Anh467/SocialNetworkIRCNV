@@ -195,7 +195,6 @@ function modifyPost(PostID, imgUser, Nameuser, timePost, Public, Content, imgPos
 
 }
 function loadUpdate() {
-
     var fileInput = document.querySelector('input[name="photoPost"]');
     var file = fileInput.files[0];
     var formData = new FormData();

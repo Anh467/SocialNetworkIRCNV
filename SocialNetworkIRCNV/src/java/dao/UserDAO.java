@@ -49,8 +49,8 @@ public class UserDAO {
     }
 
     public User getUserByID(String userId) {
-        String Query = "SELECT UserID, FullName, Address, Mail, PhoneNumber, Dob, Gender, Nation, \n" +
-"			ImageUser, ImageBackGround FROM  dbo.UserInfor WHERE UserID = ? ";
+        String Query = "SELECT UserID, FullName, Address, Mail, PhoneNumber, Dob, Gender, Nation, \n"
+                + "			ImageUser, ImageBackGround FROM  dbo.UserInfor WHERE UserID = ? ";
         try {
             PreparedStatement ps = cnn.prepareStatement(Query);
             ps.setString(1, userId);
@@ -68,6 +68,34 @@ public class UserDAO {
         }
         return null;
     }
+
+    public ArrayList<User> getUserBySearch(String keyword) {
+        ArrayList<User> profile = new ArrayList<>();
+        String query = "SELECT UserId,FullName, Address, Mail, PhoneNumber, Dob, Gender, Nation, ImageUser, ImageBackGround\n"
+                + "FROM dbo.UserInfor WHERE FullName COLLATE Latin1_General_CI_AI LIKE '%' + ? + '%'";
+        try {
+            PreparedStatement ps = cnn.prepareStatement(query);
+            ps.setString(1, keyword);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                User user = new User();
+                user.setUserID(rs.getString(1));
+                user.setFullName(rs.getString(2));
+                user.setGender(rs.getBoolean(3));
+                user.setDOB(rs.getString(4));
+                user.setAddress(rs.getString(5));
+                user.setImgUser(rs.getString(6));
+                user.setCoverImg(rs.getString(7));
+                user.setMail(rs.getString(8));
+                user.setNation(rs.getString(9));
+                user.setPhoneNumber(rs.getString(10));
+                profile.add(user);
+            }
+        } catch (Exception e) {
+        }
+        return profile;
+    }
+//update
 
     public void updateInfo(User user) {
         String query = "update UserInfor set \n"
@@ -135,6 +163,7 @@ public class UserDAO {
             System.out.println("dao.UserDAO.updateBackground()");
             e.printStackTrace();
         }
+
     }
 
 }

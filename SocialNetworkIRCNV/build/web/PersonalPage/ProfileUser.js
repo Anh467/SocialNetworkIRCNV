@@ -1,22 +1,4 @@
-function loadMorePost(type, UID, offset) {
-    var post = document.getElementById('post');
-    $.ajax({
-        url: "/SocialNetworkIRCNV/GetLoadPost",
-        type: "POST",
-        data: {type: type, UID: UID, offset: offset},
-        success: function (data) {
-            if (data === "null") {
-                alert('Request Fail');
-            } else {
-                post.innerHTML = data + post.innerHTML;
-            }
 
-        },
-        error: function (xhr) {
-            console.log("?ã x?y ra l?i: ");
-        }
-    });
-}
 function relate(Type, UID) {
     var isfriend = "<div style='color: blue'><i class='fa-solid fa-user-check'></i> Your Friend </div>";
     var request = "<div style='color: black'><i class='fa-solid fa-people-arrows'></i> Requested </div>";
@@ -46,3 +28,30 @@ function askAgainUnfiend(Type, UID) {
         relate(Type, UID);
     }
 }
+document.addEventListener('DOMContentLoaded', function () {
+    var offsett = document.getElementById('offset');
+    var post = document.getElementById('post');
+    var UID = document.getElementById('UID');
+    var btnloadmore = document.getElementById('btnloadmore');
+    $.ajax({
+        url: "/SocialNetworkIRCNV/GetLoadPost",
+        type: "POST",
+        data: {type: 'profileuser', UID: UID.innerHTML, offset: '1'},
+        success: function (data) {
+            if (data === "null") {
+                btnloadmore.innerHTML = 'User didnt have any post: ' + UID.innerHTML;
+            } else {
+                var currentOffset = parseInt(offsett.innerHTML);
+                offsett.innerHTML = currentOffset + 1;
+                post.innerHTML = post.innerHTML + data;
+            }
+
+//            var currentOffset = parseInt(offsett.innerHTML);
+//            offsett.innerHTML = currentOffset + 1;
+//            post.innerHTML = currentOffset+1;
+        },
+        error: function (xhr) {
+            console.log("?ã x?y ra l?i: ");
+        }
+    });
+});

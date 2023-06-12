@@ -354,6 +354,7 @@
     </head>
 
     <body>
+        <div id="offset" style="display: none"  >1</div>
         <header>
             <%@include file="../block/header.jsp" %>
         </header>
@@ -421,68 +422,14 @@
                         </div>
                     </div>
                 </div>
-                <jsp:include page="/post" />
-                <%
-                    ArrayList<Post> std = (ArrayList<Post>) request.getAttribute("ListPost");
+                <div>
+                    <div class ="post-container"  id="post" style="margin: 0; padding: 0">
 
-                    for (int i = 0; i < std.size(); i++)
-                        if (std.get(i) instanceof PostUser) {
-                %>
-
-                
-                    <%try {%>
-                    <div id="showpost">
-                    <jsp:include page="../BlockPost/BlockPost.jsp">
-                        <jsp:param name="post_id" value="<%=std.get(i).getPostID()%>" />
-                        <jsp:param name="img_pro" value="<%=((PostUser) std.get(i)).getImagePost()%>" />
-                        <jsp:param name="img_user" value="<%=user.getImgUser()%>"/>
-                        <jsp:param name="uName" value="<%=((PostUser) std.get(i)).getFullNameUser()%>" />
-
-                        <jsp:param name="time" value="<%=std.get(i).getTimePost()%>" />
-
-                        <jsp:param name="Public" value="<%=std.get(i).getPrivacyName()%>" />
-
-                        <jsp:param name="content" value="<%=std.get(i).getContent()%>" />
-                        <jsp:param name="img_post" value="<%=((PostUser) std.get(i)).getImagePost()%>" />
-                        <jsp:param name="num_like" value="<%=std.get(i).getNumInterface()%>" />
-                        <jsp:param name="num_cmt" value="<%=std.get(i).getNumComment()%>" />
-                        <jsp:param name="num_share" value="<%=((PostUser) std.get(i)).getNumShare()%>" />
-                    </jsp:include>
-                     </div>
-                    <%} catch (Exception e) {
-
-                        }%>
-               
-                <%} else if (std.get(i) instanceof PostShare) {%>
-                
-                    <%try {%>
-                    <div id="showpost">
-                    <jsp:include page="../BlockPost/BlockPostShare.jsp">
-                        <jsp:param name="UserIDownPost" value="<%=((PostShare) std.get(i)).getUserIDownPost()%>" />
-                        <jsp:param name="nameUserDown" value="<%=((PostShare) std.get(i)).getNameUserDown()%>" />
-                        <jsp:param name="imgUserDown" value="<%=((PostShare) std.get(i)).getImgUserDown()%>" />
-
-                        <jsp:param name="timePostDown" value="<%=((PostShare) std.get(i)).getTimePostDown()%>" />
-                        <jsp:param name="contentDown" value="<%=((PostShare) std.get(i)).getContentDown()%>" />
-                        <jsp:param name="PostID" value="<%=((PostShare) std.get(i)).getPostID()%>" />
-                        <jsp:param name="IDshare" value="<%=((PostShare) std.get(i)).getIDshare()%>" />
-                        <jsp:param name="UserID" value="<%=((PostShare) std.get(i)).getUserID()%>" />
-
-                        <jsp:param name="NameShare" value="<%= ((PostShare) std.get(i)).getNameShare()%>" />
-                        <jsp:param name="img_UserShare" value="<%=((PostShare) std.get(i)).getImg_UserShare()%>" />
-                        <jsp:param name="Content" value="<%=((PostShare) std.get(i)).getContent()%>" />
-
-                        <jsp:param name="timePost" value="<%=((PostShare) std.get(i)).getTimePost()%>" />
-                        <jsp:param name="NumInterface" value="<%=((PostShare) std.get(i)).getNumInterface()%>" />
-                        <jsp:param name="NumComment" value="<%=((PostShare) std.get(i)).getNumComment()%>" />
-                        <jsp:param name="Public" value="<%=((PostShare) std.get(i)).getPrivacyName()%>" />
-                        <jsp:param name="img_post" value="<%=((PostShare) std.get(i)).getImg_post()%>" />
-                    </jsp:include>
-                        </div>
-                    <% } catch (Exception e) {
-
-                            }
-                        }%>
+                    </div>
+                    <div id="btnloadmore">
+                        <button onclick="loadMorePost('homepage', '<%=id%>', document.getElementById('offset').innerHTML)">load more </button>
+                    </div>
+                </div>
                         
                 </div>
                
@@ -655,7 +602,7 @@
                                             <p class="name" style="color: #003140;"><%=user.getFullName()%></p>
                                         </div>
                                     </div>
-
+                                        
                                     <p>What's you think?</p>
                                     <div class="share-content" style="margin-bottom: 20px">
                                         <input id="contentPostShareModel" type="text" name="contentPostShareModel" style="width: 100%">
@@ -769,10 +716,9 @@
                         </div>
                     </div>
                 </div>
-        <script src="/SocialNetworkIRCNV/js/controlPost.js">
-
-                </script>
-
+        <script src="/SocialNetworkIRCNV/js/loadpost.js" ></script>
+            <script src="/SocialNetworkIRCNV/js/controlPost.js"></script>
+             <script src="/SocialNetworkIRCNV/HomePage/homepage.js" ></script>
 
     </body>
 

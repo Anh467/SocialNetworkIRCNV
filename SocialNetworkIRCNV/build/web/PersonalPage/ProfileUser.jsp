@@ -22,6 +22,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
         <script src="https://kit.fontawesome.com/24c45437f2.js" crossorigin="anonymous"></script>
 
     </head>
+    <link rel="stylesheet" href="/SocialNetworkIRCNV/css/post.css">
+    <link rel="stylesheet" href="/SocialNetworkIRCNV/css/postshare.css">
     <style>
         .profile-container{
             padding: 20px 17%;
@@ -446,6 +448,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
         }
     </style>
     <body style="margin: 0">
+        <div id="offset" style="display: none"  >1</div>
+        <div id="UID" style="display: none"  >${param.UID}</div>
         <header>
             <%@include file="../block/header.jsp" %>
         </header>
@@ -526,13 +530,85 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                 </div>
                 <div>
                     <div class ="post-container"  id="post" style="margin: 0; padding: 0">
-                        <button onclick="loadMorePost('profile', '<%=UID%>', '1')">load more </button>
+
+                    </div>
+                    <div id="btnloadmore">
+                        <button onclick="loadMorePost('profileuser', '<%=UID%>', document.getElementById('offset').innerHTML)">load more </button>
                     </div>
                 </div>
+            </div>
+            <div class="modal" id = "modalShare" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="PostIDPostShareModel"></div>
+                            <div class="share-head">
+                                <div style="display: flex">
+                                    <div class="dp" >
+                                        <img src="<%=user.getImgUser()%>" alt="" style="width: 45px;
+                                             height: 45px;
+                                             border-radius: 50%;
+                                             margin-right: 10px;
+                                             object-fit: cover;" >
+                                    </div>
+                                    <div class="share-info">
+                                        <p class="name" style="color: #003140;"><%=user.getFullName()%></p>
+                                    </div>
+                                </div>
 
+                                <p>What's you think?</p>
+                                <div class="share-content" style="margin-bottom: 20px">
+                                    <input id="contentPostShareModel" type="text" name="contentPostShareModel" style="width: 100%">
+                                </div>
+
+                                <select id="privacyPostShareModel" name = "privacyPostShareModel" style="color:#626262;">
+                                    <c:forEach items="${apiPrivacy.allPrivacy}" var="ele">
+                                        <option style="color:#626262; background-color:#cdf1ff;  ">${ele.getPrivacyName()}</option>
+                                    </c:forEach>
+                                </select>
+                                <div class="share-body" style="border: 1px solid black">
+                                    <div class="share-top"  style="margin-left: 10px">
+                                        <div class="dp">
+                                            <img id="imgUserDown" src="" alt="" style="width: 45px;
+                                                 height: 45px;
+                                                 border-radius: 50%;
+                                                 margin-right: 10px;
+                                                 object-fit: cover;" >
+                                        </div>
+                                        <div class="share-info">
+                                            <p id="name_userDown" class="name" style="color: #003140"></p>
+                                        </div>
+                                    </div>
+                                    <div class="share-content" style="text-align: center;" >
+                                        <p id='contentDown' style="text-align: left;"></p>
+                                        <img id='img_postDown' src="" style="width: 100%"/>
+                                    </div>
+
+                                </div> 
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" onclick="load('Share')">Save changes</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <script src="/SocialNetworkIRCNV/PersonalPage/ProfileUser.js" >
 
+
+            </script>
+             <script src="/SocialNetworkIRCNV/js/loadpost.js" >
+
+
+            </script>
+            <script src="/SocialNetworkIRCNV/js/controlPost.js">
 
             </script>
 

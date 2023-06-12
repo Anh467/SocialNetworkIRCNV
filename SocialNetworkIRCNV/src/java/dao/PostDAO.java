@@ -198,11 +198,12 @@ public class PostDAO {
                     + "            INNER JOIN dbo.Privacy e ON e.PrivacyID = a.PrivacyID\n"
                     + "WHERE a.ShareID= ? ";
             PreparedStatement ps = cnn.prepareStatement(query);
+            ps.setString(1, ShareID);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 return new PostShare(rs.getString(1), rs.getString(2), rs.getString(3),
-                        rs.getString(4), text.changeUTF8(rs.getNString(5)), rs.getString(6), rs.getString(7), rs.getString(8),
-                        text.changeUTF8(rs.getNString(9)), rs.getString(10), text.changeUTF8(rs.getNString(11)),
+                        rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8),
+                        rs.getString(9), rs.getString(10), rs.getString(11),
                         rs.getString(12), rs.getInt(13), rs.getInt(14), rs.getString(15), rs.getString(16));
             }
         } catch (Exception e) {
@@ -219,6 +220,56 @@ public class PostDAO {
             return true;
         }
         return false;
+    }
+
+    public ArrayList<Post> getPostForHomePage(String id, int offset) {
+        ArrayList<Post> post = new ArrayList<>();
+        String query = "DECLARE @id NVARCHAR(11)= ? \n"
+                + "		DECLARE @Offset INT = ? ; -- Số bài post đã hiển thị trước đó = @FetchCount* (offset-1)\n"
+                + "		DECLARE @FetchCount INT = 10; -- Số bài post muốn lấy thêm;\n"
+                + "		DECLARE @table TABLE (FriendID NVARCHAR(11))\n"
+                + "		INSERT INTO @table (FriendID)\n"
+                + "			VALUES (@id);\n"
+                + "\n"
+                + "		INSERT INTO @table (FriendID)\n"
+                + "		SELECT CASE\n"
+                + "			WHEN UserID1 = @id THEN UserID2\n"
+                + "			WHEN UserID2 = @id THEN UserID1\n"
+                + "		END AS FriendID\n"
+                + "		FROM dbo.USERRELATION\n"
+                + "		WHERE (UserID1 = @id OR UserID2 = @id) AND isFriend = 1\n"
+                + "\n"
+                + "\n"
+                + "		SELECT PostID, TimePost, PrivacyID\n"
+                + "			FROM dbo.POST\n"
+                + "			INNER JOIN @table ON UserID= FriendID\n"
+                + "			WHERE (PrivacyID='FRIEND' OR PrivacyID='Public')\n"
+                + "			UNION ALL\n"
+                + "		SELECT ShareID, TimeShare, PrivacyID\n"
+                + "			FROM dbo.POSTSHARE\n"
+                + "			INNER JOIN @table ON UserID= FriendID\n"
+                + "			WHERE (PrivacyID='FRIEND' OR PrivacyID='Public')\n"
+                + "		ORDER BY TimePost DESC\n"
+                + "		OFFSET (@Offset-1)* @FetchCount ROWS\n"
+                + "		FETCH NEXT @FetchCount ROWS ONLY;";
+        try {
+            PreparedStatement ps = cnn.prepareStatement(query);
+            ps.setString(1, id);
+            ps.setInt(2, offset);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String PostID = rs.getString(1);
+                if (PostOrShare(PostID)) {
+                    post.add(getPostUserByPostID(PostID));
+                } else {
+                    post.add(getPostShareByShareID(PostID));
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("dao.PostDAO.getPostForProfileInfo()");
+            e.printStackTrace();
+        }
+        return post;
     }
 
     public ArrayList<Post> getPostForProfileInfo(String id, int offset) {
@@ -261,7 +312,7 @@ public class PostDAO {
     -- nhâpj id: @id người dùng đang dùng tài khoản
     -- @uid id người dùng khác
     -- @Offset cụm đang hiện post*/
-    public  ArrayList<Post> getPostForProfileUser(String id, String uid, int offset) {
+    public ArrayList<Post> getPostForProfileUser(String id, String uid, int offset) {
         ArrayList<Post> post = new ArrayList<>();
         String query = "DECLARE @id NVARCHAR(11)= ? ;\n"
                 + "	DECLARE @uid NVARCHAR(11)= ? ;\n"

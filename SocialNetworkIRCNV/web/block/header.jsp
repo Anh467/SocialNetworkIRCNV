@@ -103,6 +103,56 @@
             nav .nav-right a > i{
                 font-size:18px;
             }
+            /* CSS for the search container */
+            .search-container {
+                position: relative;
+                width: 300px;
+                margin: 20px auto;
+            }
+            /* CSS for the suggestions container */
+            .suggestions-container {
+                position: absolute;
+                width: 100%;
+                max-height: 200px;
+                overflow-y: auto;
+                background-color: #fff;
+                border: 1px solid #ccc;
+                border-top: none;
+                border-radius: 0 0 4px 4px;
+                z-index: 1;
+            }
+
+            /* CSS for the suggestion items */
+            .suggestion-item {
+                display: flex;
+                align-items: center;
+                padding: 10px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+
+            .suggestion-item:hover,
+            .suggestion-item.active {
+                background-color: #f2f2f2;
+            }
+
+            .suggestion-item img {
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                margin-right: 10px;
+            }
+
+            .suggestion-item span {
+                font-size: 14px;
+                font-weight: bold;
+            }
+
+            .suggestion-item .mutual-friends {
+                margin-left: auto;
+                font-size: 12px;
+                color: #999;
+            }
         </style>
     </head>
     <body>
@@ -118,7 +168,11 @@
                     <img src="../data/img/logo.jpg" alt="Logo">
                 </a>
 
-                <input type="text" placeholder="Search Mediabook..">
+                <div class="search-container">
+                    <input id="searchInput" type="text" class="search-input" placeholder="Search...">
+                    <div class="suggestions-container" id="searchResults"></div>
+                </div>
+
             </div>
             <jsp:include page = "/GetInfor"></jsp:include>
 
@@ -188,5 +242,6 @@
             <%}
             %>
         </nav>
+        <script src="/SocialNetworkIRCNV/js/search.js"></script>
     </body>
 </html>

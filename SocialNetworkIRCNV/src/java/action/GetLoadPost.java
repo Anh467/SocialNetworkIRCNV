@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.User;
 
 /**
  *
@@ -36,15 +37,56 @@ public class GetLoadPost extends HttpServlet {
     public void loadProfileUser(String id, String uid, HttpServletResponse response, HttpServletRequest request, int offset) throws Exception {
         dao.PostDAO api = new dao.PostDAO();
         ArrayList<Post> post = api.getPostForProfileUser(id, uid, offset);
-        if (post.size() == 0) {
+        if (post.isEmpty()) {
+            User user = new dao.UserDAO().getUserByID(uid);
             try ( PrintWriter out = response.getWriter()) {
-                out.print("null");
+                out.print("usernull");
             }
         } else
         try ( PrintWriter out = response.getWriter()) {
             for (int i = 0; i < post.size(); i++) {
                 if (post.get(i) instanceof PostUser) {
                     out.append(((PostUser) post.get(i)).getDiv());
+                } else {
+                    out.append(((PostShare) post.get(i)).getDiv());
+                }
+            }
+        }
+    }
+
+    public void loadProfileinfo(String id, HttpServletResponse response, HttpServletRequest request, int offset) throws Exception {
+        dao.PostDAO api = new dao.PostDAO();
+        ArrayList<Post> post = api.getPostForProfileInfo(id, offset);
+        if (post.isEmpty()) {
+            try ( PrintWriter out = response.getWriter()) {
+                out.print("infonull");
+            }
+        } else
+        try ( PrintWriter out = response.getWriter()) {
+            for (int i = 0; i < post.size(); i++) {
+                if (post.get(i) instanceof PostUser) {
+                    out.append(((PostUser) post.get(i)).getDiv());
+                } else {
+                    out.append(((PostShare) post.get(i)).getDiv());
+                }
+            }
+        }
+    }
+
+    public void loadHomePage(String id, HttpServletResponse response, HttpServletRequest request, int offset) throws Exception {
+        dao.PostDAO api = new dao.PostDAO();
+        ArrayList<Post> post = api.getPostForHomePage(id, offset);
+        if (post.isEmpty()) {
+            try ( PrintWriter out = response.getWriter()) {
+                out.print("homenull");
+            }
+        } else
+        try ( PrintWriter out = response.getWriter()) {
+            for (int i = 0; i < post.size(); i++) {
+                if (post.get(i) instanceof PostUser) {
+                    out.append(((PostUser) post.get(i)).getDiv());
+                } else {
+                    out.append(((PostShare) post.get(i)).getDiv());
                 }
             }
         }
@@ -58,11 +100,28 @@ public class GetLoadPost extends HttpServlet {
         String id = (String) session.getAttribute("id");
         String uid = request.getParameter("UID");
         int offset = Integer.parseInt(request.getParameter("offset"));
-        if (type.equals("profile"))
-            try {
-                loadProfileUser(id, uid, response, request, offset);
-            } catch (Exception e) {
-            }
+        switch (type) {
+            case "profileuser":
+                try {
+                    loadProfileUser(id, uid, response, request, offset);
+                } catch (Exception e) {
+                }
+            break;
+            case "profileinfo":
+                try {
+                    loadProfileinfo(id, response, request, offset);
+                } catch (Exception e) {
+                }
+            break;
+            case "homepage":
+                try {
+                    loadHomePage(id, response, request, offset);
+                } catch (Exception e) {
+                }
+            break;
+            default:
+                throw new AssertionError();
+        }
 
     }
 
