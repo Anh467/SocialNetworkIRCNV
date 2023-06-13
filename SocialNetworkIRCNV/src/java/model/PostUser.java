@@ -4,6 +4,8 @@
  */
 package model;
 
+import dao.InterFaceObjectDAO;
+
 /**
  *
  * @author 84384
@@ -87,8 +89,68 @@ public class PostUser extends Post {
         return super.toString() + "PostUser{" + "ImagePost=" + ImagePost + ", FullNameUser=" + FullNameUser + ", ImgUser=" + ImgUser + ", NumShare=" + NumShare + '}';
     }
 
-    public String getDiv() {
-        return  "<!DOCTYPE html>\n"
+    public String getUpdateDiv(String IDUserCurrent) {
+        InterFaceObject interFaceObject = new InterFaceObjectDAO().getInterFaceObjectByID(super.getPostID(), IDUserCurrent);
+        return "            <div class=\"post-top\">\n"
+                + "                <p style=\"display: none\">" + this.getPostID() + "</p>\n"
+                + "                <div class=\"dp\" >\n"
+                + "                    <img src=\"" + this.getImgUser() + "\" alt=\"\" style=\"width: 100%;\" >\n"
+                + "                </div>\n"
+                + "                <div class=\"post-info\">\n"
+                + "                    <p class=\"name\" style=\"color: #003140\">" + this.getFullNameUser() + "</p>\n"
+                + "                    <span class=\"time\" style=\"color: #70d8ff\">" + this.getTimePost() + "</span>\n"
+                + "                    <span class=\"time\" style=\"color: #003140\">" + this.getPrivacyName() + "</span>\n"
+                + "                </div>\n"
+                + "                <i class=\" dropdown fas fa-ellipsis-h\">\n"
+                + "                    <div >\n"
+                + "\n"
+                + "                        <div class=\"dropdown-content\">\n"
+                + "                            <a href=\"#\" onclick=\"deletePost('" + this.getPostID() + "', 'Post')\">Delete</a>\n"
+                + "                            <a href=\"#\" onclick=\"modifyPost('" + this.getPostID() + "', '" + this.getImgUser() + "', '" + this.getFullNameUser() + "', '" + this.getTimePost() + "',\n"
+                + "                                            '" + this.getPrivacyName() + "', '" + this.getContent().trim() + "', '" + this.getImagePost() + "')\">Modify</a>\n"
+                + "                        </div>\n"
+                + "                    </div>\n"
+                + "                </i>\n"
+                + "            </div>\n"
+                + "\n"
+                + "            <div class=\"post-content\" style=\"text-align: center;\">\n"
+                + "                <p style=\"text-align: left;\">" + this.getContent().trim() + "</p>\n"
+                + "                    <img src=\"" + this.getImagePost() + "\"style=\"margin: 0 auto; max-width: 100%\"/>\n"
+                + "            </div>\n"
+                + "            <div class=\"counter\">\n"
+                + "                <div class=\"count-like\">\n"
+                + "                    <span>" + this.getNumInterface() + "</span>\n"
+                + "                </div>\n"
+                + "                <div class=\"count-cmt\">\n"
+                + "                    <span>" + this.getNumComment() + "</span>\n"
+                + "                </div>\n"
+                + "                <div class=\"count-share\">\n"
+                + "                    <span>" + this.getNumShare() + "</span>\n"
+                + "                </div>\n"
+                + "            </div>\n"
+                + "\n"
+                + "\n"
+                + "            <div class=\"post-bottom\" style=\" width: 90%; color:  #00abfd; border-top: 1px #00587c solid; margin-left: 5%; padding: 0 5%;\">\n"
+                + "                <div class=\"action\" onclick=\"like('" + this.getPostID() + "', '" + interFaceObject.getInterFaceID() + "')\">\n"
+                +                       interFaceObject.getInterFaceDiv()
+                + "                </div>\n"
+                + "                <div class=\"action\">\n"
+                + "                    <a href=\"#writecomment\" style=\"text-decoration: none; color:  #00abfd;\">\n"
+                + "                        <i class=\"far fa-comment\"></i>\n"
+                + "                        <span>Comment</span>\n"
+                + "                    </a>\n"
+                + "                </div>\n"
+                + "                <div class=\"action\" onclick=\"SharePost('" + this.getPostID() + "', '" + this.getImgUser() + "', '" + this.getFullNameUser() + "', '" + this.getContent().trim() + "', '" + this.getImagePost() + "')\">\n"
+                + "                    <i class=\" dropdown fa fa-share\">\n"
+                + "                    </i>\n"
+                + "                    <span>Share</span>\n"
+                + "                </div>\n"
+                + "            </div>\n";
+    }
+
+    public String getDiv(String IDUserCurrent) {
+        InterFaceObject interFaceObject = new InterFaceObjectDAO().getInterFaceObjectByID(super.getPostID(), IDUserCurrent);
+        return "<!DOCTYPE html>\n"
                 + "<html lang=\"vi\">\n"
                 + "    <body>\n"
                 + "        <div class=\"post\" style=\"margin: 10px; background: white; border-radius: 10px\" id=\"" + this.getPostID() + "\">\n"
@@ -120,21 +182,20 @@ public class PostUser extends Post {
                 + "            </div>\n"
                 + "            <div class=\"counter\">\n"
                 + "                <div class=\"count-like\">\n"
-                + "                    <span>" + this.getNumInterface()+ "</span>\n"
+                + "                    <span>" + this.getNumInterface() + "</span>\n"
                 + "                </div>\n"
                 + "                <div class=\"count-cmt\">\n"
-                + "                    <span>" + this.getNumComment()+ "</span>\n"
+                + "                    <span>" + this.getNumComment() + "</span>\n"
                 + "                </div>\n"
                 + "                <div class=\"count-share\">\n"
-                + "                    <span>" + this.getNumShare()+ "</span>\n"
+                + "                    <span>" + this.getNumShare() + "</span>\n"
                 + "                </div>\n"
                 + "            </div>\n"
                 + "\n"
                 + "\n"
                 + "            <div class=\"post-bottom\" style=\" width: 90%; color:  #00abfd; border-top: 1px #00587c solid; margin-left: 5%; padding: 0 5%;\">\n"
-                + "                <div class=\"action\">\n"
-                + "                    <i class=\"far fa-thumbs-up\"></i>\n"
-                + "                    <span>Like</span>\n"
+                + "                <div class=\"action\" onclick=\"like('" + this.getPostID() + "', '" + interFaceObject.getInterFaceID() + "')\">\n"
+                +                       interFaceObject.getInterFaceDiv()
                 + "                </div>\n"
                 + "                <div class=\"action\">\n"
                 + "                    <a href=\"#writecomment\" style=\"text-decoration: none; color:  #00abfd;\">\n"
@@ -142,7 +203,7 @@ public class PostUser extends Post {
                 + "                        <span>Comment</span>\n"
                 + "                    </a>\n"
                 + "                </div>\n"
-                + "                <div class=\"action\" onclick=\"SharePost('" + this.getPostID()+ "', '" + this.getImgUser()+ "', '" + this.getFullNameUser()+ "', '" + this.getContent().trim()+ "', '" + this.getImagePost()+ "')\">\n"
+                + "                <div class=\"action\" onclick=\"SharePost('" + this.getPostID() + "', '" + this.getImgUser() + "', '" + this.getFullNameUser() + "', '" + this.getContent().trim() + "', '" + this.getImagePost() + "')\">\n"
                 + "                    <i class=\" dropdown fa fa-share\">\n"
                 + "                    </i>\n"
                 + "                    <span>Share</span>\n"

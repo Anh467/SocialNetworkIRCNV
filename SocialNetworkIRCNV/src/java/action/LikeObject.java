@@ -11,13 +11,15 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.PostShare;
+import model.PostUser;
 
 /**
  *
  * @author van12
  */
-@WebServlet(name = "LikeAction", urlPatterns = {"/LikeAction"})
-public class LikeAction extends HttpServlet {
+@WebServlet(name = "LikeObject", urlPatterns = {"/LikeObject"})
+public class LikeObject extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -28,20 +30,30 @@ public class LikeAction extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    public String getInterfaceID(String InterfaceId){
+        if(InterfaceId.equalsIgnoreCase("none"))
+            return "like";
+        return "none";
+    }
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        String id= (String) request.getSession().getAttribute("id");
+        String ObejectID= request.getParameter("ObejectID");
+        String Type= request.getParameter("Type");
+        
+        new dao.InterFaceObjectDAO().setInterFaceObjectBy(ObejectID, id, getInterfaceID(Type));
+        String div="";
+        if(ObejectID.substring(0, 3).equalsIgnoreCase("PID")){
+            PostUser postUser= new dao.PostDAO().getPostUserByPostID(ObejectID);
+            div= postUser.getUpdateDiv(id);
+        }else if(ObejectID.substring(0, 3).equalsIgnoreCase("SID")){
+            PostShare postShare= new dao.PostDAO().getPostShareByShareID(ObejectID);
+            div= postShare.getUpdateDiv(id);
+        }
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet LikeAction</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet LikeAction at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            out.println(div);
         }
     }
 

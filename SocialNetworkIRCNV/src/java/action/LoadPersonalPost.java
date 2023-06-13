@@ -62,9 +62,11 @@ public class LoadPersonalPost extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        PostUserDAO post = new PostUserDAO();
         HttpSession session= request.getSession();
         String id= (String) session.getAttribute("id");
+        PostUserDAO post = new PostUserDAO();
+        
+        
         ArrayList<PostUser> puser = post.getAllPost(id);
 //        System.out.println("Hello"+ post.getAllPost().size());
         request.setAttribute("ListPost", puser);

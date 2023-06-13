@@ -611,7 +611,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
             <script src="/SocialNetworkIRCNV/js/controlPost.js">
 
             </script>
-
+            <script src="/SocialNetworkIRCNV/js/like.js" ></script>
 
         </script>
 </body>

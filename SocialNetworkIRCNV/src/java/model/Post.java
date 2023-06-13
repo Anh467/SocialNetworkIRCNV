@@ -15,7 +15,6 @@ public class Post implements Comparable<Post>{
     private String PostID, UserID, Content, timePost;
     private int NumInterface, NumComment;
     private String PrivacyName;
-  
 
     public Post(String PostID, String UserID, String Content, String timePost, int NumInterface, int NumComment, String PrivacyName) {
         this.PostID = PostID;

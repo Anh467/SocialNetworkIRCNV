@@ -717,9 +717,9 @@
                     </div>
                 </div>
         <script src="/SocialNetworkIRCNV/js/loadpost.js" ></script>
-            <script src="/SocialNetworkIRCNV/js/controlPost.js"></script>
-             <script src="/SocialNetworkIRCNV/HomePage/homepage.js" ></script>
-
+        <script src="/SocialNetworkIRCNV/js/controlPost.js"></script>
+        <script src="/SocialNetworkIRCNV/HomePage/homepage.js" ></script>
+        <script src="/SocialNetworkIRCNV/js/like.js" ></script>
     </body>
 
 </html>

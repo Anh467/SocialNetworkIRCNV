@@ -19,7 +19,6 @@ public class PostDAO {
 
     private Connection cnn;
     Text text;
-
     public PostDAO() {
         cnn = new connection.connection().getConnection();
         text = new Text();

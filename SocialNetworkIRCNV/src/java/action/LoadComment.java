@@ -50,6 +50,7 @@ public class LoadComment extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        String id= (String) request.getSession().getAttribute("id");
         PostUserDAO post = new PostUserDAO();
 
         ArrayList<Comment> cmtuser = post.getComment();

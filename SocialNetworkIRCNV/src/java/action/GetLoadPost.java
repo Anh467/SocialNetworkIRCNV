@@ -46,9 +46,9 @@ public class GetLoadPost extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             for (int i = 0; i < post.size(); i++) {
                 if (post.get(i) instanceof PostUser) {
-                    out.append(((PostUser) post.get(i)).getDiv());
+                    out.append(((PostUser) post.get(i)).getDiv(id));
                 } else {
-                    out.append(((PostShare) post.get(i)).getDiv());
+                    out.append(((PostShare) post.get(i)).getDiv(id));
                 }
             }
         }
@@ -65,9 +65,9 @@ public class GetLoadPost extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             for (int i = 0; i < post.size(); i++) {
                 if (post.get(i) instanceof PostUser) {
-                    out.append(((PostUser) post.get(i)).getDiv());
+                    out.append(((PostUser) post.get(i)).getDiv(id));
                 } else {
-                    out.append(((PostShare) post.get(i)).getDiv());
+                    out.append(((PostShare) post.get(i)).getDiv(id));
                 }
             }
         }
@@ -84,9 +84,9 @@ public class GetLoadPost extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             for (int i = 0; i < post.size(); i++) {
                 if (post.get(i) instanceof PostUser) {
-                    out.append(((PostUser) post.get(i)).getDiv());
+                    out.append(((PostUser) post.get(i)).getDiv(id));
                 } else {
-                    out.append(((PostShare) post.get(i)).getDiv());
+                    out.append(((PostShare) post.get(i)).getDiv(id));
                 }
             }
         }

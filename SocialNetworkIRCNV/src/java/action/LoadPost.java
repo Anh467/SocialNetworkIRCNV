@@ -54,9 +54,10 @@ public class LoadPost extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        PostDAO post = new PostDAO();
         HttpSession session= request.getSession();
         String id= (String) session.getAttribute("id");
+        PostDAO post = new PostDAO();
+        
         ArrayList<Post> puser = post.getPostPersonalPage(id);
 //        System.out.println("Hello"+ post.getAllPost().size());
         request.setAttribute("ListPost", puser);
