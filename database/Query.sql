@@ -40,7 +40,7 @@ VALUES
 (   'UID00000002',      -- UserID1 - varchar(11)
     'UID00000001',      -- UserID2 - varchar(11)
     DEFAULT, -- Request - bit
-    null  -- isFriend - bit
+    NULL  -- isFriend - bit
     )
 
 UPDATE dbo.USERRELATION
@@ -55,9 +55,9 @@ WHERE UserID1= 'UID00000002' AND UserID2= 'UID00000001'
 INSERT INTO dbo.UserInfor
 (
     Account,
-    Password,
+    PASSWORD,
     FullName,
-    Address,
+    ADDRESS,
     Mail,
     PhoneNumber,
     Dob,
@@ -481,74 +481,174 @@ WHERE UserID1 = 'UID00000002' AND UserID2 = 'UID00000001'
 	OFFSET (@Offset-1)* @FetchCount ROWS
 	FETCH NEXT @FetchCount ROWS ONLY;
 	
--- hiện bài post bản thân
--- nhâpj id: @id người dùng đang dùng tài khoản
--- @Offset cụm đang hiện post
-	GO
-	DECLARE @id NVARCHAR(11)= 'UID00000001'
-	DECLARE @Offset INT = 2; -- Số bài post đã hiển thị trước đó = @FetchCount* (offset-1)
-	DECLARE @FetchCount INT = 5; -- Số bài post muốn lấy thêm
+-- hiện bài post bản thân ProfileInfor
+	-- nhâpj id: @id người dùng đang dùng tài khoản
+	-- @Offset cụm đang hiện post
+		GO
+		DECLARE @id NVARCHAR(11)= 'UID00000001'
+		DECLARE @Offset INT = 1; -- Số bài post đã hiển thị trước đó = @FetchCount* (offset-1)
+		DECLARE @FetchCount INT = 5; -- Số bài post muốn lấy thêm
 
-	SELECT PostID, TimePost, PrivacyID
-	FROM dbo.POST
-	WHERE UserID= @id
-	UNION ALL
-    SELECT ShareID, TimeShare, PrivacyID
-	FROM dbo.POSTSHARE
-	WHERE UserID= @id
-	ORDER BY TimePost DESC
-	OFFSET (@Offset-1)* @FetchCount ROWS
-	FETCH NEXT @FetchCount ROWS ONLY;
-
--- hiện bài post nguoi khac người khác 
--- nhâpj id: @id người dùng đang dùng tài khoản
--- @uid id người dùng khác
--- @Offset cụm đang hiện post
-	GO
-	DECLARE @id NVARCHAR(11)= 'UID00000001';
-	DECLARE @uid NVARCHAR(11)= 'UID00000003';
-	DECLARE @u1 NVARCHAR(11), @u2 NVARCHAR(11), @isFriend bit;
-	DECLARE @Offset INT = 1; -- Số bài post đã hiển thị trước đó = @FetchCount* (offset-1)
-	DECLARE @FetchCount INT = 5; -- Số bài post muốn lấy thêm
-	IF (@id > @uid)
-	BEGIN
-		SET @u1 = @id;
-		SET @u2 = @uid;
-	END
-	ELSE
-	BEGIN
-		SET @u2 = @id;
-		SET @u1 = @uid;
-	END
-
-	SET @isFriend= (SELECT isFriend
-	FROM dbo.USERRELATION
-	WHERE UserID1= @u1 AND UserID2=@u2)
-	IF(@isFriend=1)
+		SELECT PostID, TimePost, PrivacyID
+		FROM dbo.POST
+		WHERE UserID= @id
+		UNION ALL
+		SELECT ShareID, TimeShare, PrivacyID
+		FROM dbo.POSTSHARE
+		WHERE UserID= @id
+		ORDER BY TimePost DESC
+		OFFSET (@Offset-1)* @FetchCount ROWS
+		FETCH NEXT @FetchCount ROWS ONLY;
+GO 
+-- hiện bài post nguoi khac người khác trong ProfileUser
+	-- nhâpj id: @id người dùng đang dùng tài khoản
+	-- @uid id người dùng khác
+	-- @Offset cụm đang hiện post
+		GO
+		DECLARE @id NVARCHAR(11)= 'UID00000001';
+		DECLARE @uid NVARCHAR(11)= 'UID00000003';
+		DECLARE @u1 NVARCHAR(11), @u2 NVARCHAR(11), @isFriend bit;
+		DECLARE @Offset INT = 2; -- Số bài post đã hiển thị trước đó = @FetchCount* (offset-1)
+		DECLARE @FetchCount INT = 5; -- Số bài post muốn lấy thêm
+		IF (@id > @uid)
 		BEGIN
-			SELECT PostID, TimePost, PrivacyID
-			FROM dbo.POST
-			WHERE UserID= @uid AND (PrivacyID='FRIEND' OR PrivacyID='Public')
-			UNION ALL
-			SELECT ShareID, TimeShare, PrivacyID
-			FROM dbo.POSTSHARE
-			WHERE UserID= @uid AND (PrivacyID='FRIEND' OR PrivacyID='Public')
-			ORDER BY TimePost DESC
-			OFFSET (@Offset-1)* @FetchCount ROWS
-			FETCH NEXT @FetchCount ROWS ONLY;
-		end 
-	ELSE 
+			SET @u1 = @id;
+			SET @u2 = @uid;
+		END
+		ELSE
 		BEGIN
-			SELECT PostID, TimePost, PrivacyID
-			FROM dbo.POST
-			WHERE UserID= @uid  AND (PrivacyID='Public') 
-			UNION ALL
-			SELECT ShareID, TimeShare, PrivacyID
-			FROM dbo.POSTSHARE
-			WHERE UserID= @uid AND (PrivacyID='Public') 
-			ORDER BY TimePost DESC
-			OFFSET (@Offset-1)* @FetchCount ROWS
-			FETCH NEXT @FetchCount ROWS ONLY;
-		End 
+			SET @u2 = @id;
+			SET @u1 = @uid;
+		END
 
-	
+		SET @isFriend= (SELECT isFriend
+		FROM dbo.USERRELATION
+		WHERE UserID1= @u1 AND UserID2=@u2)
+		IF(@isFriend=1)
+			BEGIN
+				SELECT PostID, TimePost, PrivacyID
+				FROM dbo.POST
+				WHERE UserID= @uid AND (PrivacyID='FRIEND' OR PrivacyID='Public')
+				UNION ALL
+				SELECT ShareID, TimeShare, PrivacyID
+				FROM dbo.POSTSHARE
+				WHERE UserID= @uid AND (PrivacyID='FRIEND' OR PrivacyID='Public')
+				ORDER BY TimePost DESC
+				OFFSET (@Offset-1)* @FetchCount ROWS
+				FETCH NEXT @FetchCount ROWS ONLY;
+			end 
+		ELSE 
+			BEGIN
+				SELECT PostID, TimePost, PrivacyID
+				FROM dbo.POST
+				WHERE UserID= @uid  AND (PrivacyID='Public') 
+				UNION ALL
+				SELECT ShareID, TimeShare, PrivacyID
+				FROM dbo.POSTSHARE
+				WHERE UserID= @uid AND (PrivacyID='Public') 
+				ORDER BY TimePost DESC
+				OFFSET (@Offset-1)* @FetchCount ROWS
+				FETCH NEXT @FetchCount ROWS ONLY;
+			End 
+
+GO 
+-- hiện bài post trong homepage, chỉ hiện bạn bè 
+		DECLARE @id NVARCHAR(11)= 'UID00000001'
+		DECLARE @Offset INT = 1; -- Số bài post đã hiển thị trước đó = @FetchCount* (offset-1)
+		DECLARE @FetchCount INT = 10; -- Số bài post muốn lấy thêm;
+		DECLARE @table TABLE (FriendID NVARCHAR(11))
+		INSERT INTO @table (FriendID)
+			VALUES (@id);
+
+		INSERT INTO @table (FriendID)
+		SELECT CASE
+			WHEN UserID1 = @id THEN UserID2
+			WHEN UserID2 = @id THEN UserID1
+		END AS FriendID
+		FROM dbo.USERRELATION
+		WHERE (UserID1 = @id OR UserID2 = @id) AND isFriend = 1
+
+
+		SELECT PostID, TimePost, PrivacyID
+			FROM dbo.POST
+			INNER JOIN @table ON UserID= FriendID
+			WHERE (PrivacyID='FRIEND' OR PrivacyID='Public')
+			UNION ALL
+		SELECT ShareID, TimeShare, PrivacyID
+			FROM dbo.POSTSHARE
+			INNER JOIN @table ON UserID= FriendID
+			WHERE (PrivacyID='FRIEND' OR PrivacyID='Public')
+		ORDER BY TimePost DESC
+		OFFSET (@Offset-1)* @FetchCount ROWS
+		FETCH NEXT @FetchCount ROWS ONLY;
+
+-- search
+SELECT UserId,FullName, Address, Mail, PhoneNumber, Dob, Gender, Nation, ImageUser, ImageBackGround
+FROM dbo.UserInfor WHERE FullName COLLATE Latin1_General_CI_AI LIKE '%' + N'Nguyễn ' + '%'
+
+SELECT UserId,FullName, ImageUser
+FROM dbo.UserInfor WHERE FullName COLLATE Latin1_General_CI_AI LIKE '%' + N'a' + '%'
+
+DECLARE @name NVARCHAR(11)= N'Nguyễn Hồ Ngọc Ấn';
+set @name =  N @name
+SELECT *
+FROM dbo.UserInfor
+WHERE FullName COLLATE Latin1_General_CI_AI LIKE N'%' + @name + N'%';
+
+--------------------------------------------------------------Like action------------------------------------------------------------------
+	-- if table not exist
+	DECLARE @PostOrShareID NVARCHAR(11)= 'PID00000001', @UserID NVARCHAR(11)= 'UID00000001'
+	IF NOT EXISTS(SELECT *
+	FROM dbo.LIKEPOST 
+	WHERE PostOrShareID= @PostOrShareID AND UserID=@UserID)
+	BEGIN
+		INSERT INTO dbo.LIKEPOST
+		VALUES
+		(   @UserID,     -- UserID - varchar(11)
+			@PostOrShareID,     -- PostOrShareID - varchar(11)
+			DEFAULT -- InterFaceID - varchar(11)
+			)
+	END
+	-- if table exist, modify interface obejct
+	DECLARE @PostOrShareID NVARCHAR(11)= 'PID00000001', @UserID NVARCHAR(11)= 'UID00000001'
+	UPDATE dbo.LIKEPOST 
+	SET InterFaceID= 'haha'
+	WHERE PostOrShareID=@PostOrShareID AND UserID= @UserID
+-- get interface obejct
+	DECLARE @ObjectID NVARCHAR(11)= 'CID00000001', @UserID NVARCHAR(11)= 'UID00000001'
+		IF NOT EXISTS(SELECT *
+		FROM dbo.InterFaceObject 
+		WHERE ObjectID= @ObjectID AND UserID=@UserID)
+		BEGIN
+			INSERT INTO dbo.InterFaceObject
+			VALUES
+			(   @UserID,     -- UserID - varchar(11)
+				@ObjectID,     -- PostOrShareID - varchar(11)
+				DEFAULT -- InterFaceID - varchar(11)
+				)
+		END
+	BEGIN
+		SELECT UserID, ObjectID, InterFaceObject.InterFaceID, InterFaceName, InterFaceDiv
+		FROM dbo.InterFaceObject
+		INNER JOIN dbo.InterFace ON InterFace.InterFaceID = InterFaceObject.InterFaceID
+		WHERE ObjectID=@ObjectID AND UserID=@UserID
+	END
+--set interface obejct
+DECLARE @ObjectID NVARCHAR(11)= 'PID00000045', @UserID NVARCHAR(11)= 'UID00000001'
+DECLARE @InterFaceID VARCHAR(11)= 'angry'
+		IF NOT EXISTS(SELECT *
+		FROM dbo.InterFaceObject 
+		WHERE ObjectID= @ObjectID AND UserID=@UserID)
+		BEGIN
+			INSERT INTO dbo.InterFaceObject
+			VALUES
+			(   @UserID,     -- UserID - varchar(11)
+				@ObjectID,     -- PostOrShareID - varchar(11)
+				DEFAULT -- InterFaceID - varchar(11)
+				)
+		END
+	BEGIN
+		UPDATE dbo.InterFaceObject
+		SET InterFaceID = @InterFaceID
+		WHERE ObjectID= @ObjectID AND UserID= @UserID
+	END

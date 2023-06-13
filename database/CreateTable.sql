@@ -159,4 +159,28 @@ CREATE TABLE MAIL(
 	Mail VARCHAR(255) PRIMARY KEY NOT NULL,
 	code CHAR(10),
 )
+--------------------------------------------------------------DBO.LIKE------------------------------------------------------------------
+CREATE TABLE InterFace(
+	InterFaceID VARCHAR(11) PRIMARY KEY NOT NULL,
+	InterFaceName VARCHAR(30),
+	InterFaceDiv VARCHAR(100),
+)
+INSERT INTO dbo.InterFace
+VALUES
+(   'like', 'like', '<i class="fa-solid fa-thumbs-up"></i>'),
+(   'love', 'love', '<i class="fa-solid fa-heart"></i>'),
+(   'haha', 'haha','<i class="fa-solid fa-face-laugh-squint"></i>'),
+(   'sad', 'sad', '<i class="fa-solid fa-face-sad-cry"></i>'),
+(   'angry', 'angry', '<i class="fa-regular fa-face-nose-steam"></i>'),
+(   'wow', 'wow', '<i class="fa-solid fa-face-explode"></i>'),
+(   'none', 'none', '<i class="fa-regular fa-thumbs-up"></i>')
+
+CREATE TABLE InterFaceObject(
+	UserID VARCHAR(11) NOT NULL,
+	CONSTRAINT fk_user_id_InterFaceObject FOREIGN KEY (UserID) REFERENCES dbo.UserInfor(UserID),
+	ObjectID VARCHAR(11),
+	PRIMARY KEY(ObjectID, UserID),
+	InterFaceID VARCHAR(11) DEFAULT 'none'
+	CONSTRAINT fk_InterFaceID_InterFaceObject FOREIGN KEY (InterFaceID) REFERENCES dbo.InterFace(InterFaceID),
+);
 
