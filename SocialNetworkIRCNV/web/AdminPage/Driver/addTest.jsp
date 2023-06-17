@@ -14,15 +14,18 @@
         <h1>Báo cáo</h1>
 
         <label for="rpID">Mã báo cáo:</label>
-        <input type="text" id="rpID">
+        <input type="text" id="rpID" value="CID00000001">
 
         <label for="userID">Mã người dùng:</label>
-        <input type="text" id="userID">
+        <input type="text" id="userID" value="UID00000004">
 
+        <label for="isPost">Comment có phải của bài post không:</label>
+        <input type="text" id="isPost">
+        
         <label for="action">Hành động:</label>
         <select id="action">
-            <option value="post">Báo cáo bài viết</option>
             <option value="comment">Báo cáo bình luận</option>
+            <option value="post">Báo cáo bài viết</option>
             <option value="user">Báo cáo người dùng</option>
         </select>
 

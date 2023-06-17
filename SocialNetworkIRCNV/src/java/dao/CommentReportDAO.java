@@ -66,4 +66,43 @@ public class CommentReportDAO {
             e.printStackTrace();
         }
     }
+
+    public void AddReport(String pid, String uid, String isPost) {
+        boolean isPostVerBool = false;
+        if (isPost.equalsIgnoreCase("1")) {
+            isPostVerBool = true;
+        }
+        try {
+            PreparedStatement ps = cnn.prepareStatement("INSERT INTO dbo.ReportComment1686\n"
+                    + "(\n"
+                    + "    CommentID,\n"
+                    + "    UserID,\n"
+                    + "    UserID2,\n"
+                    + "    IsPost,\n"
+                    + "    Status\n"
+                    + ")\n"
+                    + "VALUES\n"
+                    + "(   ?,   -- CommentID - varchar(11)\n"
+                    + "    ?,   -- UserID - varchar(11)\n"
+                    + "    CASE WHEN ? = 1 \n"
+                    + "THEN (SELECT UserID FROM dbo.COMMENT WHERE dbo.COMMENT.CmtID=?) \n"
+                    + "ELSE (SELECT UserID FROM dbo.COMMENTSHARE WHERE dbo.COMMENTSHARE.CmtID=?) END,   -- UserID2 - varchar(11)\n"
+                    + "    ?, -- IsPost - bit\n"
+                    + "    1  -- Status - bit\n"
+                    + "    )");
+            ps.setString(1, pid);
+            ps.setString(2, uid);
+            ps.setBoolean(3, isPostVerBool);
+            ps.setString(4, pid);
+            ps.setString(5, pid);
+            ps.setBoolean(6, isPostVerBool);
+
+            ps.executeUpdate();
+            return;
+
+        } catch (Exception e) {
+            System.err.println("AddReport CommentReportDAO");
+            e.printStackTrace();
+        }
+    }
 }

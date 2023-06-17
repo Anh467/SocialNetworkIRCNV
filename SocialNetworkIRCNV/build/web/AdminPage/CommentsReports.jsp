@@ -138,7 +138,8 @@
                                         }
                                         function deleteDB(id, isPost, link) {
                                             var data = {
-                                                id: id
+                                                id: id,
+                                                isPost: isPost
                                             };
                                             if (isPost === "1") {
                                                 $.ajax({

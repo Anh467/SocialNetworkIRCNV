@@ -1,19 +1,30 @@
-﻿
+﻿UPDATE dbo.ReportComment1686
+SET ReportComment1686.Status=1
 
-SELECT * FROM ReportPostView
-SELECT POSTSHARE.UserID FROM dbo.POSTSHARE
-UPDATE ReportPost
-SET Status = 1
-WHERE PostID = 'PID00000005';
-
-DECLARE @check BIT;
-SET @check = 0;
+INSERT INTO dbo.ReportComment1686
+(
+    CommentID,
+    UserID,
+    UserID2,
+    IsPost,
+    Status
+)
+VALUES
+(   'đã có',   -- CommentID - varchar(11)
+    'đã có',   -- UserID - varchar(11)
+    CASE WHEN 1 = 1 
+THEN (SELECT UserID FROM dbo.COMMENT WHERE dbo.COMMENT.CmtID='') 
+ELSE (SELECT UserID FROM dbo.COMMENTSHARE WHERE dbo.COMMENTSHARE.CmtID='') END,   -- UserID2 - varchar(11)
+    NULL, -- IsPost - bit
+    1  -- Status - bit
+    )
 
 INSERT INTO dbo.ReportPost (IsPost, PostID, UserID, UserID2, Status)
-VALUES (1, 'SID00000020', 'UID00000003', 
-        CASE WHEN 1 = 1 THEN (SELECT UserID FROM Post WHERE POST.PostID='PID00001053') ELSE (SELECT UserID FROM PostShare WHERE dbo.POSTSHARE.ShareID='SID00000020') END, 
-        1);
-
+VALUES (?, ?, ?,
+CASE WHEN ? = 1 
+THEN (SELECT UserID FROM Post WHERE POST.PostID=?) 
+ELSE (SELECT UserID FROM PostShare WHERE dbo.POSTSHARE.ShareID=?) END,
+1);
 --------------------------------------------------
 CREATE VIEW PostSummaryByMonth AS
 SELECT
@@ -118,8 +129,25 @@ GROUP BY
     RP.IsPost,
 	RP.UserID2;
 
-SELECT * FROM ReportCommentView
 
-UPDATE dbo.ReportComment1686
-SET ReportComment1686.Status = 0
-WHERE ReportComment1686.CommentID='' AND ReportComment1686.IsPost=
+CREATE TABLE ReportUser1686 (
+	ID INT IDENTITY(1,1) NOT NULL,
+	ReportID AS 'RPID' + RIGHT('00000000' + CAST(ID AS VARCHAR(8)), 8) PERSISTED PRIMARY KEY,
+    UserID VARCHAR(11),
+    UserIDRP VARCHAR(11),
+	Status BIT DEFAULT 1,
+    CONSTRAINT FK_ReportUser_User FOREIGN KEY (UserID) REFERENCES UserInfor(UserID),
+	CONSTRAINT FK_ReportUser_User2 FOREIGN KEY (UserIDRP) REFERENCES UserInfor(UserID),
+    CONSTRAINT UQ_User_User UNIQUE (UserID,UserIDRP)
+);
+
+CREATE TABLE UserLock (
+	UserID VARCHAR(11),
+	LockTime DATETIME,
+    LockDurationDay INT,
+    LockDurationHour INT,
+    LockDurationMinute INT,
+    PRIMARY KEY (UserID),
+    FOREIGN KEY (UserID) REFERENCES dbo.UserInfor(UserID)
+);
+
