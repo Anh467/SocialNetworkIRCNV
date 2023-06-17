@@ -1,0 +1,12 @@
+SMAP
+UserReports_jsp.java
+JSP
+*S JSP
+*F
++ 0 UserReports.jsp
+AdminPage/UserReports.jsp
+*L
+5,27:44
+32:71,3
+33,41:74
+*E

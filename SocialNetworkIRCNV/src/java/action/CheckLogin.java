@@ -91,14 +91,13 @@ public class CheckLogin extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        session.setAttribute("id", null);
+        session.invalidate();
         Cookie cookie = new Cookie("id", null);
         cookie.setMaxAge(60 * 60 * 24);
         cookie.setHttpOnly(true);
         response.addCookie(cookie);
         response.sendRedirect("Authen/login.jsp");
     }
-
     /**
      * Returns a short description of the servlet.
      *

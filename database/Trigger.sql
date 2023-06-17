@@ -206,5 +206,58 @@
 			INNER JOIN INSERTED i ON p.UserID = i.UserID
 		END
 	END
-	
+	--trigger like object 
+	GO
+    CREATE TRIGGER UpDate_Object_Inteface
+	ON dbo.InterFaceObject AFTER UPDATE 
+	AS
+	BEGIN
+			-- Khai báo các biến
+		DECLARE @ObjectID varchar(11)
+		DECLARE @UserID varchar(11)
+		DECLARE @InterFaceID varchar(11)
+
+		-- Khởi tạo CURSOR để duyệt qua từng hàng trong bảng inserted
+		DECLARE curRows CURSOR FOR
+			SELECT Inserted.ObjectID, Inserted.UserID,Inserted.InterFaceID
+			FROM inserted;
+
+		-- Mở CURSOR
+		OPEN curRows;
+
+		-- Lấy hàng đầu tiên
+		FETCH NEXT FROM curRows INTO @ObjectID, @UserID, @InterFaceID;
+
+		-- Duyệt qua từng hàng và thực hiện các câu lệnh tương ứng
+		WHILE @@FETCH_STATUS = 0
+		BEGIN
+			-- Thực hiện câu lệnh cập nhật cho hàng hiện tại
+			-- Ví dụ: Cập nhật cột Column3 dựa trên giá trị của cột Column1
+			IF(@ObjectID LIKE 'PID%')
+				BEGIN
+					UPDATE dbo.POST
+					SET NumInterface= CASE 
+								WHEN @InterFaceID= 'none' THEN  NumInterface-1
+								ELSE NumInterface + 1
+							END
+					WHERE PostID= @ObjectID
+				END
+			ELSE IF (@ObjectID LIKE 'SID%')
+				BEGIN
+					UPDATE dbo.POSTSHARE
+					SET NumInterface= CASE 
+								WHEN @InterFaceID= 'none' THEN  NumInterface-1
+								ELSE NumInterface + 1
+							END
+					WHERE ShareID= @ObjectID
+				END
+
+			-- Lấy hàng tiếp theo
+			FETCH NEXT FROM curRows INTO @ObjectID, @UserID, @InterFaceID;
+		END;
+
+		-- Đóng CURSOR
+		CLOSE curRows;
+		DEALLOCATE curRows;
+	END
 

@@ -29,18 +29,44 @@ public class PostStatisticsDAO {
     public List<PostStatistics> getData() {
         List<PostStatistics> list = new ArrayList<>();
         try {
-            PreparedStatement ps = cnn.prepareStatement("SELECT * FROM (SELECT TOP 12 MonthDate, PostCount\n"
-                    + "				FROM PostStatistics\n"
-                    + "				ORDER BY MonthDate DESC) a\n"
-                    + "ORDER BY a.MonthDate ASC;");
+            PreparedStatement ps = cnn.prepareStatement("SELECT\n"
+                    + "    M.CreatedMonth AS Month,\n"
+                    + "    M.CreatedYear AS Year,\n"
+                    + "    COALESCE(P.TotalPosts, 0) AS TotalPosts\n"
+                    + "FROM\n"
+                    + "    (SELECT\n"
+                    + "        MONTH(MonthDate) AS CreatedMonth,\n"
+                    + "        YEAR(MonthDate) AS CreatedYear\n"
+                    + "    FROM\n"
+                    + "        (SELECT TOP 11\n"
+                    + "            DATEADD(MONTH, -ROW_NUMBER() OVER (ORDER BY (SELECT NULL)), GETDATE()) AS MonthDate\n"
+                    + "        FROM\n"
+                    + "            sys.objects\n"
+                    + "        UNION ALL\n"
+                    + "        SELECT\n"
+                    + "            DATEADD(MONTH, 0, GETDATE()) AS MonthDate) AS Subquery) AS M\n"
+                    + "LEFT JOIN\n"
+                    + "    (SELECT TOP 12\n"
+                    + "        Month,\n"
+                    + "        Year,\n"
+                    + "		TotalPosts\n"
+                    + "    FROM\n"
+                    + "        PostSummaryByMonth\n"
+                    + "    ORDER BY\n"
+                    + "        Year DESC,\n"
+                    + "        Month DESC) AS P\n"
+                    + "ON\n"
+                    + "    M.CreatedMonth = P.Month\n"
+                    + "    AND M.CreatedYear = P.Year\n"
+                    + "ORDER BY\n"
+                    + "    M.CreatedYear ASC,\n"
+                    + "    M.CreatedMonth ASC");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                Date date = rs.getDate(1);
-                LocalDate localDate = date.toLocalDate();
-                int month = localDate.getMonthValue();
-                int year = localDate.getYear();
-                int number = rs.getInt(2);
-                list.add(new PostStatistics(month+"/"+year%100, number));
+                int month = rs.getInt(1);
+                int year = rs.getInt(2);
+                int number = rs.getInt(3);
+                list.add(new PostStatistics(month + "/" + year % 100, number));
             }
             return list;
 
