@@ -1,18 +1,19 @@
 <%-- 
-    Document   : PostsReports
-    Created on : Jun 14, 2023, 10:28:53 AM
+    Document   : UserReports
+    Created on : Jun 18, 2023, 4:39:47 PM
     Author     : TCNJK
 --%>
-<%@page import="model.PostReport"%>
+
 <%@page import="java.util.List"%>
+<%@page import="dao.UserReportDAO"%>
+<%@page import="model.UserReport"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="dao.PostReportDAO"%>
-<!doctype html>
+<!DOCTYPE html>
 <html class="no-js" lang="en">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Datatable - Posts Report</title>
+        <title>Datatable - Comment Report</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="shortcut icon" type="image/png" href="assets/images/icon/favicon.ico">
         <link rel="stylesheet" href="assets/css/bootstrap.min.css">
@@ -38,50 +39,7 @@
     </head>
 
     <body>
-        <div id="preloader">
-            <div class="loader"></div>
-        </div>
-        <!-- preloader area end -->
-        <!-- page container area start -->
-        <div class="page-container">
-            <!-- sidebar menu area start -->
-            <div class="sidebar-menu">
-                <div class="sidebar-header">
-                    <div class="logo">
-                        <a href="index.html"><img src="assets/images/icon/logo.png" alt="logo"></a>
-                    </div>
-                </div>
-                <div class="main-menu">
-                    <div class="menu-inner">
-                        <nav>
-                            <ul class="metismenu" id="menu">
-                                <li >
-                                    <a href="AdminPageIndex.jsp" aria-expanded="true"><i class="ti-dashboard"></i><span>Dashboard</span></a>
-                                </li>
-                                <li class="active">
-                                    <a href="javascript:void(0)" aria-expanded="true"><i class="ti-flag-alt"></i><span>Reported Content
-                                        </span></a>
-                                    <ul class="collapse">
-                                        <li><a href="UserReports.jsp">User Reports</a></li>
-                                        <li class="active"><a href="PostsReports.jsp">Posts Reports</a></li>
-                                        <li><a href="CommentsReports.jsp">Comments Reports</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)" aria-expanded="true"><i class="ti-slice"></i><span>icons</span></a>
-                                    <ul class="collapse">
-                                        <li><a href="fontawesome.html">fontawesome icons</a></li>
-                                        <li><a href="themify.html">themify icons</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="invoice.html"><i class="ti-receipt"></i> <span>Invoice Summary</span></a></li>
-                                
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-            </div>
-            <!-- sidebar menu area end -->
+        <jsp:include page="sidebarMenu.jsp"></jsp:include>
             <!-- main content area start -->
         <jsp:include page="header.jsp"></jsp:include>
             <!-- page title area start -->
@@ -89,10 +47,10 @@
                 <div class="row align-items-center">
                     <div class="col-sm-6">
                         <div class="breadcrumbs-area clearfix">
-                            <h4 class="page-title pull-left">PostReport</h4>
+                            <h4 class="page-title pull-left">UserReports</h4>
                             <ul class="breadcrumbs pull-left">
                                 <li><a href="index.html">Home</a></li>
-                                <li><span>PostReport</span></li>
+                                <li><span>UserReports</span></li>
                             </ul>
                         </div>
                     </div>
@@ -112,24 +70,34 @@
                                         <thead class="text-capitalize">
                                             <tr>
                                                 <th>Image</th>
-                                                <th>Content</th>
-                                                <th>Report Number</th>
-                                                <th>Time</th>
+                                                <th>FullName</th>
+                                                <th>Account</th>
+                                                <th>Mail</th>
+                                                <th>PhoneNumber</th>
+                                                <th>Address</th>
+                                                <th>Number Reported of Comment</th>
+                                                <th>Number Reported of Post</th>
+                                                <th>Number Reported of User</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        <%!PostReport elem;%>
-                                        <%PostReportDAO e = new PostReportDAO();
-                                            List<PostReport> list = e.getData();
-                                            for (PostReport elem : list) {
+                                        <%! UserReport elem;%>
+                                        <% UserReportDAO e = new UserReportDAO();
+                                            List<UserReport> list = e.getData();
+                                            for (UserReport elem : list) {
                                         %>
-                                        <tr class="<%= elem.getPostID()%>">
-                                            <td class="post-image"><img style="width: 50px;" src="<%=elem.getImg()%>" alt="Không Có Ảnh"></td>
-                                            <td><%=elem.getContent()%></td>
-                                            <td><%=elem.getReportCount()%></td>
-                                            <td><%=elem.getTime()%></td>
-                                            <td><a href="#" onclick="deleteRow(this, '<%= elem.getPostID()%>', '<%=elem.getIsPostVerInt()%>')">Delete</a>/<a href="#" onclick="skipRow(this, '<%= elem.getPostID()%>')">Skip</a></td>
+                                        <tr class="<%= elem.getUserID()%>">
+                                            <td class="user-image"><img style="width: 50px;" src="<%= elem.getImageUser()%>" alt="Không Có Ảnh"></td>
+                                            <td><%= elem.getFullName()%></td>
+                                            <td><%= elem.getAccount()%></td>
+                                            <td><%= elem.getMail()%></td>
+                                            <td><%= elem.getPhoneNumber()%></td>
+                                            <td><%= elem.getAddress()%></td>
+                                            <td><%= elem.getNumCommentReported()%></td>
+                                            <td><%= elem.getNumPostReported()%></td>
+                                            <td><%= elem.getNumReportedByUsers()%></td>
+                                            <td>Delete/Lock/<a href="#" onclick="skipRow(this, '<%= elem.getUserID()%>')">Skip</a></td>
                                         </tr>
                                         <%
                                             }
@@ -138,10 +106,10 @@
 
                                         function skipRow(link, id) {
                                             var data = {
-                                                id: id
+                                                id: id,
                                             };
                                             $.ajax({
-                                                url: '../SkipReport',
+                                                url: '../SkipReportUser',
                                                 type: 'GET',
                                                 data: data,
                                                 success: function (response) {
@@ -177,46 +145,29 @@
                                             row.remove();
                                             alert('Thành công');
                                         }
-                                        function deleteDB(id, isPost, link) {
+                                        function deleteDB(link, id) {
                                             var data = {
-                                                id: id
+                                                id: id,
                                             };
-                                            if (isPost === "1") {
-                                                $.ajax({
-                                                    url: 'servlet_xóa-post bằng id',
-                                                    type: 'POST',
-                                                    data: data,
-                                                    success: function (response) {
-                                                        // Xử lý phản hồi từ servlet nếu cần
-                                                        console.log('Yêu cầu thành công');
-                                                        skipRow(link);
-                                                    },
-                                                    error: function (xhr, status, error) {
-                                                        // Xử lý lỗi nếu có
-                                                        console.log('Lỗi yêu cầu: ' + error);
-                                                        console.log('true');
-                                                    }
-                                                });
-                                            } else {
-                                                $.ajax({
-                                                    url: 'servlet_xóa-postShare bằng id',
-                                                    type: 'POST',
-                                                    data: data,
-                                                    success: function (response) {
-                                                        // Xử lý phản hồi từ servlet nếu cần
-                                                        console.log('Yêu cầu thành công');
-                                                        skipRow(link);
-                                                    },
-                                                    error: function (xhr, status, error) {
-                                                        // Xử lý lỗi nếu có
-                                                        console.log('Lỗi yêu cầu: ' + error);
-                                                        console.log('false');
-                                                    }
-                                                });
-                                            }
+
+                                            $.ajax({
+                                                url: '../DeleteUserReport',
+                                                type: 'POST',
+                                                data: data,
+                                                success: function (response) {
+                                                    // Xử lý phản hồi từ servlet nếu cần
+                                                    console.log('Yêu cầu thành công');
+                                                    skipRow(link, id);
+                                                },
+                                                error: function (xhr, status, error) {
+                                                    // Xử lý lỗi nếu có
+                                                    console.log('Lỗi yêu cầu: ' + error);
+                                                    console.log('false');
+                                                }
+                                            });
                                         }
-                                        function deleteRow(link, id, isPost) {
-                                            deleteDB(id, isPost, link)
+                                        function deleteRow(link, id) {
+                                            deleteDB(link,id)
                                         }
                                     </script>
                                     <!-- Add more rows as needed -->
@@ -264,3 +215,4 @@
 </body>
 
 </html>
+

@@ -151,3 +151,39 @@ CREATE TABLE UserLock (
     FOREIGN KEY (UserID) REFERENCES dbo.UserInfor(UserID)
 );
 
+
+CREATE VIEW UserReportSummary
+AS
+SELECT
+    u.UserID,
+    u.ImageUser,
+    u.FullName,
+    u.Account,
+    u.Mail,
+    u.PhoneNumber,
+    u.Address,
+    (SELECT COUNT(*) FROM ReportComment1686 WHERE UserID2 = u.UserID) AS NumCommentReported,
+    (SELECT COUNT(*) FROM ReportPost WHERE UserID2 = u.UserID) AS NumPostReported,
+	(SELECT COUNT(DISTINCT UserIDRP) FROM ReportUser1686 WHERE UserID = u.UserID AND Status = 1) AS NumReportedByUsers
+FROM
+    UserInfor u
+WHERE
+    u.UserID IN (SELECT UserID FROM ReportUser1686 WHERE Status = 1);
+
+	SELECT * FROM UserReportSummary
+
+	INSERT INTO dbo.ReportUser1686
+	(
+	    UserID,
+	    UserIDRP,
+	    Status
+	)
+	VALUES
+	(   'UID00001001',  -- UserID - varchar(11)
+	    'UID00000003',  -- UserIDRP - varchar(11)
+	    1 -- Status - bit
+	    )
+
+	UPDATE dbo.ReportUser1686 
+	SET ReportUser1686.Status=0
+	WHERE ReportUser1686.UserID=

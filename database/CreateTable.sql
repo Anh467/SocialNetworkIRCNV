@@ -184,3 +184,19 @@ CREATE TABLE InterFaceObject(
 	CONSTRAINT fk_InterFaceID_InterFaceObject FOREIGN KEY (InterFaceID) REFERENCES dbo.InterFace(InterFaceID),
 );
 
+CREATE VIEW UserReportSummary
+AS
+SELECT
+    u.UserID,
+    u.ImageUser,
+    u.FullName,
+    u.Account,
+    u.Mail,
+    u.PhoneNumber,
+    u.Address,
+    (SELECT COUNT(*) FROM ReportComment1686 WHERE UserID2 = u.UserID) AS NumCommentReported,
+    (SELECT COUNT(*) FROM ReportPost WHERE UserID2 = u.UserID) AS NumPostReported
+FROM
+    UserInfor u;
+
+	SELECT * FROM UserReportSummary

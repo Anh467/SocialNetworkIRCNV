@@ -59,6 +59,23 @@ function reportComment(rpID, userID, isPost) {
 }
 
 function reportUser(rpID, userID) {
-    // Thực hiện báo cáo người dùng
-    console.log('Báo cáo người dùng - rpID: ' + rpID + ', userID: ' + userID);
+    var data = {
+        rpID: rpID,
+        userID: userID,
+    };
+
+    // Gửi yêu cầu Ajax tới Servlet
+    $.ajax({
+        url: '../../AddUserReport',
+        type: 'POST',
+        data: data,
+        success: function (response) {
+            // Xử lý phản hồi từ Servlet nếu cần
+            console.log('Báo cáo bài viết thành công');
+        },
+        error: function (xhr, status, error) {
+            // Xử lý lỗi nếu có
+            console.log('Lỗi yêu cầu: ' + error);
+        }
+    });
 }
