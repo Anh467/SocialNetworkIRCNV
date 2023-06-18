@@ -1,30 +1,22 @@
-﻿UPDATE dbo.ReportComment1686
-SET ReportComment1686.Status=1
-
-INSERT INTO dbo.ReportComment1686
+﻿INSERT INTO dbo.Role
 (
-    CommentID,
-    UserID,
-    UserID2,
-    IsPost,
-    Status
+    RoleID,
+    RoleName
 )
 VALUES
-(   'đã có',   -- CommentID - varchar(11)
-    'đã có',   -- UserID - varchar(11)
-    CASE WHEN 1 = 1 
-THEN (SELECT UserID FROM dbo.COMMENT WHERE dbo.COMMENT.CmtID='') 
-ELSE (SELECT UserID FROM dbo.COMMENTSHARE WHERE dbo.COMMENTSHARE.CmtID='') END,   -- UserID2 - varchar(11)
-    NULL, -- IsPost - bit
-    1  -- Status - bit
+(   'Lock', -- RoleID - varchar(11)
+    '1895'  -- RoleName - varchar(30)
     )
-
-INSERT INTO dbo.ReportPost (IsPost, PostID, UserID, UserID2, Status)
-VALUES (?, ?, ?,
-CASE WHEN ? = 1 
-THEN (SELECT UserID FROM Post WHERE POST.PostID=?) 
-ELSE (SELECT UserID FROM PostShare WHERE dbo.POSTSHARE.ShareID=?) END,
-1);
+INSERT INTO dbo.Role
+(
+    RoleID,
+    RoleName
+)
+VALUES
+(   'DELETED', -- RoleID - varchar(11)
+    '4489'  -- RoleName - varchar(30)
+    )
+	UPDATE dbo.UserInfor SET UserInfor.RoleID = 'LOCK' WHERE UserID = ?;
 --------------------------------------------------
 CREATE VIEW PostSummaryByMonth AS
 SELECT
@@ -170,20 +162,3 @@ FROM
 WHERE
     u.UserID IN (SELECT UserID FROM ReportUser1686 WHERE Status = 1);
 
-	SELECT * FROM UserReportSummary
-
-	INSERT INTO dbo.ReportUser1686
-	(
-	    UserID,
-	    UserIDRP,
-	    Status
-	)
-	VALUES
-	(   'UID00001001',  -- UserID - varchar(11)
-	    'UID00000003',  -- UserIDRP - varchar(11)
-	    1 -- Status - bit
-	    )
-
-	UPDATE dbo.ReportUser1686 
-	SET ReportUser1686.Status=0
-	WHERE ReportUser1686.UserID=

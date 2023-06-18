@@ -97,7 +97,7 @@
                                             <td><%= elem.getNumCommentReported()%></td>
                                             <td><%= elem.getNumPostReported()%></td>
                                             <td><%= elem.getNumReportedByUsers()%></td>
-                                            <td>Delete/Lock/<a href="#" onclick="skipRow(this, '<%= elem.getUserID()%>')">Skip</a></td>
+                                            <td><a href="#" onclick="deleteRow(this, '<%= elem.getUserID()%>')">Delete</a>/<a href="#" onclick="openLockWindow(this, '<%= elem.getUserID()%>')">Lock</a>/<a href="#" onclick="skipRow(this, '<%= elem.getUserID()%>')">Skip</a></td>
                                         </tr>
                                         <%
                                             }
@@ -147,7 +147,7 @@
                                         }
                                         function deleteDB(link, id) {
                                             var data = {
-                                                id: id,
+                                                id: id
                                             };
 
                                             $.ajax({
@@ -167,7 +167,41 @@
                                             });
                                         }
                                         function deleteRow(link, id) {
-                                            deleteDB(link,id)
+                                            deleteDB(link, id)
+                                        }
+
+                                        function openLockWindow(link, id) {
+                                            var url = "Lock.jsp?id=" + encodeURIComponent(id);
+                                            var width = 400;
+                                            var height = 200;
+                                            var screenWidth = window.screen.width;
+                                            var screenHeight = window.screen.height;
+                                            var top = screenHeight / 2 - height / 2;
+                                            var left = screenWidth / 2 - width / 2;
+                                            var options = "width=" + width + ",height=" + height + ",top=" + top + ",left=" + left;
+                                            window.open(url, "_blank", options);
+                                            var row = link.parentNode.parentNode; // Lấy thẻ <tr> chứa liên kết được nhấn
+                                            row = row.parentNode;
+                                            if (row !== null) {
+                                                row = row.parentNode;
+                                                if (row !== null) {
+                                                    row = row.parentNode;
+                                                    if (row !== null) {
+                                                        var oldRow = row;
+                                                        row = row.previousElementSibling;
+                                                        if (row !== null) {
+                                                            if (row.nodeName === 'TR') {
+                                                                oldRow.remove();
+                                                                row.remove();
+                                                                alert('Thành công');
+                                                                return;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            row = link.parentNode.parentNode; // Lấy thẻ <tr> chứa liên kết được nhấn
+                                            row.remove();
                                         }
                                     </script>
                                     <!-- Add more rows as needed -->

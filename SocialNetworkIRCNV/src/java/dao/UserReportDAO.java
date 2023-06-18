@@ -91,4 +91,54 @@ public class UserReportDAO {
             e.printStackTrace();
         }
     }
+
+    public boolean AddLock(String id, int day, int hour, int minute) {
+        try {
+            PreparedStatement ps = cnn.prepareStatement("INSERT INTO dbo.UserLock\n"
+                    + "(\n"
+                    + "    UserID,\n"
+                    + "    LockTime,\n"
+                    + "    LockDurationDay,\n"
+                    + "    LockDurationHour,\n"
+                    + "    LockDurationMinute\n"
+                    + ")\n"
+                    + "VALUES\n"
+                    + "(   ?,        -- UserID - varchar(11)\n"
+                    + "    GETDATE(), -- LockTime - datetime\n"
+                    + "    ?,         -- LockDurationDay - int\n"
+                    + "    ?,         -- LockDurationHour - int\n"
+                    + "    ?          -- LockDurationMinute - int\n"
+                    + "    )");
+            ps.setString(1, id);
+            ps.setInt(2, day);
+            ps.setInt(3, hour);
+            ps.setInt(4, minute);
+
+            ps.executeUpdate();
+            
+            ps = cnn.prepareStatement("UPDATE dbo.UserInfor SET UserInfor.RoleID = 'LOCK' WHERE UserID = ?;");
+            ps.setString(1, id);
+            ps.executeUpdate();
+            return true;
+
+        } catch (Exception e) {
+            System.err.println("AddLock UserReportDAO");
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public boolean DeleteUser(String id) {
+        try {
+            PreparedStatement ps;
+            ps = cnn.prepareStatement("UPDATE dbo.UserInfor SET UserInfor.RoleID = 'NULL' WHERE UserID = ?;");
+            ps.setString(1, id);
+            ps.executeUpdate();
+            return true;
+
+        } catch (Exception e) {
+            System.err.println("DeleteUser UserReportDAO");
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
