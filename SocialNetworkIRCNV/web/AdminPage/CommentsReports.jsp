@@ -69,6 +69,9 @@
                                     </ul>
                                 </li>
                                 <li>
+                                    <a href="AdminManage.jsp" aria-expanded="true"><i class="ti-slice"></i><span>AdminManage</span></a>
+                                </li>
+                                <li>
                                     <a href="javascript:void(0)" aria-expanded="true"><i class="ti-slice"></i><span>icons</span></a>
                                     <ul class="collapse">
                                         <li><a href="fontawesome.html">fontawesome icons</a></li>
