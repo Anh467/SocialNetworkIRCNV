@@ -4,22 +4,21 @@
  */
 package action;
 
+import dao.ChangeRoleDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author 84384
+ * @author TCNJK
  */
-@WebServlet(name = "CheckLogin", urlPatterns = {"/CheckLogin"})
-public class CheckLogin extends HttpServlet {
+@WebServlet(name = "changeRole", urlPatterns = {"/changeRole"})
+public class changeRole extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,10 +37,10 @@ public class CheckLogin extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CheckLogin</title>");
+            out.println("<title>Servlet changeRole</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CheckLogin at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet changeRole at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,26 +58,7 @@ public class CheckLogin extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String user = request.getParameter("user");
-        String pass = request.getParameter("pass");
-        String id = new dao.AccountDAO().checkLogin(user, pass);
-        if (id == null) {
-            request.setAttribute("pass", "");
-            request.setAttribute("status", "Login fail");
-            request.getRequestDispatcher("Authen/login.jsp").forward(request, response);
-            return;
-        }
-        HttpSession session = request.getSession();
-        session.setAttribute("id", id);
-        session.setAttribute("userRole", "Admin");
-//        session.setAttribute("userRole", "Master Admin");
-        if (request.getParameter("check") != null) {
-            Cookie cookie = new Cookie("id", id);
-            cookie.setMaxAge(60 * 60 * 24);
-            cookie.setHttpOnly(true);
-            response.addCookie(cookie);
-        }
-        response.sendRedirect("HomePage/HomePage.jsp");
+        processRequest(request, response);
     }
 
     /**
@@ -92,13 +72,10 @@ public class CheckLogin extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        session.invalidate();
-        Cookie cookie = new Cookie("id", null);
-        cookie.setMaxAge(60 * 60 * 24);
-        cookie.setHttpOnly(true);
-        response.addCookie(cookie);
-        response.sendRedirect("Authen/login.jsp");
+        String userID = request.getParameter("userID");
+        String newRole = request.getParameter("newRole");
+        ChangeRoleDAO e= new ChangeRoleDAO();
+        e.change(userID, newRole);
     }
 
     /**

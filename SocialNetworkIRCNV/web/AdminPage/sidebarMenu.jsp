@@ -32,26 +32,20 @@
                                 <li >
                                     <a href="AdminPageIndex.jsp" aria-expanded="true"><i class="ti-dashboard"></i><span>Dashboard</span></a>
                                 </li>
-                                <li class="active">
+                                <li >
                                     <a href="javascript:void(0)" aria-expanded="true"><i class="ti-flag-alt"></i><span>Reported Content
                                         </span></a>
                                     <ul class="collapse">
-                                        <li class="active"><a href="UserReports.jsp">User Reports</a></li>
+                                        <li ><a href="UserReports.jsp">User Reports</a></li>
                                         <li><a href="PostsReports.jsp">Posts Reports</a></li>
                                         <li><a href="CommentsReports.jsp">Comments Reports</a></li>
                                     </ul>
                                 </li>
-                                <li>
+                                <% if ("Master Admin".equals(session.getAttribute("userRole"))) { %>
+                                <li class="active">
                                     <a href="AdminManage.jsp" aria-expanded="true"><i class="ti-slice"></i><span>AdminManage</span></a>
                                 </li>
-                                <li>
-                                    <a href="javascript:void(0)" aria-expanded="true"><i class="ti-slice"></i><span>icons</span></a>
-                                    <ul class="collapse">
-                                        <li><a href="fontawesome.html">fontawesome icons</a></li>
-                                        <li><a href="themify.html">themify icons</a></li>
-                                    </ul>
-                                </li>
-
+                                <% }%>
                                 <li><a href="invoice.html"><i class="ti-receipt"></i> <span>Invoice Summary</span></a></li>
                             </ul>
                         </nav>

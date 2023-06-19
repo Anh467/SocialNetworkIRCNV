@@ -117,7 +117,8 @@ public class AddUserLock extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String userID = request.getParameter("userID");
+        String newRole = request.getParameter("newRole");
     }
 
     /**

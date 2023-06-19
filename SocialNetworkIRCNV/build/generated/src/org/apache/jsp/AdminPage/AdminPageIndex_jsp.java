@@ -68,7 +68,7 @@ public final class AdminPageIndex_jsp extends org.apache.jasper.runtime.HttpJspB
       out.write("        <!-- modernizr css -->\n");
       out.write("        <script src=\"assets/js/vendor/modernizr-2.8.3.min.js\"></script>\n");
       out.write("    </head>\n");
-      out.write("    <body>\n");
+      out.write("    <body onload=\"load()\">\n");
       out.write("        <!--[if lt IE 8]>\n");
       out.write("                <p class=\"browserupgrade\">You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/\">upgrade your browser</a> to improve your experience.</p>\n");
       out.write("            <![endif]-->\n");
@@ -102,13 +102,15 @@ public final class AdminPageIndex_jsp extends org.apache.jasper.runtime.HttpJspB
       out.write("                                        <li><a href=\"CommentsReports.jsp\">Comments Reports</a></li>\n");
       out.write("                                    </ul>\n");
       out.write("                                </li>\n");
+      out.write("                                ");
+ if ("Master Admin".equals(session.getAttribute("userRole"))) { 
+      out.write("\n");
       out.write("                                <li>\n");
-      out.write("                                    <a href=\"javascript:void(0)\" aria-expanded=\"true\"><i class=\"ti-slice\"></i><span>icons</span></a>\n");
-      out.write("                                    <ul class=\"collapse\">\n");
-      out.write("                                        <li><a href=\"fontawesome.html\">fontawesome icons</a></li>\n");
-      out.write("                                        <li><a href=\"themify.html\">themify icons</a></li>\n");
-      out.write("                                    </ul>\n");
+      out.write("                                    <a href=\"AdminManage.jsp\" aria-expanded=\"true\"><i class=\"ti-slice\"></i><span>AdminManage</span></a>\n");
       out.write("                                </li>\n");
+      out.write("                                ");
+ }
+      out.write("\n");
       out.write("                                <li><a href=\"invoice.html\"><i class=\"ti-receipt\"></i> <span>Invoice Summary</span></a></li>\n");
       out.write("                            </ul>\n");
       out.write("                        </nav>\n");

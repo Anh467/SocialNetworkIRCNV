@@ -16,7 +16,6 @@ VALUES
 (   'DELETED', -- RoleID - varchar(11)
     '4489'  -- RoleName - varchar(30)
     )
-	UPDATE dbo.UserInfor SET UserInfor.RoleID = 'LOCK' WHERE UserID = ?;
 --------------------------------------------------
 CREATE VIEW PostSummaryByMonth AS
 SELECT
@@ -162,3 +161,8 @@ FROM
 WHERE
     u.UserID IN (SELECT UserID FROM ReportUser1686 WHERE Status = 1);
 
+	CREATE VIEW UserView AS
+SELECT UserID, ImageUser, FullName, Address, Mail, Account, PhoneNumber, Dob, Nation, RoleID
+FROM UserInfor;
+
+SELECT * FROM UserView

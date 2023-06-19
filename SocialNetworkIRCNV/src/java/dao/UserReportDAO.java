@@ -130,7 +130,7 @@ public class UserReportDAO {
     public boolean DeleteUser(String id) {
         try {
             PreparedStatement ps;
-            ps = cnn.prepareStatement("UPDATE dbo.UserInfor SET UserInfor.RoleID = 'NULL' WHERE UserID = ?;");
+            ps = cnn.prepareStatement("UPDATE dbo.UserInfor SET UserInfor.RoleID = 'DELETED' WHERE UserID = ?;");
             ps.setString(1, id);
             ps.executeUpdate();
             return true;

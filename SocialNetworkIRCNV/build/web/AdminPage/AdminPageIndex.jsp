@@ -29,7 +29,7 @@
         <!-- modernizr css -->
         <script src="assets/js/vendor/modernizr-2.8.3.min.js"></script>
     </head>
-    <body>
+    <body onload="load()">
         <!--[if lt IE 8]>
                 <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
             <![endif]-->
@@ -63,16 +63,11 @@
                                         <li><a href="CommentsReports.jsp">Comments Reports</a></li>
                                     </ul>
                                 </li>
+                                <% if ("Master Admin".equals(session.getAttribute("userRole"))) { %>
                                 <li>
                                     <a href="AdminManage.jsp" aria-expanded="true"><i class="ti-slice"></i><span>AdminManage</span></a>
                                 </li>
-                                <li>
-                                    <a href="javascript:void(0)" aria-expanded="true"><i class="ti-slice"></i><span>icons</span></a>
-                                    <ul class="collapse">
-                                        <li><a href="fontawesome.html">fontawesome icons</a></li>
-                                        <li><a href="themify.html">themify icons</a></li>
-                                    </ul>
-                                </li>
+                                <% }%>
                                 <li><a href="invoice.html"><i class="ti-receipt"></i> <span>Invoice Summary</span></a></li>
                             </ul>
                         </nav>
