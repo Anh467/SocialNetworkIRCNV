@@ -4,44 +4,79 @@
 var postChartData = {
     labels: [],
     datasets: [{
-            label: 'Number of Posts',
-            data: [],
-            backgroundColor: 'rgba(54, 162, 235, 0.5)',
-            borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 1
+            label: "Post",
+            backgroundColor: "rgba(104, 124, 247, 0.6)",
+            borderColor: '#8596fe',
+            data: []
         }]
 };
-var postChart = new Chart(document.getElementById('postChartCanvas'), {
-    type: 'bar',
+var ctx1 = document.getElementById("seolinechart1").getContext('2d');
+var chart1 = new Chart(ctx1, {
+    // The type of chart we want to create
+    type: 'line',
+    // The data for our dataset
     data: postChartData,
+    // Configuration options go here
     options: {
-        responsive: true,
+        legend: {
+            display: false
+        },
+        animation: {
+            easing: "easeInOutBack"
+        },
         scales: {
-            y: {
-                beginAtZero: true
+            yAxes: [{
+                    display: !1,
+                    ticks: {
+                        fontColor: "rgba(0,0,0,0.5)",
+                        fontStyle: "bold",
+                        beginAtZero: !0,
+                        maxTicksLimit: 5,
+                        padding: 0
+                    },
+                    gridLines: {
+                        drawTicks: !1,
+                        display: !1
+                    }
+                }],
+            xAxes: [{
+                    display: !1,
+                    gridLines: {
+                        zeroLineColor: "transparent"
+                    },
+                    ticks: {
+                        padding: 0,
+                        fontColor: "rgba(0,0,0,0.5)",
+                        fontStyle: "bold"
+                    }
+                }]
+        },
+        elements: {
+            line: {
+                tension: 0 // disables bezier curves
             }
         }
     }
 });
 // Function to get data and labels 
 window.onload = function () {
-    fetchData();
+//    fetchData();
     setInterval(fetchData, 2000);
-    $.ajax({
-        url: "../getPostStatistics",
-        method: "GET",
-        dataType: "json",
-        success: function (data) {
-            updateChartData(data);
-        },
-        error: function (xhr, status, error) {
-            console.log("Error:", error);
-        }
-    });
+//    $.ajax({
+//        url: "../getPostStatistics",
+//        method: "GET",
+//        dataType: "json",
+//        success: function (data) {
+//            updateChartData(data);
+//        },
+//        error: function (xhr, status, error) {
+//            console.log("Error:", error);
+//        }
+//    });
 };
 function fetchData() {
     $.ajax({
-        url: "../getPostStatistics",
+        url: "../../getPostStatistics",
         method: "GET",
         dataType: "json",
         success: function (data) {
@@ -70,5 +105,6 @@ function updateChartData(data) {
     postChartData.datasets[0].data = postCounts;
 
     // Cập nhật biểu đồ
-    postChart.update();
+    chart1.update();
 }
+

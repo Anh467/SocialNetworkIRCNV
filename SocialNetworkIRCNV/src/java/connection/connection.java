@@ -19,8 +19,8 @@ public class connection {
         Config c = new Config();
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String connectionUrl = "jdbc:sqlserver://" + c.serverName + ";databaseName=" + c.databaseName + "; Encrypt=false;";
-            Connection con = DriverManager.getConnection(connectionUrl, c.user, c.password);
+            String connectionUrl = "jdbc:sqlserver://" + "DESKTOP-ULQ9JUL\\TCNJK:1433" + ";databaseName=" + "SocialMedia" + "; Encrypt=false;";
+            Connection con = DriverManager.getConnection(connectionUrl, "sa", "lioooo0000");
             System.out.println("True at connection/ connect2");
             this.cnn = con;
         } catch (Exception e) {

@@ -33,7 +33,7 @@ public class CheckLogin extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
+        try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
@@ -70,6 +70,8 @@ public class CheckLogin extends HttpServlet {
         }
         HttpSession session = request.getSession();
         session.setAttribute("id", id);
+        session.setAttribute("userRole", "Admin");
+//        session.setAttribute("userRole", "Master Admin");
         if (request.getParameter("check") != null) {
             Cookie cookie = new Cookie("id", id);
             cookie.setMaxAge(60 * 60 * 24);
