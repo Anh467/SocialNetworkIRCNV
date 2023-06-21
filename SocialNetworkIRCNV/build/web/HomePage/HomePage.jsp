@@ -7,6 +7,8 @@
 <%@page import="model.PostShare"%>
 <%@page import="model.PostUser"%>
 <%@page import="dao.UserDAO"%>
+<%@page import="model.Privacy"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="vi">
 
@@ -357,6 +359,7 @@
 
     <body>
         <div id="offset" style="display: none"  >1</div>
+        <jsp:useBean id="apiPrivacy" class="dao.PrivacyDao"/>
         <header>
             <%@include file="../block/header.jsp" %>
         </header>
@@ -482,10 +485,10 @@
                                         <div class="form-group">
                                             <label for="avatar" class="col-form-label">Avatar:</label>
                                             <img id="previewImage4" src="<%=user.getImgUser()%>" alt="Preview Image" style="width: 130px;
-                                                                                                                                                height: 130px;
-                                                                                                                                                margin-right: 30px;
-                                                                                                                                                border-radius: 3px;
-                                                                                                                                                object-fit: cover;">
+                                                                                                                            height: 130px;
+                                                                                                                            margin-right: 30px;
+                                                                                                                            border-radius: 3px;
+                                                                                                                            object-fit: cover;">
                                             <input  type="file" name="avatar" id="fileInput4">
                                         </div>
 
@@ -567,17 +570,17 @@
                                             <p class="name" style="color: #003140;"><%=user.getFullName()%></p>
                                         </div>
                                     </div>
-                                        
+
                                     <p>What's you think?</p>
                                     <div class="share-content" style="margin-bottom: 20px">
                                         <input id="contentPostShareModel" type="text" name="contentPostShareModel" style="width: 100%">
                                     </div>
-                                    <div>
-                                        <input type="radio" id="privacyPostShareModel" name="privacy" value="Public">
-                                          <label for="Public">Public</label><br>
-                                         <input type="radio" id="privacyPostShareModel" name="privacy" value="Private">
-                                          <label for="Private">Private</label><br>
-                                    </div>
+                                    
+                                    <select id="privacyPostShareModel" name = "privacyPostShareModel" style="color:#626262;">
+                                    <c:forEach items="${apiPrivacy.allPrivacy}" var="ele">
+                                        <option style="color:#626262; background-color:#cdf1ff;  ">${ele.getPrivacyName()}</option>
+                                    </c:forEach>
+                                </select>
                                     <div class="share-body" style="border: 1px solid black">
                                         <div class="share-top"  style="margin-left: 10px">
                                             <div class="dp">

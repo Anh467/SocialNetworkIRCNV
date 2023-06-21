@@ -75,21 +75,37 @@ public class CheckLogin extends HttpServlet {
                     request.setAttribute("status", "Login fail");
                 }
             }
-
-            request.getRequestDispatcher("Authen/login.jsp").forward(request, response);
-            return;
-        }
-        HttpSession session = request.getSession();
-        session.setAttribute("id", id);
-        session.setAttribute("userRole", role.getRoleName());
+            if (role != null) {
+                if (id == null || role.isIsLock()) {
+                    request.setAttribute("pass", "");
+                    if (role.isIsLock()) {
+                        request.setAttribute("status", "This account is locked");
+                    } else {
+                        request.setAttribute("status", "Login fail");
+                    }
+                    request.getRequestDispatcher("Authen/login.jsp").forward(request, response);
+                    return;
+                }
+            } else {
+                if (id == null) {
+                    request.setAttribute("pass", "");
+                    request.setAttribute("status", "Login fail");
+                    request.getRequestDispatcher("Authen/login.jsp").forward(request, response);
+                    return;
+                }
+            }
+            HttpSession session = request.getSession();
+            session.setAttribute("id", id);
+            session.setAttribute("userRole", role.getRoleName());
 //        session.setAttribute("userRole", "Master Admin");
-        if (request.getParameter("check") != null) {
-            Cookie cookie = new Cookie("id", id);
-            cookie.setMaxAge(60 * 60 * 24);
-            cookie.setHttpOnly(true);
-            response.addCookie(cookie);
+            if (request.getParameter("check") != null) {
+                Cookie cookie = new Cookie("id", id);
+                cookie.setMaxAge(60 * 60 * 24);
+                cookie.setHttpOnly(true);
+                response.addCookie(cookie);
+            }
+            response.sendRedirect("HomePage/HomePage.jsp");
         }
-        response.sendRedirect("HomePage/HomePage.jsp");
     }
 
     /**

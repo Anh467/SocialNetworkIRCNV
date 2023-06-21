@@ -59,6 +59,9 @@ public class NOTE_LIKE extends NOTE{
             
         return "";
     }
+    public String getDivIcon(String status, User user){
+        return "<div class=\"name-box\">"+user.getFullName()+ "<i class=\"fa-sharp fa-solid fa-thumbs-up\"></i>"+" </div>\n";
+    }
     public String getDiv() {
 //       String href= this.ObjectID;
 //       if(href.substring(0, 3).equalsIgnoreCase("CID"))
@@ -76,7 +79,7 @@ public class NOTE_LIKE extends NOTE{
                 + "                                <div class=\"friend-box\" id=\"NoteID\">\n"
                 
                 + "                                    <div class=\"friend-profile\" style=\"background-image: url("+user.getImgUser()+");\"></div>\n"
-                + "                                    <div class=\"name-box\">"+user.getFullName()+ "<i class=\"fa-sharp fa-solid fa-thumbs-up\"></i>"+" </div>\n"
+                + getDivIcon(this.statusNote.trim(), user)
                 + "                                    <div class=\"user-name-box\">"+super.getTime()+" <br> "+post.getNumInterface()+getStatus(this.statusNote.trim())+"</div>\n"
                 + "                                    <div class=\"request-btn-row\" data-username=\"silvergoose115\">\n"
                 + "\n"

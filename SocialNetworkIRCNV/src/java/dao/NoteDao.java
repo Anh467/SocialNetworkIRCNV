@@ -45,7 +45,7 @@ public class NoteDao {
     }
 
     public NOTE_COUNT getNOTE_COUNT(String UserID) {
-        String query = "DECLARE @UserID NVARCHAR(11) =?\n"
+        String query = "DECLARE @UserID NVARCHAR(11) =? \n"
                 + "	IF NOT EXISTS(SELECT UserID, MESS, NOTE\n"
                 + "                FROM dbo.NOTE_COUNT\n"
                 + "                WHERE UserID= @UserID)\n"
