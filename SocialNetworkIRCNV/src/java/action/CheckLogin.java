@@ -64,48 +64,42 @@ public class CheckLogin extends HttpServlet {
         String pass = request.getParameter("pass");
         String id = new dao.AccountDAO().checkLogin(user, pass);
         Role role = new dao.RoleDao().getRole(id);
-        if (id == null || role.isIsLock() || role.getRoleID().equalsIgnoreCase("DELETED")) {
-            request.setAttribute("pass", "");
-            if (role.isIsLock()) {
-                request.setAttribute("status", "This account is locked");
-            } else {
-                if (role.getRoleID().equalsIgnoreCase("DELETED")) {
-                    request.setAttribute("status", "This account is DELETED");
+
+        if (role != null) {
+            if (id == null || role.isIsLock() || role.getRoleID().equalsIgnoreCase("DELETED")) {
+                request.setAttribute("pass", "");
+                if (role.isIsLock()) {
+                    request.setAttribute("status", "This account is locked");
                 } else {
-                    request.setAttribute("status", "Login fail");
-                }
-            }
-            if (role != null) {
-                if (id == null || role.isIsLock()) {
-                    request.setAttribute("pass", "");
-                    if (role.isIsLock()) {
-                        request.setAttribute("status", "This account is locked");
+                    if (role.getRoleID().equalsIgnoreCase("DELETED")) {
+                        request.setAttribute("status", "This account is DELETED");
                     } else {
                         request.setAttribute("status", "Login fail");
                     }
-                    request.getRequestDispatcher("Authen/login.jsp").forward(request, response);
-                    return;
                 }
-            } else {
-                if (id == null) {
-                    request.setAttribute("pass", "");
-                    request.setAttribute("status", "Login fail");
-                    request.getRequestDispatcher("Authen/login.jsp").forward(request, response);
-                    return;
-                }
+                request.setAttribute("pass", "");
+                request.getRequestDispatcher("Authen/login.jsp").forward(request, response);
+                return;
             }
-            HttpSession session = request.getSession();
-            session.setAttribute("id", id);
-            session.setAttribute("userRole", role.getRoleName());
-//        session.setAttribute("userRole", "Master Admin");
-            if (request.getParameter("check") != null) {
-                Cookie cookie = new Cookie("id", id);
-                cookie.setMaxAge(60 * 60 * 24);
-                cookie.setHttpOnly(true);
-                response.addCookie(cookie);
+        } else {
+            if (id == null) {
+                request.setAttribute("pass", "");
+                request.setAttribute("status", "Login fail");
+                request.getRequestDispatcher("Authen/login.jsp").forward(request, response);
+                return;
             }
-            response.sendRedirect("HomePage/HomePage.jsp");
         }
+        HttpSession session = request.getSession();
+        session.setAttribute("id", id);
+        session.setAttribute("userRole", role.getRoleName());
+//        session.setAttribute("userRole", "Master Admin");
+        if (request.getParameter("check") != null) {
+            Cookie cookie = new Cookie("id", id);
+            cookie.setMaxAge(60 * 60 * 24);
+            cookie.setHttpOnly(true);
+            response.addCookie(cookie);
+        }
+        response.sendRedirect("HomePage/HomePage.jsp");
     }
 
     /**
