@@ -11,7 +11,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import javax.servlet.ServletContext;
 import javax.servlet.http.Part;
-
+import model.CommentChild;
+import model.Comment;
 /**
  *
  * @author van12
@@ -82,7 +83,16 @@ public class ControlData {
         this.realPath = projectRootPath + "\\web\\data\\post\\" + PostID;
         this.pathForDb= "data\\post\\"+ PostID;
     }
-
+    public void createInitForCommentChild(CommentChild commentChild) {
+        this.realPathBuild = projectRootPath + "\\build\\web\\data\\post\\" + commentChild.getPostID()+"\\"+ commentChild.getCmtID()+"\\"+commentChild.getChilID();
+        this.realPath = projectRootPath + "\\web\\data\\post\\" + commentChild.getPostID()+"\\"+ commentChild.getCmtID()+"\\"+commentChild.getChilID();
+        this.pathForDb= "data\\post\\"+ commentChild.getPostID()+"\\"+ commentChild.getCmtID()+"\\"+commentChild.getChilID();
+    }
+    public void createInitForComment(Comment comment) {
+        this.realPathBuild = projectRootPath + "\\build\\web\\data\\post\\" + comment.getPostID()+"\\"+comment.getCmtID();
+        this.realPath = projectRootPath + "\\web\\data\\post\\" + comment.getPostID()+"\\"+comment.getCmtID();
+        this.pathForDb= "data\\post\\"+ comment.getPostID()+"\\"+comment.getCmtID();
+    }
     public void createInitForAvatar(String UserID) {
         this.realPathBuild = projectRootPath + "\\build\\web\\data\\user\\" + UserID + "\\avatar";
         this.realPath = projectRootPath + "\\web\\data\\user\\" + UserID + "\\avatar";

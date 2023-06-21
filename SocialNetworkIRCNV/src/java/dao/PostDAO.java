@@ -7,6 +7,7 @@ package dao;
 import controller.Text;
 import java.sql.*;
 import java.util.ArrayList;
+import jdk.vm.ci.code.CodeUtil;
 import model.Post;
 import model.PostShare;
 import model.PostUser;
@@ -21,6 +22,10 @@ public class PostDAO {
     Text text;
     public PostDAO() {
         cnn = new connection.connection().getConnection();
+        text = new Text();
+    }
+    public PostDAO(Connection cnn) {
+         this.cnn= cnn;
         text = new Text();
     }
     String getPostUser = "SELECT PostID, POST.UserID, Content, ImagePost, TimePost, NumInterface, NumComment, NumShare, PrivacyName, FullName, ImageUser\n"
@@ -183,7 +188,11 @@ public class PostDAO {
         }
         return null;
     }
-
+    public Post getPostByID(String PostID){
+        if(PostOrShare(PostID))
+            return getPostUserByPostID(PostID);
+        return getPostShareByShareID(PostID);
+    }
     public PostShare getPostShareByShareID(String ShareID) {
         try {
             String query = "SELECT c.UserID, c.FullName, c.ImageUser, \n"

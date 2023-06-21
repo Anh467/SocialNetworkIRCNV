@@ -138,7 +138,8 @@ public class Verify extends HttpServlet {
             cookie.setHttpOnly(true);
             response.addCookie(cookie);
         }
-        request.getRequestDispatcher("HomePage/HomePage.jsp").forward(request, response);
+        response.sendRedirect("HomePage/HomePage.jsp");
+       
     }
 
     /**

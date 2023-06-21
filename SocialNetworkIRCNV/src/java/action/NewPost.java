@@ -84,7 +84,7 @@ public class NewPost extends HttpServlet {
 //                String publicpost = isPublic.endsWith("1") ? "Public" : "Private";
                 User user = new dao.UserDAO().getUserByID(id);
                 PostUser postUser = new dao.PostUserDAO().getPost(PostID);
-//                String pathImg = "http://localhost:8080/SocialNetworkIRCNV/data/post/" + postUser.getImagePost();
+//                String pathImg = "..s/SocialNetworkIRCNV/data/post/" + postUser.getImagePost();
                 out.println("<div class=\"post\" style=\"margin: 10px; background: white; border-radius: 10px\" id=\"" + postUser.getPostID() + "\">\n"
                         + "            <div class=\"post-top\">\n"
                         + "                <p style=\"display: none\">" + postUser.getPostID() + "</p>\n"
@@ -177,7 +177,7 @@ public class NewPost extends HttpServlet {
                 PostShare postShare = new dao.PostDAO().getPostShareByShareID(ShareID);
                 User userShare = new dao.UserDAO().getUserByID(postShare.getUserID());
 
-//                String pathImg = "http://localhost:8080/SocialNetworkIRCNV/data/post/" + postUser.getImagePost();
+//                String pathImg = "../SocialNetworkIRCNV/data/post/" + postUser.getImagePost();
                 out.println("\n"
                         + " <div id=\"showpost\">\n"
                         + "<%@page contentType=\"text/html\" pageEncoding=\"UTF-8\"%>\n"

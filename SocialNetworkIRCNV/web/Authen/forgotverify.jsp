@@ -22,7 +22,7 @@
                 <h2 class="text-center">Wellcome User ${name} with account ${user}</h2>
                 <h4>Check your mail ${mail}</h4>
                 
-                <form action="http://localhost:8080/SocialNetworkIRCNV/ForgotPass" method="post" class="login-form" onsubmit="return validateForm()">
+                <form action="/SocialNetworkIRCNV/ForgotPass" method="post" class="login-form" onsubmit="return validateForm()">
                     <input name="mail" value="${mail}" style="display: none">
                      <input name="user" value="${user}" style="display: none">
                     <div class="form-group">

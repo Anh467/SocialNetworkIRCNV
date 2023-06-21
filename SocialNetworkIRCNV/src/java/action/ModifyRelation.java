@@ -37,7 +37,7 @@ public class ModifyRelation extends HttpServlet {
         String UID= request.getParameter("UID");
         String Type= request.getParameter("Type");
         String div="";
-        dao.RelationDao api= new dao.RelationDao();
+        dao.RelationDao api= new dao.RelationDao("relate");
         switch (Type) {
             case "unfriend": 
                 div= api.unFriend(id, UID);

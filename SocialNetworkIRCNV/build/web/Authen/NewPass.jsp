@@ -21,7 +21,7 @@
                 <div class="row">
                     <div class="col-md-4 login-sec">
                         <h2 class="text-center">Hello user ${user}</h2>
-                        <form id="myForm" action="http://localhost:8080/SocialNetworkIRCNV/ResetPass" method="get" class="login-form">
+                        <form id="myForm" action="/SocialNetworkIRCNV/ResetPass" method="get" class="login-form">
                             <input style="display: none" name="user" value="${user}">
                             <div class="form-group">
                                 <label >Password</label>

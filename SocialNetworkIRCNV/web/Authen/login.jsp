@@ -21,7 +21,7 @@
                 <div class="row">
                     <div class="col-md-4 login-sec">
                         <h2 class="text-center">Login Now</h2>
-                        <form action="http://localhost:8080/SocialNetworkIRCNV/CheckLogin" method="get" class="login-form">
+                        <form action="/SocialNetworkIRCNV/CheckLogin" method="get" class="login-form">
 
 
                             <div class="form-group">

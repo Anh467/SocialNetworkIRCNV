@@ -78,13 +78,30 @@ CREATE TABLE COMMENT(
 	UserID VARCHAR(11),
 	CONSTRAINT fk_user_id_dboCOMMENT FOREIGN KEY (UserID) REFERENCES dbo.UserInfor(UserID),
 	PostID VARCHAR(11),
-	CONSTRAINT fk_post_id_dboCOMMENT FOREIGN KEY (PostID) REFERENCES dbo.POST(PostID),
+	Content NVARCHAR(MAX),
+	TimeComment DATETIME DEFAULT GETDATE(),
+	ImageComment varchar(255),
+	NumInterface INT DEFAULT 0,
+)
+CREATE TABLE COMMENTCHILD(
+	ID INT IDENTITY(1,1) NOT NULL,
+	ChildID AS 'ILD' + RIGHT('00000000' + CAST(ID AS VARCHAR(8)), 8) PERSISTED PRIMARY KEY,
+	UserID VARCHAR(11),
+	CONSTRAINT fk_user_id_dboCOMMENTCHILD FOREIGN KEY (UserID) REFERENCES dbo.UserInfor(UserID),
+	CmtID VARCHAR(11),
+	CONSTRAINT fk_post_id_dboCOMMENTCHILD FOREIGN KEY (CmtID) REFERENCES dbo.COMMENT(CmtID),
 	Content NVARCHAR(MAX),
 	TimeComment DATETIME DEFAULT GETDATE(),
 	ImageComment varchar(255),
 	NumInterface INT DEFAULT 0,
 )
 
+
+--------------------------------------------------------------DBO.MAIL------------------------------------------------------------------
+CREATE TABLE MAIL(
+	Mail VARCHAR(255) PRIMARY KEY NOT NULL,
+	code CHAR(10),
+)
 
 
 
@@ -133,7 +150,6 @@ ID INT IDENTITY(1,1) NOT NULL,
 	UserID VARCHAR(11),
 	CONSTRAINT fk_user_id_dboPOSTSHARE FOREIGN KEY (UserID) REFERENCES dbo.UserInfor(UserID),
 	PostID VARCHAR(11),
-	CONSTRAINT fk_post_id_dboPOSTSHARE FOREIGN KEY (PostID) REFERENCES dbo.POST(PostID),
 	Content NVARCHAR(MAX),
 	TimeShare DATETIME DEFAULT GETDATE(),
 	NumInterface INT DEFAULT 0,
@@ -142,7 +158,7 @@ ID INT IDENTITY(1,1) NOT NULL,
 	CONSTRAINT fk_PrivacyID_POSTSHARE FOREIGN KEY (PrivacyID) REFERENCES dbo.Privacy(PrivacyID),
 )
 
-CREATE TABLE COMMENTSHARE(
+/*CREATE TABLE COMMENTSHARE(
 	ID INT IDENTITY(1,1) NOT NULL,
 	CmtID AS 'CID' + RIGHT('00000000' + CAST(ID AS VARCHAR(8)), 8) PERSISTED PRIMARY KEY,
 	UserID VARCHAR(11),
@@ -153,12 +169,8 @@ CREATE TABLE COMMENTSHARE(
 	TimeComment DATETIME DEFAULT GETDATE(),
 	ImageComment VARCHAR(255),
 	NumInterface INT DEFAULT 0,
-)
+)*/
 
-CREATE TABLE MAIL(
-	Mail VARCHAR(255) PRIMARY KEY NOT NULL,
-	code CHAR(10),
-)
 --------------------------------------------------------------DBO.LIKE------------------------------------------------------------------
 CREATE TABLE InterFace(
 	InterFaceID VARCHAR(11) PRIMARY KEY NOT NULL,
@@ -183,4 +195,55 @@ CREATE TABLE InterFaceObject(
 	InterFaceID VARCHAR(11) DEFAULT 'none'
 	CONSTRAINT fk_InterFaceID_InterFaceObject FOREIGN KEY (InterFaceID) REFERENCES dbo.InterFace(InterFaceID),
 );
+--------------------------------------------------------------DBO.Notificate------------------------------------------------------------------
+CREATE TABLE NOTE_COUNT(
+	UserID VARCHAR(11) PRIMARY KEY,
+	NOTE INT,
+	MESS INT 
+)
+
+CREATE TABLE NOTE_FRIEND(
+	ID INT IDENTITY(1,1) NOT NULL,
+	NoteID AS 'NFR' + RIGHT('00000000' + CAST(ID AS VARCHAR(8)), 8) PERSISTED PRIMARY KEY,
+	UserID VARCHAR(11) NOT NULL,
+	CONSTRAINT fk_user_id_Notificate FOREIGN KEY (UserID) REFERENCES dbo.UserInfor(UserID),
+	UserIDRequest VARCHAR(11) NOT NULL,
+	CONSTRAINT fk_UserIDRequest_Notificate FOREIGN KEY (UserIDRequest) REFERENCES dbo.UserInfor(UserID),
+	 CONSTRAINT uc_UserID_UserIDRequest UNIQUE (UserID, UserIDRequest),
+	 statusNote NVARCHAR(30),
+	 -- sent : nguowfi dung khac yeu cau
+	 -- request: minh yeu cau
+	 -- accepted: yeu cau cua minh duoc chap nhan
+	 -- isFriend: minh chap nhan yeu cau
+	TimeRequest DATETIME DEFAULT GETDATE(),
+	isRead BIT DEFAULT 0
+)
+CREATE TABLE NOTE_COMMENT(
+	ID INT IDENTITY(1,1) NOT NULL,
+	NoteID AS 'NCM' + RIGHT('00000000' + CAST(ID AS VARCHAR(8)), 8) PERSISTED PRIMARY KEY,
+	ObjectID VARCHAR(11),
+	UserID VARCHAR(11) NOT NULL,
+	CONSTRAINT uc_UserID_NoteID UNIQUE (UserID, NoteID),
+	statusNote NVARCHAR(30),
+	 -- post :là bình luậnt của bài dang
+	 -- comment: la binh luan tra loi comment
+	TimeComment DATETIME DEFAULT GETDATE(),
+	isRead BIT DEFAULT 0
+)
+
+
+CREATE TABLE NOTE_lIKE(
+	ID INT IDENTITY(1,1) NOT NULL,
+	NoteID AS 'NLI' + RIGHT('00000000' + CAST(ID AS VARCHAR(8)), 8) PERSISTED PRIMARY KEY,
+	ObjectID VARCHAR(11),
+	UserID VARCHAR(11) NOT NULL,
+	CONSTRAINT uc_UserID_ObjectID UNIQUE (UserID, ObjectID),
+	
+	statusNote NVARCHAR(30),
+	-- post (PID and SID) :là thong bao cho bai viet post va sharepost
+	 -- comment (CID, ILD): là thong bao tuong tac cho binh luan post va sharepost
+	TimeComment DATETIME DEFAULT GETDATE(),
+	isRead BIT DEFAULT 0
+)
+
 

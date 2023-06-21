@@ -107,7 +107,7 @@ public class BlockFilter implements Filter {
         doBeforeProcessing(request, response);
         
         HttpServletResponse rp= (HttpServletResponse) response;
-        rp.sendRedirect("http://localhost:8080/SocialNetworkIRCNV/HomePage/HomePage.jsp");
+        rp.sendRedirect("../HomePage/HomePage.jsp");
         return;
     }
 

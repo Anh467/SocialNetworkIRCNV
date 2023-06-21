@@ -17,11 +17,13 @@ import model.User;
 public class UserDAO {
 
     Connection cnn;
-
+    
     public UserDAO() {
-        cnn = new connection.connection().getConnection();
+        this.cnn = new connection.connection().getConnection();
     }
-
+    public UserDAO(Connection cnn) {
+        this.cnn= cnn;
+    }
     public ArrayList<User> getProfile() {
         ArrayList<User> profile = new ArrayList<>();
         String Query = "SELECT UserId,FullName, Address, Mail, PhoneNumber, Dob, Gender, Nation, ImageUser, ImageBackGround FROM  dbo.UserInfor ";
@@ -49,8 +51,8 @@ public class UserDAO {
     }
 
     public User getUserByID(String userId) {
-        String Query = "SELECT UserID, FullName, Address, Mail, PhoneNumber, Dob, Gender, Nation, \n"
-                + "			ImageUser, ImageBackGround FROM  dbo.UserInfor WHERE UserID = ? ";
+        String Query = "SELECT UserID, FullName, Address, Mail, PhoneNumber, Dob, Gender, Nation, ImageUser, ImageBackGround, NumFriend, NumPost"
+                + " FROM  dbo.UserInfor WHERE UserID = ? ";
         try {
             PreparedStatement ps = cnn.prepareStatement(Query);
             ps.setString(1, userId);
@@ -60,12 +62,12 @@ public class UserDAO {
                         rs.getString(10), rs.getString(1),
                         rs.getNString(2), rs.getString(3),
                         rs.getString(4), rs.getString(5),
-                        rs.getString(6), rs.getBoolean(7));
+                        rs.getString(6), rs.getBoolean(7), rs.getInt(11), rs.getInt(12));
             }
         } catch (Exception e) {
             System.out.println("dao.UserDAO.getUserByID()");
             e.printStackTrace();
-        }
+        } 
         return null;
     }
 
@@ -166,4 +168,81 @@ public class UserDAO {
 
     }
 
+    public ArrayList<User> getUserFriend(String id, int offset) {
+        ArrayList<User> profile = new ArrayList<>();
+        String query = "DECLARE @UserID VARCHAR(11)= ? ;\n"
+                + "	DECLARE @Offset INT = ? ; -- Số bài post đã hiển thị trước đó = @FetchCount* (offset-1)\n"
+                + "	DECLARE @FetchCount INT = 5; -- Số bài post muốn lấy thêm\n"
+                + "	SELECT  UserInfor.UserID,FullName, Address, Mail, PhoneNumber, Dob, Gender, Nation, ImageUser, ImageBackGround, NumFriend, NumPost\n"
+                + "	FROM(\n"
+                + "	SELECT UserID2\n"
+                + "	FROM dbo.USERRELATION\n"
+                + "	WHERE (UserID1= @UserID AND isFriend= 1)\n"
+                + "	UNION ALL\n"
+                + "	SELECT UserID1\n"
+                + "	FROM dbo.USERRELATION\n"
+                + "	WHERE (UserID2= @UserID AND isFriend= 1)) AS friend\n"
+                + "	INNER JOIN dbo.UserInfor ON UserInfor.UserID = friend.UserID2\n"
+                + "	ORDER BY TimeCreate\n"
+                + "	OFFSET (@Offset-1)* @FetchCount ROWS\n"
+                + "	FETCH NEXT @FetchCount ROWS ONLY;";
+        try {
+            PreparedStatement ps = cnn.prepareStatement(query);
+            ps.setString(1, id);
+            ps.setInt(2, offset);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                User user = new User(rs.getNString(8), rs.getString(9),
+                        rs.getString(10), rs.getString(1),
+                        rs.getNString(2), rs.getString(3),
+                        rs.getString(4), rs.getString(5),
+                        rs.getString(6), rs.getBoolean(7), rs.getInt(11), rs.getInt(12));
+                user.toString();
+                profile.add(user);
+            }
+        } catch (Exception e) {
+            System.out.println("dao.UserDAO.getUserFriend()");
+            e.printStackTrace();
+        }
+        return profile;
+    }
+    public ArrayList<User> getUserFriend(String id, int offset, int num) {
+        ArrayList<User> profile = new ArrayList<>();
+        String query = "DECLARE @UserID VARCHAR(11)= ? ;\n"
+                + "	DECLARE @Offset INT = ? ; -- Số bài post đã hiển thị trước đó = @FetchCount* (offset-1)\n"
+                + "	DECLARE @FetchCount INT = ?; -- Số bài post muốn lấy thêm\n"
+                + "	SELECT  UserInfor.UserID,FullName, Address, Mail, PhoneNumber, Dob, Gender, Nation, ImageUser, ImageBackGround, NumFriend, NumPost\n"
+                + "	FROM(\n"
+                + "	SELECT UserID2\n"
+                + "	FROM dbo.USERRELATION\n"
+                + "	WHERE (UserID1= @UserID AND isFriend= 1)\n"
+                + "	UNION ALL\n"
+                + "	SELECT UserID1\n"
+                + "	FROM dbo.USERRELATION\n"
+                + "	WHERE (UserID2= @UserID AND isFriend= 1)) AS friend\n"
+                + "	INNER JOIN dbo.UserInfor ON UserInfor.UserID = friend.UserID2\n"
+                + "	ORDER BY TimeCreate\n"
+                + "	OFFSET (@Offset-1)* @FetchCount ROWS\n"
+                + "	FETCH NEXT @FetchCount ROWS ONLY;";
+        try {
+            PreparedStatement ps = cnn.prepareStatement(query);
+            ps.setString(1, id);
+            ps.setInt(2, offset);
+            ps.setInt(3, num);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                User user = new User(rs.getNString(8), rs.getString(9),
+                        rs.getString(10), rs.getString(1),
+                        rs.getNString(2), rs.getString(3),
+                        rs.getString(4), rs.getString(5),
+                        rs.getString(6), rs.getBoolean(7), rs.getInt(11), rs.getInt(12));
+                user.toString();
+                profile.add(user);
+            }
+        } catch (Exception e) {
+            System.out.println("dao.UserDAO.getUserFriend()");
+            e.printStackTrace();
+        }
+        return profile;
+    }
 }

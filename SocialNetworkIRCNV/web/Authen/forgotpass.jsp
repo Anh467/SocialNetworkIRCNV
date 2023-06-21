@@ -22,7 +22,7 @@
                 <div class="row">
                     <div class="col-md-4 login-sec">
                         <h2 class="text-center">Forgot password</h2>
-                        <form id="myForm" action="http://localhost:8080/SocialNetworkIRCNV/ForgotPass" method="get" class="login-form">
+                        <form id="myForm" action="/SocialNetworkIRCNV/ForgotPass" method="get" class="login-form">
                             <div class="form-group">
                                 <label class="text-uppercase">Mail</label>
                                 <input name="mail" type="text" class="form-control" placeholder="" value="${mail}">

@@ -27,7 +27,7 @@ public class Relation {
             this.User1 = User1;
             this.User2 = User2;
         }
-        new dao.RelationDao().createRelation(this.User1 , this.User2);
+        new dao.RelationDao("relate").createRelation(this.User1 , this.User2);
     }
 
     public Relation(String User1, String User2, boolean U1RequestU2, boolean U2RequestU1, boolean isFriend) {
@@ -38,7 +38,7 @@ public class Relation {
             this.User1 = User1;
             this.User2 = User2;
         }
-        new dao.RelationDao().createRelation(this.User1, this.User2);
+        new dao.RelationDao("relate").createRelation(this.User1, this.User2);
         this.U1RequestU2 = U1RequestU2;
         this.U2RequestU1 = U2RequestU1;
         this.isFriend = isFriend;

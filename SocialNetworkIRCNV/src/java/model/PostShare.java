@@ -201,20 +201,18 @@ public class PostShare extends Post {
     }
 
     public String getDiv(String IDUserCurrent) {
+        String href= (!IDUserCurrent.equalsIgnoreCase(this.getUserID()))?"<a class=\"suggestion-href\" href=\"/SocialNetworkIRCNV/PersonalPage/ProfileUser.jsp?UID="+this.getUserID()+"\" style=\"display: inline\">\n":"<a class=\"suggestion-href\" href=\"/SocialNetworkIRCNV/PersonalPage/ProfileInfo.jsp\" style=\"display: inline\">\n";
         InterFaceObject interFaceObject = new InterFaceObjectDAO().getInterFaceObjectByID(IDshare, IDUserCurrent);
-        return "\n"
-                + "\n"
-                + "<!DOCTYPE html>\n"
-                + "<html>\n"
-                + "    \n"
-                + "    <body>\n"
-                + "        <div class=\"share\"  style=\"margin: 10px; width: 700px;\" id=\"" + this.IDshare + "\">\n"
+        return 
+                 "        <div class=\"share\"  style=\"margin: 10px; width: 700px;\" id=\"" + this.IDshare + "\">\n"
                 + "            <div class=\"share-head\">\n"
                 + "                <div class=\"dp\" >\n"
                 + "                    <img src=\"" + this.img_UserShare + "\" alt=\"\" style=\"width: 100%;\" >\n"
                 + "                </div>\n"
                 + "                <div class=\"share-info\">\n"
+                + href
                 + "                    <p class=\"name\" style=\"color: #003140\">" + this.NameShare + "</p>\n"
+                + " </a>"
                 + "                    <span class=\"time\" style=\"color: #70d8ff\">" + this.getTimePost() + "</span>\n"
                 + "                    <span class=\"time\" style=\"color: #003140\">" + this.getPrivacyName() + "</span>\n"
                 + "                </div>\n"
@@ -227,7 +225,6 @@ public class PostShare extends Post {
                 + "                        </div>\n"
                 + "                    </div>\n"
                 + "                </i>\n"
-                + "\n"
                 + "            </div>\n"
                 + "            <div class=\"share-content\">\n"
                 + "                " + this.getContent().trim() + "\n"
@@ -238,10 +235,11 @@ public class PostShare extends Post {
                 + "                        <img src=\"" + this.getImgUserDown() + "\" alt=\"\" style=\"width: 100%;\" >\n"
                 + "                    </div>\n"
                 + "                    <div class=\"share-info\">\n"
+                + "                  <a class=\"suggestion-href\" href=\"../PersonalPage/ProfileUser.jsp?UID=" + this.getUserIDownPost() + "\">"
                 + "                        <p class=\"name\" style=\"color: #003140\">" + this.getNameUserDown() + "</p>\n"
+                + " </a>"
                 + "                        <span class=\"time\" style=\"color: #70d8ff\">" + this.getTimePostDown() + "</span>\n"
                 + "                    </div>\n"
-                + "\n"
                 + "                </div>\n"
                 + "\n"
                 + "                <div class=\"share-content\" style=\"text-align: center;\" >\n"
@@ -262,7 +260,7 @@ public class PostShare extends Post {
                 + "                </div>\n"
                 + "            </div>\n"
                 + "            <div class=\"share-bottom\" style=\" width: 90%; color:  #00abfd; border-top: 1px #00587c solid; margin-left: 5%; padding: 0 5%;\">\n"
-                + "                <div class=\"action\" onclick=\"like('" +IDshare + "', '" + interFaceObject.getInterFaceID() + "')\">\n"
+                + "                <div class=\"action\" onclick=\"like('" + IDshare + "', '" + interFaceObject.getInterFaceID() + "')\">\n"
                 + interFaceObject.getInterFaceDiv()
                 + "                </div>\n"
                 + "                <div class=\"action\">\n"
@@ -277,9 +275,6 @@ public class PostShare extends Post {
                 + "                    </i>\n"
                 + "                </div>\n"
                 + "            </div>\n"
-                + "        </div>\n"
-                + "\n"
-                + "    </body>\n"
-                + "</html>";
+                + "        </div>\n";
     }
 }

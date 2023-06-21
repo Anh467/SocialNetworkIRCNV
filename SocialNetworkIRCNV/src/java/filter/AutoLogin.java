@@ -14,6 +14,7 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +25,7 @@ import javax.servlet.jsp.PageContext;
  *
  * @author van12
  */
+@WebFilter(filterName = "AutoLogin", urlPatterns = {"/Authen/*"})
 public class AutoLogin implements Filter {
 
     private static final boolean debug = true;
@@ -41,7 +43,32 @@ public class AutoLogin implements Filter {
         if (debug) {
             log("AutoLogin:DoBeforeProcessing");
         }
-
+        HttpServletRequest rq = (HttpServletRequest) request;
+        HttpServletResponse rp = (HttpServletResponse) response;
+        HttpSession session = rq.getSession();
+        Cookie[] cookies = rq.getCookies();
+        try {
+            for (Cookie aCookie : cookies) {
+                if (aCookie.getName().equals("id")) {
+                    if (aCookie.getValue() == null || aCookie.getValue().equals("")) {
+                        break;
+                    } else {
+                        rq.getSession().setAttribute("id", aCookie.getValue());
+                        System.out.println("rq.getContextPath(): " + rq.getContextPath());
+                        System.out.println("rq.getContextPath(): " + rq.getServerName());
+                        System.out.println("rq.getContextPath(): " + rq.getServerPort());
+                        String url = rq.getServerName() + ":" + rq.getServerPort() + rq.getContextPath() + "/user.jsp";
+                    }
+                }
+            }
+        } catch (Exception e) {
+        }
+        String id = (String) session.getAttribute("id");
+        if (id != null && !id.equals("")) {
+//            rq.getRequestDispatcher("../HomePage/HomePage.jsp").forward(rq, rp);
+              rp.sendRedirect("../HomePage/HomePage.jsp");
+             
+        }
         // Write code here to process the request and/or response before
         // the rest of the filter chain is invoked.
         // For example, a logging filter might log items on the request object,
@@ -108,31 +135,6 @@ public class AutoLogin implements Filter {
 
         doBeforeProcessing(request, response);
 
-        HttpServletRequest rq = (HttpServletRequest) request;
-        HttpServletResponse rp = (HttpServletResponse) response;
-        HttpSession session = rq.getSession();
-        Cookie[] cookies = rq.getCookies();
-        try {
-            for (Cookie aCookie : cookies) {
-                if (aCookie.getName().equals("id")) {
-                    if (aCookie.getValue() == null || aCookie.getValue().equals("")) {
-                        break;
-                    } else {
-                        session.setAttribute("id", aCookie.getValue());
-                        System.out.println("rq.getContextPath(): "+rq.getContextPath());
-                        System.out.println("rq.getContextPath(): "+rq.getServerName());
-                        System.out.println("rq.getContextPath(): "+rq.getServerPort());
-                        String url= rq.getServerName()+":"+rq.getServerPort()+rq.getContextPath()+"/user.jsp";                       
-                    }
-                }
-            }
-        } catch (Exception e) {
-        }
-        String id=(String) session.getAttribute("id");
-        if(id!=null && !id.equals("")){
-            rp.sendRedirect("../HomePage/HomePage.jsp");
-                        return;
-        }
         Throwable problem = null;
         try {
             chain.doFilter(request, response);

@@ -12,6 +12,8 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World! USER</h1>
+        <a class="suggestion-href" href="/SocialNetworkIRCNV/PersonalPage/ProfileUser.jsp?UID=UID00000003" style="display: inline">
+            
+        </a>
     </body>
 </html>

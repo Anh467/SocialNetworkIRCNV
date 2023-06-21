@@ -21,7 +21,7 @@ public class SearchUser {
             this.img_user = "";
         else this.img_user = "/SocialNetworkIRCNV/"+img_user;
         this.fullName = text.changeUTF8(fullName);
-        this.link_href= "http://localhost:8080/SocialNetworkIRCNV/PersonalPage/ProfileUser.jsp?UID="+this.UserID;
+        this.link_href= "../PersonalPage/ProfileUser.jsp?UID="+this.UserID;
         this.mutual_friend= 0;
     }
 

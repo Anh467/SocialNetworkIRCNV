@@ -131,8 +131,8 @@ public class PostUser extends Post {
                 + "\n"
                 + "\n"
                 + "            <div class=\"post-bottom\" style=\" width: 90%; color:  #00abfd; border-top: 1px #00587c solid; margin-left: 5%; padding: 0 5%;\">\n"
-                + "                <div class=\"action\" onclick=\"like('" + this.getPostID() + "', '" + interFaceObject.getInterFaceID() + "')\">\n"
-                +                       interFaceObject.getInterFaceDiv()
+                + "                <div class=\"action\" onclick=\"like('" + this.getPostID() + "', '" + interFaceObject.getInterFaceID() + "')\" >\n"
+                + interFaceObject.getInterFaceDiv()
                 + "                </div>\n"
                 + "                <div class=\"action\">\n"
                 + "                    <a href=\"#writecomment\" style=\"text-decoration: none; color:  #00abfd;\">\n"
@@ -149,18 +149,19 @@ public class PostUser extends Post {
     }
 
     public String getDiv(String IDUserCurrent) {
+       
+        String href= (!IDUserCurrent.equalsIgnoreCase(this.getUserID()))?"<a class=\"suggestion-href\" href=\"/SocialNetworkIRCNV/PersonalPage/ProfileUser.jsp?UID="+this.getUserID()+"\" style=\"display: inline\">\n":"<a class=\"suggestion-href\" href=\"/SocialNetworkIRCNV/PersonalPage/ProfileInfo.jsp\" style=\"display: inline\">\n";
         InterFaceObject interFaceObject = new InterFaceObjectDAO().getInterFaceObjectByID(super.getPostID(), IDUserCurrent);
-        return "<!DOCTYPE html>\n"
-                + "<html lang=\"vi\">\n"
-                + "    <body>\n"
-                + "        <div class=\"post\" style=\"margin: 10px; background: white; border-radius: 10px\" id=\"" + this.getPostID() + "\">\n"
+        return  "<div class=\"post\" style=\"margin: 10px; background: white; border-radius: 10px\" id=\"" + this.getPostID() + "\">\n"
                 + "            <div class=\"post-top\">\n"
                 + "                <p style=\"display: none\">" + this.getPostID() + "</p>\n"
                 + "                <div class=\"dp\" >\n"
                 + "                    <img src=\"" + this.getImgUser() + "\" alt=\"\" style=\"width: 100%;\" >\n"
                 + "                </div>\n"
                 + "                <div class=\"post-info\">\n"
+                +href
                 + "                    <p class=\"name\" style=\"color: #003140\">" + this.getFullNameUser() + "</p>\n"
+                + "        </a>"
                 + "                    <span class=\"time\" style=\"color: #70d8ff\">" + this.getTimePost() + "</span>\n"
                 + "                    <span class=\"time\" style=\"color: #003140\">" + this.getPrivacyName() + "</span>\n"
                 + "                </div>\n"
@@ -195,7 +196,7 @@ public class PostUser extends Post {
                 + "\n"
                 + "            <div class=\"post-bottom\" style=\" width: 90%; color:  #00abfd; border-top: 1px #00587c solid; margin-left: 5%; padding: 0 5%;\">\n"
                 + "                <div class=\"action\" onclick=\"like('" + this.getPostID() + "', '" + interFaceObject.getInterFaceID() + "')\">\n"
-                +                       interFaceObject.getInterFaceDiv()
+                + interFaceObject.getInterFaceDiv()
                 + "                </div>\n"
                 + "                <div class=\"action\">\n"
                 + "                    <a href=\"#writecomment\" style=\"text-decoration: none; color:  #00abfd;\">\n"
@@ -209,11 +210,7 @@ public class PostUser extends Post {
                 + "                    <span>Share</span>\n"
                 + "                </div>\n"
                 + "            </div>\n"
-                + "        </div>                  \n"
-                + "    </body>\n"
-                + "\n"
-                + "</html>\n"
-                + "";
+                + "        </div>                  \n";
     }
 
 }

@@ -1,4 +1,5 @@
 <%@page import="model.User"%>
+<%@ page errorPage="../block/errorPage.jsp" %>  
 <%@page import="model.PostShare"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="model.PostUser"%>
@@ -11,10 +12,11 @@
 
     <head>
         <link rel="icon" href="/SocialNetworkIRCNV/data/img/logo.jpg" type="image/i-con">
+        <link rel="shortcut icon" href="./images/logo.png" type="image/x-icon">
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="shortcut icon" href="./images/logo.png" type="image/x-icon">
+        
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://kit.fontawesome.com/24c45437f2.js" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
@@ -27,7 +29,7 @@
         <link rel="stylesheet" href="style.css">
         <link rel="stylesheet" href="/SocialNetworkIRCNV/css/post.css">
         <link rel="stylesheet" href="/SocialNetworkIRCNV/css/postshare.css">
-        <title>MediaBook</title>
+        <title class="title-page" id="title-page">Home Page</title>
         <style>
             *{
                 margin:0;
@@ -381,10 +383,12 @@
                         <i class="fa fa-home"></i>
                         <p> Home</p>
                     </li>
+                    <a href="${pageContext.request.contextPath}/PersonalPage/FriendList.jsp">
                     <li>
                         <i class="fa fa-user-friends"></i>
                         <p>Friends</p>
                     </li>
+                    </a>
                     <a href="../BoxChat/GetFriendAndBoxChat" style="text-decoration: none; color: black">
                         <li>
                             <i class="fas fa-comments"></i>
@@ -432,60 +436,21 @@
                 </div>
                         
                 </div>
-               
+            <% ArrayList<User> friendList= new dao.UserDAO().getUserFriend(id, 1, 9);
+                int size= (9>friendList.size())?friendList.size(): 9;
+            %>
             <div class="right-panel">
 
                     <div class="friends-section">
                         <h4>Friends</h4>
-                        <a class='friend' href="#">
+                        <%for(int i=0; i< size; i++){%>
+                        <a class='friend' href="/SocialNetworkIRCNV/PersonalPage/ProfileUser.jsp?UID=<%=friendList.get(i).getUserID()%>">
                             <div class="dp">
-                                <img src="./images/dp.jpg" alt="">
+                                <img src="<%=friendList.get(i).getImgUser()%>" alt="">
                             </div>
-                            <p class="name">Henry Mosely</p>
+                            <p class="name"><%=friendList.get(i).getFullName()%></p>
                         </a>
-
-                        <a class='friend' href="#">
-                            <div class="dp">
-                                <img src="./images/shoes.jpg" alt="">
-                            </div>
-                            <p class="name">George</p>
-                        </a>
-
-                        <a class="friend" href="#">
-                            <div class="dp">
-                                <img src="./images/boy.jpg" alt="">
-                            </div>
-                            <p class="name">Aakash Malhotra</p>
-                        </a>
-
-                        <a class="friend" href="#">
-                            <div class="dp">
-                                <img src="./images/model.jpg" alt="">
-                            </div>
-                            <p class="name">Ragini Khanna</p>
-                        </a>
-
-                        <a class="friend" href="#">
-                            <div class="dp">
-                                <img src="./images/boy.jpg" alt="">
-                            </div>
-                            <p class="name">Justin Bieber</p>
-                        </a>
-
-                        <a class="friend" href="#">
-                            <div class="dp">
-                                <img src="./images/dp.jpg" alt="">
-                            </div>
-                            <p class="name">Ramesh GC</p>
-                        </a>
-
-                        <a class="friend" href="#">
-                            <div class="dp">
-                                <img src="./images/model.jpg" alt="">
-                            </div>
-                            <p class="name">Sajita Gurung</p>
-                        </a>
-
+                        <%}%> 
                     </div>
                 </div>
         </div>
@@ -720,6 +685,7 @@
         <script src="/SocialNetworkIRCNV/js/controlPost.js"></script>
         <script src="/SocialNetworkIRCNV/HomePage/homepage.js" ></script>
         <script src="/SocialNetworkIRCNV/js/like.js" ></script>
+        
     </body>
 
 </html>

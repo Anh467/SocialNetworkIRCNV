@@ -154,7 +154,7 @@ public class UpdateInfo extends HttpServlet {
                 System.out.println("path: " + data.getRealPath());
             }
             new dao.UserDAO().updateInfo(user);
-            response.sendRedirect("http://localhost:8080/SocialNetworkIRCNV/PersonalPage/ProfileInfo.jsp");
+            response.sendRedirect("../PersonalPage/ProfileInfo.jsp");
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,78 +1,183 @@
 package model;
 
+import model.InterFaceObject;
+import java.util.ArrayList;
+
 public class Comment {
 
-    private String NameUser, ImgUser, timeCmt, contentCmt, ImgCmt, IDcmt;
-    private int numInter;
+    private String CmtID, UserID, PostID, Content, TimeComment, ImageComment;
+    int NumInterface;
+    ArrayList<CommentChild> commentChild;
 
-    public Comment(String NameUser, String ImgUser, String timeCmt, String contentCmt, int numInter, String ImgCmt, String IDcmt) {
-        this.NameUser = NameUser;
-        this.ImgUser = "/SocialNetworkIRCNV/"+ImgUser;
-        this.timeCmt = timeCmt;
-        this.contentCmt = contentCmt;
-        this.numInter = numInter;
-        this.ImgCmt="/SocialNetworkIRCNV/"+ImgCmt;
-        this.IDcmt=IDcmt;
-    }
-
-    public String getIDcmt() {
-        return IDcmt;
-    }
-
-    public void setIDcmt(String IDcmt) {
-        this.IDcmt = IDcmt;
-    }
-    
     public Comment() {
     }
 
-    public String getImgCmt() {
-        return ImgCmt;
+    public Comment(String CmtID, String UserID, String PostID, String Content, String TimeComment,
+            String ImageComment, int NumInterface, ArrayList<CommentChild> commentChild) {
+        this.CmtID = CmtID;
+        this.UserID = UserID;
+        this.PostID = PostID;
+        this.Content = Content;
+        this.TimeComment = TimeComment;
+        this.ImageComment = ImageComment;
+        this.NumInterface = NumInterface;
+        this.commentChild = commentChild;
     }
 
-    public void setImgCmt(String ImgCmt) {
-        this.ImgCmt = ImgCmt;
-    }
-    
-    public String getNameUser() {
-        return NameUser;
+    public Comment(String CmtID, String UserID, String PostID, String Content, String TimeComment,
+            String ImageComment, int NumInterface) {
+        this.CmtID = CmtID;
+        this.UserID = UserID;
+        this.PostID = PostID;
+        this.Content = Content;
+        this.TimeComment = TimeComment;
+        this.ImageComment = ImageComment;
+        this.NumInterface = NumInterface;
+
     }
 
-    public void setNameUser(String NameUser) {
-        this.NameUser = NameUser;
+    public String getCmtID() {
+        return CmtID;
     }
 
-    public String getImgUser() {
-        return ImgUser;
+    public void setCmtID(String CmtID) {
+        this.CmtID = CmtID;
     }
 
-    public void setImgUser(String ImgUser) {
-        this.ImgUser = ImgUser;
+    public String getUserID() {
+        return UserID;
     }
 
-    public String getTimeCmt() {
-        return timeCmt;
+    public void setUserID(String UserID) {
+        this.UserID = UserID;
     }
 
-    public void setTimeCmt(String timeCmt) {
-        this.timeCmt = timeCmt;
+    public String getPostID() {
+        return PostID;
     }
 
-    public String getContentCmt() {
-        return contentCmt;
+    public void setPostID(String PostID) {
+        this.PostID = PostID;
     }
 
-    public void setContentCmt(String contentCmt) {
-        this.contentCmt = contentCmt;
+    public String getContent() {
+        return Content;
     }
 
-    public int getNumInter() {
-        return numInter;
+    public void setContent(String Content) {
+        this.Content = Content;
     }
 
-    public void setNumInter(int numInter) {
-        this.numInter = numInter;
+    public String getTimeComment() {
+        return TimeComment;
     }
-    
-    
+
+    public void setTimeComment(String TimeComment) {
+        this.TimeComment = TimeComment;
+    }
+
+    public String getImageComment() {
+        return ImageComment;
+    }
+
+    public void setImageComment(String ImageComment) {
+        this.ImageComment = ImageComment;
+    }
+
+    public int getNumInterface() {
+        return NumInterface;
+    }
+
+    public void setNumInterface(int NumInterface) {
+        this.NumInterface = NumInterface;
+    }
+
+    public ArrayList<CommentChild> getCommentChild() {
+        return commentChild;
+    }
+
+    public void setCommentChild(ArrayList<CommentChild> commentChild) {
+        this.commentChild = commentChild;
+    }
+
+   public String getDiv(String id) {
+        String str = "";
+        if (this.getImageComment() != null && !this.getImageComment().isEmpty()) {
+            str = "<img src=\"" + this.getImageComment() + "\">\n";
+        }
+        User user = new dao.UserDAO().getUserByID(this.getUserID());
+        InterFaceObject interFaceObject = new dao.InterFaceObjectDAO().getInterFaceObjectByID(this.CmtID, id);
+        return  "<ul><li id=\"comment-"+this.getCmtID()+"\">"
+                + "    <div class=\"comment\" id=\""+this.getCmtID()+"\">\n"
+                + "        <div class=\"comment-img\">\n"
+                + "            <img src=\""+user.getImgUser()+"\" alt=\"\">\n"
+                + "        </div>\n"
+                + "        <div class=\"comment-content\">\n"
+                + "            <div class=\"comment-details\">\n"
+                + "                <h4 class=\"comment-name\">"+user.getFullName()+"</h4>\n"
+                + "                <span class=\"comment-log\">"+this.getTimeComment()+"</span>\n"
+                + "            </div>\n"
+                + "            <div class=\"comment-desc\">\n"
+                + "                <p>"+this.getContent()+"<br>\n"
+                + str
+                + "                </p>\n"
+                + "            </div>\n"
+                + "            <div class=\"comment-data\">\n"
+                + "                <div class=\"comment-likes\">\n"
+                + "                    <div class=\"comment-likes-up\" onclick=\"like('"+this.getCmtID()+"', '"+interFaceObject.getInterFaceID()+"')\">\n"
+                + "                        "+interFaceObject.getInterFaceDiv()+"\n"
+                + "\n"
+                + "                    </div>\n"
+                + "                    <span>"+this.NumInterface+"</span>\n"
+                + "                </div>\n"
+                + "                <div class=\"comment-reply\" onclick=\"reply('"+this.getCmtID()+"', '"+user.getFullName()+"')\">\n"
+                + "                    <a href=\"#!\">Reply</a>\n"
+                + "                </div>\n"
+                + "                <div class=\"comment-report\">\n"
+                + "                    <a href=\"#!\">Report</a>\n"
+                + "                </div>\n"
+                + "            </div>\n"
+                + "        </div>\n"
+                + "    </div>\n"
+                + "</li></ul>";
+    }
+    public String getUpdateDiv(String id) {
+        String str = "";
+        if (this.getImageComment() != null && !this.getImageComment().isEmpty()) {
+            str = "<img src=\"" + this.getImageComment() + "\">\n";
+        }
+        User user = new dao.UserDAO().getUserByID(this.getUserID());
+        InterFaceObject interFaceObject = new dao.InterFaceObjectDAO().getInterFaceObjectByID(this.CmtID, id);
+        return  "        <div class=\"comment-img\">\n"
+                + "            <img src=\""+user.getImgUser()+"\" alt=\"\">\n"
+                + "        </div>\n"
+                + "        <div class=\"comment-content\">\n"
+                + "            <div class=\"comment-details\">\n"
+                + "                <h4 class=\"comment-name\">"+user.getFullName()+"</h4>\n"
+                + "                <span class=\"comment-log\">"+this.getTimeComment()+"</span>\n"
+                + "            </div>\n"
+                + "            <div class=\"comment-desc\">\n"
+                + "                <p>"+this.getContent()+"<br>\n"
+                + str
+                + "                </p>\n"
+                + "            </div>\n"
+                + "            <div class=\"comment-data\">\n"
+                + "                <div class=\"comment-likes\">\n"
+                + "                    <div class=\"comment-likes-up\" onclick=\"like('"+this.getCmtID()+"', '"+interFaceObject.getInterFaceID()+"')\">\n"
+                + "                        "+interFaceObject.getInterFaceDiv()+"\n"
+                + "\n"
+                + "                    </div>\n"
+                + "                    <span>"+this.NumInterface+"</span>\n"
+                + "                </div>\n"
+                + "                <div class=\"comment-reply\" onclick=\"reply('"+this.getCmtID()+"', '"+user.getFullName()+"')\">\n"
+                + "                    <a href=\"#!\">Reply</a>\n"
+                + "                </div>\n"
+                + "                <div class=\"comment-report\">\n"
+                + "                    <a href=\"#!\">Report</a>\n"
+                + "                </div>\n"
+                + "            </div>\n"
+                + "        </div>\n";
+                
+
+    }
 }

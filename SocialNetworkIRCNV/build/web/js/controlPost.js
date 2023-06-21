@@ -160,20 +160,20 @@ function SharePost(PostIDown, imgUserDown, name_userDown, contentDown, img_postD
     PostID.value = PostIDown;
     $('#modalShare').modal('show');
 }
-document.addEventListener('DOMContentLoaded', function () {
-    // Lấy tất cả các phần tử <img> trên trang
-    var images = document.getElementsByTagName('img');
-
-    // Duyệt qua từng phần tử <img> và kiểm tra src
-    for (var i = 0; i < images.length; i++) {
-        var img = images[i];
-
-        // Kiểm tra nếu src của hình ảnh là rỗng
-        if (img.src === '') {
-            img.style.display = 'none'; // Ẩn hình ảnh
-        }
-    }
-});
+//document.addEventListener('DOMContentLoaded', function () {
+//    // Lấy tất cả các phần tử <img> trên trang
+//    var images = document.getElementsByTagName('img');
+//
+//    // Duyệt qua từng phần tử <img> và kiểm tra src
+//    for (var i = 0; i < images.length; i++) {
+//        var img = images[i];
+//
+//        // Kiểm tra nếu src của hình ảnh là rỗng
+//        if (img.src === '') {
+//            img.style.display = 'none'; // Ẩn hình ảnh
+//        }
+//    }
+//});
 function modifyPost(PostID, imgUser, Nameuser, timePost, Public, Content, imgPost) {
     var postID = document.getElementById('IDpost');
     var img_user = document.getElementById('imgUser');

@@ -23,12 +23,12 @@ $(document).ready(function() {
         results.forEach(function(suggestion) {
           const suggestionHref = document.createElement('a');
           suggestionHref.classList.add('suggestion-href');  
-          suggestionHref.setAttribute('href', suggestion.link_href);
+          //suggestionHref.setAttribute('href', suggestion.link_href);
 
           const suggestionItem = document.createElement('div');
           suggestionItem.classList.add('suggestion-item');
           suggestionItem.setAttribute('id',suggestion.UserID);
-
+          suggestionItem.setAttribute('onclick', 'otherProfile(\''+suggestion.UserID+'\')');
           const profilePic = document.createElement('img');
           profilePic.src = suggestion.img_user;
           suggestionHref.appendChild(profilePic);
@@ -41,7 +41,7 @@ $(document).ready(function() {
           
           const mutualFriends = document.createElement('span');
           mutualFriends.classList.add('mutual-friends');
-          mutualFriends.textContent = `${suggestion.mutual_friend} mutual friends`;
+          mutualFriends.textContent = `${suggestion.mutual_friend} number friends`;
           suggestionHref.appendChild(mutualFriends);
 
           suggestionItem.appendChild(suggestionHref);

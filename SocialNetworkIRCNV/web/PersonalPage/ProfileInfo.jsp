@@ -6,6 +6,7 @@
 <%@page import="model.Post"%>
 <%@page import="model.PostShare"%>
 <%@page import="model.PostUser"%>
+<%@ page errorPage="../block/errorPage.jsp" %>  
 <!DOCTYPE html>
 <!--
 Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -18,8 +19,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
 <!DOCTYPE html>
 <html lang="vi">
     <head>
-        <title>TODO supply a title</title>
+        <title>Your Profile</title>
         <meta charset="UTF-8">
+        <link rel="icon" href="/SocialNetworkIRCNV/data/img/logo.jpg" type="image/i-con">
+        <link rel="shortcut icon" href="./images/logo.png" type="image/x-icon">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="bootstrap-5.0.2-dist/css/bootstrap.min.css" rel="stylesheet">
         <script src="bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script> 
@@ -246,8 +249,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
 
         }
         .friend-box div img{
-            width:80%;
-            height:90%;
+            width:80px;
+            height:110px;
+            object-fit: cover;
             cursor:pointer;
             padding-bottom:30px;
             border-radius:10px;
@@ -334,8 +338,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
         </header>
 
         <jsp:include page = "/GetInfor"></jsp:include>
-        
-        <jsp:include page="/post" />
+        <%
+        ArrayList<User> friendList = new dao.UserDAO().getUserFriend(id, 1, 9);
+        %>
        
         <div class ="profile-container ">
 
@@ -347,11 +352,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                         <img src ="<%=user.getImgUser()%>" class ="pd-image">
                         <div class = "profile-name">
                             <h3><a href="" style="text-decoration: none; color:#626262;"><%=user.getFullName()%></a></h3>
-                            <p>4 Friends - 0 Follow</p>
-                            <img src="https://picsum.photos/300/300/?random" alt="alt"/>
-                            <img src="https://picsum.photos/300/300/?random" alt="alt"/>
-                            <img src="https://picsum.photos/300/300/?random" alt="alt"/>
-                            <img src="https://picsum.photos/300/300/?random" alt="alt"/>    
+                            <p><%= user.getNumFriend()%> Friends</p>
+                            <%
+                                int size = (5 > friendList.size()) ? friendList.size() : 5;
+                                for (int i = 0; i < size; i++) {%>
+                            <img src="<%=friendList.get(i).getImgUser()%>" alt="alt" onclick="otherProfile('<%=friendList.get(i).getUserID()%>')"/>
+                            <%}%>  
                         </div>
                     </div>
                 </div>
@@ -387,10 +393,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                             <a href ="" style="margin-top:-18px;">All Friends</a>
                         </div>
                         <div class = "friend-box">
-                            <div><img src="https://picsum.photos/300/300/?random"><p>IRCN V</p></div>
-                            <div><img src="https://picsum.photos/300/300/?random"><p>IRCN V</p></div>
-                            <div><img src="https://picsum.photos/300/300/?random"><p>IRCN V</p></div>
-                            <div><img src="https://picsum.photos/300/300/?random"><p>IRCN V</p></div>
+                             <%
+                                size = (9 > friendList.size()) ? friendList.size() : 9;
+                                for (int i = 0; i < size; i++) {%>
+                            <div onclick="otherProfile('<%=friendList.get(i).getUserID()%>')">
+                                <img src="<%=friendList.get(i).getImgUser()%>">
+                                
+                            </div>
+                            <%}%>
                         </div>
 
                     </div>

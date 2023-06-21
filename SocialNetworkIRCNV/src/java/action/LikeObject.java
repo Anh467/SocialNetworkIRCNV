@@ -11,6 +11,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.CommentChild;
+import model.Comment;
 import model.PostShare;
 import model.PostUser;
 
@@ -50,6 +52,12 @@ public class LikeObject extends HttpServlet {
         }else if(ObejectID.substring(0, 3).equalsIgnoreCase("SID")){
             PostShare postShare= new dao.PostDAO().getPostShareByShareID(ObejectID);
             div= postShare.getUpdateDiv(id);
+        }else if(ObejectID.substring(0, 3).equalsIgnoreCase("ILD")){
+            CommentChild commentChild= new dao.CommentDAO().getCommentChildByChildID(ObejectID);
+            div= commentChild.getUpdateDiv(id);
+        }else if(ObejectID.substring(0, 3).equalsIgnoreCase("CID")){
+            Comment comment= new dao.CommentDAO().getCommentByCmtID(ObejectID);
+            div= comment.getUpdateDiv(id);
         }
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */

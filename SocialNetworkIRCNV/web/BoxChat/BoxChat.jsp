@@ -27,12 +27,12 @@
             <div class="sidebar">
                 <ul class="friend-list">
                     <%
-                        String UID = (String) session.getAttribute("id");
+                       
                         String FID = request.getParameter("Friendid");
 
                         BoxChatFriendListDAO e = new BoxChatFriendListDAO();
-                        BoxChatFriend data = e.getData(UID);
-                        FriendBoxChat box = e.getBoxChat(UID, FID);
+                        BoxChatFriend data = e.getData(id);
+                        FriendBoxChat box = e.getBoxChat(id, FID);
                         if (data != null) {
                     %>
                     <p id="UserID" class="userID" style="display: none;"><%=data.getUserID()%></p>

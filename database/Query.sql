@@ -615,7 +615,7 @@ WHERE FullName COLLATE Latin1_General_CI_AI LIKE N'%' + @name + N'%';
 	SET InterFaceID= 'haha'
 	WHERE PostOrShareID=@PostOrShareID AND UserID= @UserID
 -- get interface obejct
-	DECLARE @ObjectID NVARCHAR(11)= 'CID00000001', @UserID NVARCHAR(11)= 'UID00000001'
+	DECLARE @ObjectID NVARCHAR(11)= 'ILD00000007', @UserID NVARCHAR(11)= 'UID00000001'
 		IF NOT EXISTS(SELECT *
 		FROM dbo.InterFaceObject 
 		WHERE ObjectID= @ObjectID AND UserID=@UserID)
@@ -652,3 +652,305 @@ DECLARE @InterFaceID VARCHAR(11)= 'angry'
 		SET InterFaceID = @InterFaceID
 		WHERE ObjectID= @ObjectID AND UserID= @UserID
 	END
+--note
+INSERT INTO DBO.NOTE_FRIEND
+(
+    UserID,
+    UserIDRequest,
+    TimeRequest
+)
+VALUES
+(   'UID00000001',     -- UserID - varchar(11)
+    'UID00000003',     -- UserIDRequest - varchar(11)
+    DEFAULT -- TimeRequest - datetime
+    )
+
+
+	SELECT NoteID, TimeRequest
+	FROM dbo.NOTE_FRIEND
+	WHERE UserID= 'UID00000001';
+	--hieenj note 
+	SELECT NoteID, UserID, UserIDRequest, TimeRequest
+	FROM dbo.NOTE_FRIEND
+	WHERE NoteID= 'NFR00000001';
+	--hieenj note 
+	GO 
+	DECLARE @UserID VARCHAR(11)= 'UID00000001';
+	DECLARE @Offset INT = 1; -- Số bài post đã hiển thị trước đó = @FetchCount* (offset-1)
+	DECLARE @FetchCount INT = 5; -- Số bài post muốn lấy thêm
+
+	SELECT NoteID
+	FROM dbo.NOTE_FRIEND
+	WHERE UserID= @UserID
+	ORDER BY TimeRequest DESC
+	OFFSET (@Offset-1)* @FetchCount ROWS
+	FETCH NEXT @FetchCount ROWS ONLY;
+-- truy van laays danh sach ban be
+go
+	DECLARE @UserID VARCHAR(11)= 'UID00000002';
+	DECLARE @Offset INT = 1; -- Số bài post đã hiển thị trước đó = @FetchCount* (offset-1)
+	DECLARE @FetchCount INT = 5; -- Số bài post muốn lấy thêm
+	SELECT  UserInfor.UserID,FullName, Address, Mail, PhoneNumber, Dob, Gender, Nation, ImageUser, ImageBackGround
+	FROM(
+	SELECT UserID2
+	FROM dbo.USERRELATION
+	WHERE (UserID1= @UserID AND isFriend= 1)
+	UNION ALL
+	SELECT UserID1
+	FROM dbo.USERRELATION
+	WHERE (UserID2= @UserID AND isFriend= 1)) AS friend
+	INNER JOIN dbo.UserInfor ON UserInfor.UserID = friend.UserID2
+	ORDER BY TimeCreate
+	OFFSET (@Offset-1)* @FetchCount ROWS
+	FETCH NEXT @FetchCount ROWS ONLY;
+
+
+
+	GO
+		DECLARE @id NVARCHAR(11)= 'UID00000001'
+		DECLARE @Offset INT = 1; -- Số bài post đã hiển thị trước đó = @FetchCount* (offset-1)
+		DECLARE @FetchCount INT = 5; -- Số bài post muốn lấy thêm
+
+		SELECT PostID, TimePost, PrivacyID
+		FROM dbo.POST
+		WHERE UserID= @id
+		UNION ALL
+		SELECT ShareID, TimeShare, PrivacyID
+		FROM dbo.POSTSHARE
+		WHERE UserID= @id
+		ORDER BY TimePost DESC
+		OFFSET (@Offset-1)* @FetchCount ROWS
+		FETCH NEXT @FetchCount ROWS ONLY;
+
+		DELETE dbo.NOTE_lIKE
+		
+
+		
+	INSERT INTO dbo.COMMENT
+	(
+	    UserID,
+	    PostID,
+	    Content,
+	    TimeComment,
+	    ImageComment,
+	    NumInterface
+	)
+	VALUES
+	(   'UID00000001',    -- UserID - varchar(11)
+	    'PID00000006',    -- PostID - varchar(11)
+	    NULL,    -- Content - nvarchar(max)
+	    DEFAULT, -- TimeComment - datetime
+	    NULL,    -- ImageComment - varchar(255)
+	    DEFAULT  -- NumInterface - int
+	    )
+
+		SELECT NoteID, TimeRequest
+        FROM dbo.NOTE_FRIEND
+		UNION ALL
+		SELECT NoteID, TimeComment
+        FROM dbo.NOTE_lIKE
+        WHERE UserID= 'UID00000001'
+		ORDER BY TimeRequest DESC
+
+				DECLARE @NoteID NVARCHAR(11)= 'NLI00000008'
+				SELECT NoteID, ObjectID, UserID, statusNote, TimeComment, isRead,  CASE
+																					WHEN ObjectID LIKE 'ILD%' THEN (SELECT TOP(1) PostID
+																														FROM dbo.COMMENTCHILD
+																														INNER JOIN dbo.COMMENT ON COMMENT.CmtID = COMMENTCHILD.CmtID
+																														WHERE ChildID= ObjectID
+																														)
+																					WHEN ObjectID LIKE 'CID%' THEN (SELECT TOP(1) PostID
+																														FROM dbo.COMMENT 
+																														WHERE CmtID=ObjectID)
+																					ELSE ObjectID
+																				END AS PostID
+                	FROM dbo.NOTE_lIKE
+                	WHERE NoteID= @NoteID
+
+
+
+	SELECT TOP(1) PostID
+	FROM dbo.COMMENTCHILD
+	INNER JOIN dbo.COMMENT ON COMMENT.CmtID = COMMENTCHILD.CmtID
+	WHERE ChildID= 'ILD00000009' 
+
+
+	SELECT ChildID, UserID, CmtID, Content, 
+	TimeComment, ImageComment, NumInterface, (SELECT TOP(1) PostID
+												FROM dbo.COMMENTCHILD
+												INNER JOIN dbo.COMMENT ON COMMENT.CmtID = COMMENTCHILD.CmtID
+												WHERE ChildID= 'ILD00000009' ) AS PostID														
+	FROM dbo.COMMENTCHILD
+	WHERE ChildID= 'ILD00000009' 
+
+go
+	DECLARE @UserID VARCHAR(11)= 'UID00000001' ;
+    DECLARE @Offset INT = 1; -- Số bài post đã hiển thị trước đó = @FetchCount* (offset-1)
+    DECLARE @FetchCount INT = 5; -- Số bài post muốn lấy thêm
+                
+	SELECT NoteID, TimeRequest
+		FROM dbo.NOTE_FRIEND
+		WHERE UserID= @UserID
+	UNION ALL
+		SELECT NoteID, TimeComment
+		FROM dbo.NOTE_lIKE
+		WHERE UserID= @UserID
+    ORDER BY TimeRequest DESC
+    OFFSET (@Offset-1)* @FetchCount ROWS
+    FETCH NEXT @FetchCount ROWS ONLY
+
+	SELECT *
+	FROM dbo.NOTE_FRIEND
+
+GO
+SELECT UserID, MESS, NOTE
+FROM dbo.NOTE_COUNT
+WHERE UserID= 'UID00000001'
+
+UPDATE dbo.NOTE_COUNT
+SET NOTE= 0
+WHERE UserID= ?
+
+UPDATE dbo.NOTE_COUNT
+SET MESS= 0
+WHERE UserID= ?
+
+
+INSERT INTO dbo.COMMENT
+(
+    UserID,
+    PostID,
+    Content,
+    TimeComment,
+    ImageComment,
+    NumInterface
+)
+VALUES
+(    'UID00000001',    -- UserID - varchar(11)
+    'PID00000006',    -- PostID - varchar(11)
+    'sdf',    -- Content - nvarchar(max)
+    DEFAULT, -- TimeComment - datetime
+    'abc',    -- ImageComment - varchar(255)
+    DEFAULT  -- NumInterface - int
+    )
+
+------------getCommentChildByChildID()------------------
+/*	private String ChilID, UserID, CmtID, Content, TimeComment, ImageComment;
+    int NumInterface;*/
+	go
+	DECLARE @CmtID VARCHAR(11)= 'CID00000012' ;
+    DECLARE @Offset INT = 1; -- Số bài post đã hiển thị trước đó = @FetchCount* (offset-1)
+    DECLARE @FetchCount INT = 5; -- Số bài post muốn lấy thêm
+                
+	SELECT ChildID, UserID, CmtID, Content, TimeComment, ImageComment, NumInterface
+	FROM dbo.COMMENTCHILD
+	WHERE CmtID= @CmtID
+	ORDER BY TimeComment DESC
+    OFFSET (@Offset-1)* @FetchCount ROWS
+    FETCH NEXT @FetchCount ROWS ONLY
+
+	SELECT *
+	FROM dbo.COMMENTCHILD
+
+---------------getCommentByCmtID------------------------
+-- private String CmtID, UserID, PostID, Content, TimeComment, ImageComment;
+-- int NumInterface;
+SELECT CmtID, UserID, PostID, Content, TimeComment, ImageComment, NumInterface
+FROM dbo.COMMENT
+WHERE CmtID= 'CID00000012'
+---------getCommentByPostID---------
+SELECT CmtID, UserID, PostID, Content, TimeComment, ImageComment, NumInterface
+FROM dbo.COMMENT
+WHERE PostID= 'PID00000006'
+
+go
+	DECLARE @PostID VARCHAR(11)= 'PID00000006' ;
+    DECLARE @Offset INT = 1; -- Số bài post đã hiển thị trước đó = @FetchCount* (offset-1)
+    DECLARE @FetchCount INT = 5; -- Số bài post muốn lấy thêm
+                
+	SELECT CmtID, UserID, PostID, Content, TimeComment, ImageComment, NumInterface
+	FROM dbo.COMMENT
+	WHERE PostID= @PostID
+	ORDER BY TimeComment DESC
+    OFFSET (@Offset-1)* @FetchCount ROWS
+    FETCH NEXT @FetchCount ROWS ONLY
+
+	SELECT *
+	FROM dbo.COMMENTCHILD
+
+GO 
+	SELECT *
+	FROM dbo.COMMENT
+	WHERE CmtID= 'CID00000012'
+
+----------------------updateImageCommentOFCommentByCmtID------------------
+	DECLARE @CmtId NVARCHAR(11)= ?
+	DECLARE @ImageComment varchar(255) = ?
+	UPDATE dbo.COMMENT
+	SET ImageComment= @ImageComment
+	WHERE CmtID= @CmtId
+
+----------------------updateContentOFCommentByCmtID------------------	
+	DECLARE @CmtId NVARCHAR(11)= ?
+	DECLARE @Content NVARCHAR(MAX) ='acbc'
+	UPDATE dbo.COMMENT
+	SET Content= @Content
+	WHERE CmtID= @CmtId
+
+------------------updateImageCommentOFCommentChildByChildID-----------
+go
+	DECLARE @ChildId NVARCHAR(11)= ?
+	DECLARE @ImageComment varchar(255) = ?
+	UPDATE dbo.COMMENTCHILD
+	SET ImageComment= @ImageComment
+	WHERE ChildID= @ChildId
+------------------updateContentOFCommentChildByChildID---------------
+GO
+	DECLARE @ChildId NVARCHAR(11)= ?
+	DECLARE @Content varchar(255) = ?
+	UPDATE dbo.COMMENTCHILD
+	SET Content= @Content
+	WHERE ChildID= @ChildId
+	--------insert comment child-------------
+	DECLARE @InsertedIDs TABLE (ChildID VARCHAR(11));
+	INSERT INTO dbo.COMMENTCHILD
+	(
+	    UserID,
+	    CmtID,
+	    Content,
+	    TimeComment,
+	    ImageComment,
+	    NumInterface
+	)
+	OUTPUT Inserted.ChildID INTO @InsertedIDs
+	VALUES
+	(   'UID00000001',    -- UserID - varchar(11)
+	    'CID00000001',    -- CmtID - varchar(11)
+	    NULL,    -- Content - nvarchar(max)
+	    DEFAULT, -- TimeComment - datetime
+	    '',    -- ImageComment - varchar(255)
+	    DEFAULT  -- NumInterface - int
+	    )
+		SELECT ChildID FROM @InsertedIDs;
+
+		go
+		DECLARE @InsertedIDs TABLE (CmtID VARCHAR(11));
+		INSERT INTO dbo.COMMENT
+		(
+		    UserID,
+		    PostID,
+		    Content,
+		    TimeComment,
+		    ImageComment,
+		    NumInterface
+		)
+		OUTPUT Inserted.CmtID INTO @InsertedIDs
+		VALUES
+		(   NULL,    -- UserID - varchar(11)
+		    NULL,    -- PostID - varchar(11)
+		    NULL,    -- Content - nvarchar(max)
+		    DEFAULT, -- TimeComment - datetime
+		    NULL,    -- ImageComment - varchar(255)
+		    DEFAULT  -- NumInterface - int
+		    )
+		SELECT CmtID FROM @InsertedIDs;

@@ -31,8 +31,13 @@ function sendMessagever1() {
         }
     }
 }
-var websocket = new WebSocket("ws://localhost:8080/SocialNetworkIRCNV/chatRoomServer");
+var protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
+var host = window.location.host;
+var path = '/SocialNetworkIRCNV/chatRoomServer';
 
+var websocket = new WebSocket(protocol + host + path);
+//var websocket = new WebSocket("wss://localhost:8080/SocialNetworkIRCNV/chatRoomServer");
+//wss://67d0-116-98-167-177.ngrok-free.app/SocialNetworkIRCNV/chatRoomServer' 
 websocket.onopen = function (message) {
     processOpen(message);
 };

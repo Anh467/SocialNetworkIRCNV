@@ -95,5 +95,10 @@ public  class Person {
     public void setGender(boolean Gender) {
         this.Gender = Gender;
     }
+
+    @Override
+    public String toString() {
+        return "Person{" + "UserID=" + UserID + ", FullName=" + FullName + ", Address=" + Address + ", Mail=" + Mail + ", PhoneNumber=" + PhoneNumber + ", DOB=" + DOB + ", Gender=" + Gender + '}';
+    }
     
 }

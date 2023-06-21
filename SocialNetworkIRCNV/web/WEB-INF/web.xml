@@ -13,6 +13,7 @@
     <filter-mapping>
         <filter-name>AutoLogin</filter-name>
         <url-pattern>/Authen/*</url-pattern>
+     
     </filter-mapping>
     <filter-mapping>
         <filter-name>Authorization</filter-name>

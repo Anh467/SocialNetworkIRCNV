@@ -20,7 +20,7 @@
 
             <div class="col-xl-5 col-lg-6 col-md-7 col-sm-9 col-11  login-sec container">
                 <h2 class="text-center">Sign up now</h2>
-                <form action="http://localhost:8080/SocialNetworkIRCNV/Verify" method="get" class="login-form" onsubmit="return validateForm()">
+                <form action="/SocialNetworkIRCNV/Verify" method="get" class="login-form" onsubmit="return validateForm()">
 
                     <div class="form-group">
                         <label >User Name</label>

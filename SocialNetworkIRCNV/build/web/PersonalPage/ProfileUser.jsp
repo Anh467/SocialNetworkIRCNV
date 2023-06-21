@@ -1,3 +1,4 @@
+<%@page import="java.util.ArrayList"%>
 <!DOCTYPE html>
 <!--
 Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -5,10 +6,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
 -->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="model.User"%>
+<%@ page errorPage="../block/errorPage.jsp" %>  
 <!DOCTYPE html>
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>Profile User</title>
+        <link rel="icon" href="/SocialNetworkIRCNV/data/img/logo.jpg" type="image/i-con">
+        <link rel="shortcut icon" href="./images/logo.png" type="image/x-icon">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="bootstrap-5.0.2-dist/css/bootstrap.min.css" rel="stylesheet">
@@ -238,8 +242,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
 
         }
         .friend-box div img{
-            width:80%;
-            height:90%;
+            width:80px;
+            height:110px;
+            object-fit: cover;
             cursor:pointer;
             padding-bottom:30px;
             border-radius:10px;
@@ -453,16 +458,16 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
         <header>
             <%@include file="../block/header.jsp" %>
         </header>
-        <%            String UID = request.getParameter("UID");
-            User profileUser = new dao.UserDAO().getUserByID(UID);
-            if (id.equalsIgnoreCase(UID) || profileUser == null) {
-                response.sendRedirect("ProfileInfo.jsp");
-                return;
+        <%            if (profileUser == null) {
+                response.sendRedirect("../block/errorPage.jsp");
             }
+            System.out.println("id and UID" + id + UID);
+            String FriendStatus = new dao.RelationDao("relate").getDivRelation(id, UID);
+            ArrayList<User> friendList = new dao.UserDAO().getUserFriend(UID, 1, 9);
 
-            String FriendStatus = new dao.RelationDao().getDivRelation(id, UID);
             //request.setAttribute("profileUser", profileUser);
         %>
+
         <div class ="profile-container">
             <img src="<%=profileUser.getCoverImg()%>" class="cover-img"/>
             <div class = "profile-details">
@@ -471,11 +476,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                         <img src ="<%=profileUser.getImgUser()%>" class ="pd-image">
                         <div>
                             <h3><a href="" style="text-decoration: none; color:#626262;"><%=profileUser.getFullName()%></a></h3>
-                            <p>4 Friends - 0 Follow</p>
-                            <img src="https://picsum.photos/300/300/?random" alt="alt"/>
-                            <img src="https://picsum.photos/300/300/?random" alt="alt"/>
-                            <img src="https://picsum.photos/300/300/?random" alt="alt"/>
-                            <img src="https://picsum.photos/300/300/?random" alt="alt"/>
+                            <p><%=profileUser.getNumFriend()%> Friends</p>
+                            <%
+                                int size = (5 > friendList.size()) ? friendList.size() : 5;
+                                for (int i = 0; i < size; i++) {%>
+                            <img src="<%=friendList.get(i).getImgUser()%>" alt="alt" onclick="otherProfile('<%=friendList.get(i).getUserID()%>')"/>
+                            <%}%>
                         </div>
                     </div>
                 </div>
@@ -483,10 +489,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                     <span class ="friendstatus" id="friendstatus">
                         <%=FriendStatus%>
                     </span>
-                    <span class = "sendmessage">           
-                        <button type = "button"> 
+                    <span class = "sendmessage">    
+                        <a href="/SocialNetworkIRCNV/BoxChat/BoxChat.jsp?Friendid=<%=profileUser.getUserID()%>">
+                            <button type = "button"> 
                             <i class="icon fa-regular fa-message"></i> Send Message
                         </button>
+                        </a>
+                        
                     </span><br>
                     <a href =""> <i class="more fa-solid fa-ellipsis"></i> </a>
                 </div>
@@ -510,15 +519,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                         </div>
 
                         <div class = "friend-box">
-                            <div><img src="https://picsum.photos/300/300/?random"><p>IRCN V</p></div>
-                            <div><img src="https://picsum.photos/300/300/?random"><p>IRCN V</p></div>
-                            <div><img src="https://picsum.photos/300/300/?random"><p>IRCN V</p></div>
-                            <div><img src="https://picsum.photos/300/300/?random"><p>IRCN V</p></div>
-                            <div><img src="https://picsum.photos/300/300/?random"><p>IRCN V</p></div>
-                            <div><img src="https://picsum.photos/300/300/?random"><p>IRCN V</p></div>
-                            <div><img src="https://picsum.photos/300/300/?random"><p>IRCN V</p></div>
-                            <div><img src="https://picsum.photos/300/300/?random"><p>IRCN V</p></div>
-                            <div><img src="https://picsum.photos/300/300/?random"><p>IRCN V</p></div>
+                            <%
+                                size = (9 > friendList.size()) ? friendList.size() : 9;
+                                for (int i = 0; i < size; i++) {%>
+                            <div onclick="otherProfile('<%=friendList.get(i).getUserID()%>')">
+                                <img src="<%=friendList.get(i).getImgUser()%>">
+                                
+                            </div>
+                            <%}%>
                         </div>
 
 
@@ -600,19 +608,21 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                     </div>
                 </div>
             </div>
-            <script src="/SocialNetworkIRCNV/PersonalPage/ProfileUser.js" >
+        </div>
+        <script src="/SocialNetworkIRCNV/PersonalPage/ProfileUser.js" >
 
-
-            </script>
-             <script src="/SocialNetworkIRCNV/js/loadpost.js" >
-
-
-            </script>
-            <script src="/SocialNetworkIRCNV/js/controlPost.js">
-
-            </script>
-            <script src="/SocialNetworkIRCNV/js/like.js" ></script>
 
         </script>
-</body>
+        <script src="/SocialNetworkIRCNV/js/loadpost.js" >
+
+
+        </script>
+        <script src="/SocialNetworkIRCNV/js/controlPost.js">
+
+        </script>
+        <script src="/SocialNetworkIRCNV/js/like.js" ></script>
+
+
+
+    </body>
 </html>
