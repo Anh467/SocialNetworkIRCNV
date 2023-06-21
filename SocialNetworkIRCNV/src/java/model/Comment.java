@@ -101,16 +101,21 @@ public class Comment {
     }
 
    public String getDiv(String id) {
+               String href = (!id.equalsIgnoreCase(this.getUserID())) ? "<a class=\"suggestion-href\" href=\"/SocialNetworkIRCNV/PersonalPage/ProfileUser.jsp?UID=" + this.getUserID() + "\" style=\"display: inline\">\n" : "<a class=\"suggestion-href\" href=\"/SocialNetworkIRCNV/PersonalPage/ProfileInfo.jsp\" style=\"display: inline\">\n";
+
         String str = "";
         if (this.getImageComment() != null && !this.getImageComment().isEmpty()) {
             str = "<img src=\"" + this.getImageComment() + "\">\n";
         }
+        
         User user = new dao.UserDAO().getUserByID(this.getUserID());
         InterFaceObject interFaceObject = new dao.InterFaceObjectDAO().getInterFaceObjectByID(this.CmtID, id);
         return  "<ul><li id=\"comment-"+this.getCmtID()+"\">"
                 + "    <div class=\"comment\" id=\""+this.getCmtID()+"\">\n"
                 + "        <div class=\"comment-img\">\n"
+                + href
                 + "            <img src=\""+user.getImgUser()+"\" alt=\"\">\n"
+                + "</a>"
                 + "        </div>\n"
                 + "        <div class=\"comment-content\">\n"
                 + "            <div class=\"comment-details\">\n"
@@ -142,6 +147,8 @@ public class Comment {
                 + "</li></ul>";
     }
     public String getUpdateDiv(String id) {
+                String href = (!id.equalsIgnoreCase(this.getUserID())) ? "<a class=\"suggestion-href\" href=\"/SocialNetworkIRCNV/PersonalPage/ProfileUser.jsp?UID=" + this.getUserID() + "\" style=\"display: inline\">\n" : "<a class=\"suggestion-href\" href=\"/SocialNetworkIRCNV/PersonalPage/ProfileInfo.jsp\" style=\"display: inline\">\n";
+
         String str = "";
         if (this.getImageComment() != null && !this.getImageComment().isEmpty()) {
             str = "<img src=\"" + this.getImageComment() + "\">\n";
@@ -153,7 +160,9 @@ public class Comment {
                 + "        </div>\n"
                 + "        <div class=\"comment-content\">\n"
                 + "            <div class=\"comment-details\">\n"
+                +href
                 + "                <h4 class=\"comment-name\">"+user.getFullName()+"</h4>\n"
+                + "</a>"
                 + "                <span class=\"comment-log\">"+this.getTimeComment()+"</span>\n"
                 + "            </div>\n"
                 + "            <div class=\"comment-desc\">\n"

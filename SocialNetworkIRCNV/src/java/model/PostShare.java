@@ -186,7 +186,7 @@ public class PostShare extends Post {
                 + "                <div class=\"action\" onclick=\"like('" + IDshare + "', '" + interFaceObject.getInterFaceID() + "')\">\n"
                 + interFaceObject.getInterFaceDiv()
                 + "                </div>\n"
-                + "                <div class=\"action\">\n"
+                + "                <div class=\"action\" onclick=\"openPost('" + this.getPostID() +"')\" >\n"
                 + "                    <a href=\"#writecomment-share\" style=\"text-decoration: none; color:  #00abfd;\">\n"
                 + "                        <i class=\"far fa-comment\"></i>\n"
                 + "                        <span>Comment</span>\n"
@@ -263,8 +263,8 @@ public class PostShare extends Post {
                 + "                <div class=\"action\" onclick=\"like('" + IDshare + "', '" + interFaceObject.getInterFaceID() + "')\">\n"
                 + interFaceObject.getInterFaceDiv()
                 + "                </div>\n"
-                + "                <div class=\"action\">\n"
-                + "                    <a href=\"#writecomment-share\" style=\"text-decoration: none; color:  #00abfd;\">\n"
+                + "                <div class=\"action\" onclick=\"openPost('" + this.getPostID() +"')\">\n"
+                + "                    <a href=\"#writecomment-share\"  style=\"text-decoration: none; color:  #00abfd;\">\n"
                 + "                        <i class=\"far fa-comment\"></i>\n"
                 + "                        <span>Comment</span>\n"
                 + "                    </a>\n"

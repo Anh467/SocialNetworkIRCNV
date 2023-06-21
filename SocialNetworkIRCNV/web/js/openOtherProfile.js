@@ -8,7 +8,7 @@ function otherProfile(UID) {
     window.location.href = "/SocialNetworkIRCNV/PersonalPage/ProfileUser.jsp?UID=" + UID;
 }
 function openPost(PostID) {
-    window.location.href = "/SocialNetworkIRCNV/post?PostID=" + PostID;
+    window.open("/SocialNetworkIRCNV/post?PostID=" + PostID, '_blank');
 }
 function openHref(URL) {
     window.location.href = URL;

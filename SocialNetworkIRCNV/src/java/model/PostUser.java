@@ -134,7 +134,7 @@ public class PostUser extends Post {
                 + "                <div class=\"action\" onclick=\"like('" + this.getPostID() + "', '" + interFaceObject.getInterFaceID() + "')\" >\n"
                 + interFaceObject.getInterFaceDiv()
                 + "                </div>\n"
-                + "                <div class=\"action\">\n"
+                + "                <div class=\"action\" onclick=\"openPost('" + this.getPostID() +"')\">\n"
                 + "                    <a href=\"#writecomment\" style=\"text-decoration: none; color:  #00abfd;\">\n"
                 + "                        <i class=\"far fa-comment\"></i>\n"
                 + "                        <span>Comment</span>\n"
@@ -198,7 +198,7 @@ public class PostUser extends Post {
                 + "                <div class=\"action\" onclick=\"like('" + this.getPostID() + "', '" + interFaceObject.getInterFaceID() + "')\">\n"
                 + interFaceObject.getInterFaceDiv()
                 + "                </div>\n"
-                + "                <div class=\"action\">\n"
+                + "                <div class=\"action\" onclick=\"openPost('" + this.getPostID() +"')\">\n"
                 + "                    <a href=\"#writecomment\" style=\"text-decoration: none; color:  #00abfd;\">\n"
                 + "                        <i class=\"far fa-comment\"></i>\n"
                 + "                        <span>Comment</span>\n"

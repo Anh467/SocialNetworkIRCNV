@@ -90,7 +90,7 @@ public class LoadPost extends HttpServlet {
 
         if (post == null)
             try {
-            errorPage(request, response, getHeader(user));
+            errorPage(request, response, user);
         } catch (Exception e) {
             System.out.println("action.LoadPost.doGet()");
             e.printStackTrace();
@@ -98,7 +98,7 @@ public class LoadPost extends HttpServlet {
             if (!id.equalsIgnoreCase(post.getUserID())) {
                 if (!isAllow(new dao.RelationDao("relate").getRelation(id, post.getUserID()), post)) {
                     try {
-                        errorPage(request, response, getHeader(user));
+                        errorPage(request, response, user);
                         return;
                     } catch (Exception e) {
                     }
@@ -176,7 +176,7 @@ public class LoadPost extends HttpServlet {
         return str;
     }
 
-    public void errorPage(HttpServletRequest request, HttpServletResponse response, String header) throws Exception {
+    public void errorPage(HttpServletRequest request, HttpServletResponse response, User user) throws Exception {
         try ( PrintWriter out = response.getWriter()) {
             out.print("<html lang=\"en\">\n"
                     + "\n"
@@ -265,7 +265,7 @@ public class LoadPost extends HttpServlet {
                     + "<body>\n"
                     + "\n"
                     + "  <div class=\"headd\">\n"
-                    + header
+                    + getHeader(user)
                     + "  </div>\n"
                     + "  <div class=\"bodyy\" style=\"margin-top: 15vw;\">\n"
                     + "    <div class=\"Container\">\n"
@@ -615,7 +615,7 @@ public class LoadPost extends HttpServlet {
                 + "                top: 30px;\n"
                 + "                right: 0;\n"
                 + "                width: 470px;\n"
-                + "                max-height: 300px;\n"
+                + "                max-height: 700px;\n"
                 + "                overflow-y: auto;\n"
                 + "                background-color: white;\n"
                 + "                border: 1px solid #ccc;\n"
