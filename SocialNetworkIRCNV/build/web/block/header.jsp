@@ -540,6 +540,7 @@
             %>
         </nav>
         <script src="/SocialNetworkIRCNV/js/search.js"></script>
+        <script src="/SocialNetworkIRCNV/js/report.js"></script>
         <script src="/SocialNetworkIRCNV/js/friend.js" ></script>
         <script src="/SocialNetworkIRCNV/js/note.js" ></script>
         <script src="/SocialNetworkIRCNV/js/openOtherProfile.js" ></script>
