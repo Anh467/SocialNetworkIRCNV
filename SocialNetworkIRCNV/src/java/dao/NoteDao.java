@@ -45,9 +45,26 @@ public class NoteDao {
     }
 
     public NOTE_COUNT getNOTE_COUNT(String UserID) {
-        String query = "SELECT UserID, MESS, NOTE\n"
-                + "FROM dbo.NOTE_COUNT\n"
-                + "WHERE UserID= ? ";
+        String query = "DECLARE @UserID NVARCHAR(11) =?\n"
+                + "	IF NOT EXISTS(SELECT UserID, MESS, NOTE\n"
+                + "                FROM dbo.NOTE_COUNT\n"
+                + "                WHERE UserID= @UserID)\n"
+                + "				BEGIN\n"
+                + "					INSERT INTO dbo.NOTE_COUNT\n"
+                + "					(\n"
+                + "					    UserID,\n"
+                + "					    NOTE,\n"
+                + "					    MESS\n"
+                + "					)\n"
+                + "					VALUES\n"
+                + "					(   @UserID,   -- UserID - varchar(11)\n"
+                + "					    0, -- NOTE - int\n"
+                + "					    0  -- MESS - int\n"
+                + "					    )\n"
+                + "                END \n"
+                + "   SELECT UserID, MESS, NOTE\n"
+                + "                FROM dbo.NOTE_COUNT\n"
+                + "                WHERE UserID= @UserID";
         try {
             PreparedStatement ps = cnn.prepareStatement(query);
             ps.setString(1, UserID);

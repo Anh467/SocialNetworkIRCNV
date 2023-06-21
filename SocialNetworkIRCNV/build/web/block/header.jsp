@@ -480,9 +480,9 @@
                 <a id="note-container" class="container" onclick="handleClick(event)" style="padding: 0">
                         <div class="notification-icon" onclick="toggleNotificationDropdown()" >
                             <% if ((note.getNote() + note.getMess()) == 0) { %>
-                            <i class="fa fa-bell " style = "font-size : 20px;"></i>
+                            <i class="fa fa-bell" style = "font-size : 20px;"></i>
                         <%} else {%>
-                        <i class="fa fa-bell shake-icon " style = "font-size : 20px;"></i>
+                        <i class="fa fa-bell shake-icon" style = "font-size : 20px;"></i>
                         <%}%>
 
 
@@ -502,7 +502,7 @@
                             </button>
                     </form>
 
-                    <a href="#">
+                    <a href="../AdminPage/AdminPageIndex.jsp">
                         <i class="fas fa-ellipsis-h"></i>
                     </a>
 

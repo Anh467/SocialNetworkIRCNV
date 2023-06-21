@@ -13,14 +13,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.Role;
 
 /**
  *
- * @author 84384
+ * @author TCNJK
  */
-@WebServlet(name = "CheckLogin", urlPatterns = {"/CheckLogin"})
-public class CheckLogin extends HttpServlet {
+@WebServlet(name = "Logout", urlPatterns = {"/Logout"})
+public class Logout extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +38,10 @@ public class CheckLogin extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CheckLogin</title>");
+            out.println("<title>Servlet Logout</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CheckLogin at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet Logout at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,36 +59,13 @@ public class CheckLogin extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String user = request.getParameter("user");
-        String pass = request.getParameter("pass");
-        String id = new dao.AccountDAO().checkLogin(user, pass);
-        Role role = new dao.RoleDao().getRole(id);
-        if (id == null || role.isIsLock() || role.getRoleID().equalsIgnoreCase("DELETED")) {
-            request.setAttribute("pass", "");
-            if (role.isIsLock()) {
-                request.setAttribute("status", "This account is locked");
-            } else {
-                if (role.getRoleID().equalsIgnoreCase("DELETED")) {
-                    request.setAttribute("status", "This account is DELETED");
-                } else {
-                    request.setAttribute("status", "Login fail");
-                }
-            }
-
-            request.getRequestDispatcher("Authen/login.jsp").forward(request, response);
-            return;
-        }
         HttpSession session = request.getSession();
-        session.setAttribute("id", id);
-        session.setAttribute("userRole", role.getRoleName());
-//        session.setAttribute("userRole", "Master Admin");
-        if (request.getParameter("check") != null) {
-            Cookie cookie = new Cookie("id", id);
-            cookie.setMaxAge(60 * 60 * 24);
-            cookie.setHttpOnly(true);
-            response.addCookie(cookie);
-        }
-        response.sendRedirect("HomePage/HomePage.jsp");
+        session.invalidate();
+        Cookie cookie = new Cookie("id", null);
+        cookie.setMaxAge(60 * 60 * 24);
+        cookie.setHttpOnly(true);
+        response.addCookie(cookie);
+        response.sendRedirect("Authen/login.jsp");
     }
 
     /**
@@ -103,13 +79,7 @@ public class CheckLogin extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        session.invalidate();
-        Cookie cookie = new Cookie("id", null);
-        cookie.setMaxAge(60 * 60 * 24);
-        cookie.setHttpOnly(true);
-        response.addCookie(cookie);
-        response.sendRedirect("Authen/login.jsp");
+        processRequest(request, response);
     }
 
     /**

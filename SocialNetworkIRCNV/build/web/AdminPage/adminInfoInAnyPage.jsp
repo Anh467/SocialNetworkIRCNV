@@ -19,7 +19,13 @@
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="../HomePage/HomePage.jsp">USER CHANGE</a>
                     <a class="dropdown-item" href="#">Settings</a>
-                    <a class="dropdown-item" href="../CheckLogin">Log Out</a>
+                    <a href="../Logout" onclick="logout()">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        Logout
+                    </a>
+                    </script>
+
+                    </button>
                 </div>
             </div>
         </div>
