@@ -12,6 +12,7 @@ public class User extends Person {
 
     private String Nation, imgUser, coverImg;
     private int NumFriend, NumPost;
+    private Role role;
     public User() {
     }
 
@@ -55,6 +56,14 @@ public class User extends Person {
         }
          this.NumFriend= NumFriend;
         this.NumPost= NumPost;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public int getNumFriend() {

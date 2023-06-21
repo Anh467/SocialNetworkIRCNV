@@ -4,7 +4,7 @@
  */
 package action;
 
-import dao.ChangeRoleDAO;
+import dao.RoleDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -74,7 +74,7 @@ public class changeRole extends HttpServlet {
             throws ServletException, IOException {
         String userID = request.getParameter("userID");
         String newRole = request.getParameter("newRole");
-        ChangeRoleDAO e= new ChangeRoleDAO();
+        RoleDao e= new RoleDao();
         e.change(userID, newRole);
     }
 

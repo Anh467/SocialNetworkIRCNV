@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.Role;
 
 /**
  *
@@ -33,7 +34,7 @@ public class CheckLogin extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
@@ -62,15 +63,19 @@ public class CheckLogin extends HttpServlet {
         String user = request.getParameter("user");
         String pass = request.getParameter("pass");
         String id = new dao.AccountDAO().checkLogin(user, pass);
-        if (id == null) {
+        Role role = new dao.RoleDao().getRole(id);
+        if (id == null || role.isIsLock()) {
             request.setAttribute("pass", "");
-            request.setAttribute("status", "Login fail");
+            if (role.isIsLock()) {
+                request.setAttribute("status", "This account is locked");
+            } else request.setAttribute("status", "Login fail");
+
             request.getRequestDispatcher("Authen/login.jsp").forward(request, response);
             return;
         }
         HttpSession session = request.getSession();
         session.setAttribute("id", id);
-        session.setAttribute("userRole", "Admin");
+        session.setAttribute("userRole", role.getRoleName());
 //        session.setAttribute("userRole", "Master Admin");
         if (request.getParameter("check") != null) {
             Cookie cookie = new Cookie("id", id);

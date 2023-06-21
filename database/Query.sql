@@ -954,3 +954,27 @@ GO
 		    DEFAULT  -- NumInterface - int
 		    )
 		SELECT CmtID FROM @InsertedIDs;
+
+		
+--- check lock
+	DECLARE @UserID NVARCHAR(11) ='UID00000001'
+	DECLARE @isLock BIT= CASE
+				WHEN ((SELECT TOP(1) DATEADD(MINUTE, LockDurationMinute, DATEADD(HOUR, LockDurationHour, DATEADD(DAY, LockDurationDay, LockTime)))
+							FROM UserLock
+							WHERE UserID= @UserID
+						 )> GETDATE()) THEN 1
+				ELSE 0
+			END
+	IF(@isLock = 0)
+		BEGIN
+		UPDATE dbo.UserInfor
+                    SET UserInfor.RoleID= 'USER'
+                    WHERE UserInfor.UserID= @UserID
+		END 
+	SELECT Role.RoleID, RoleName, @isLock
+	FROM dbo.UserInfor
+	INNER JOIN dbo.Role ON Role.RoleID = UserInfor.RoleID
+	WHERE UserID= @UserID
+	
+   
+	
