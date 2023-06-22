@@ -34,9 +34,9 @@ public class PostUserDAO {
             + "		where PostID= ? ";
 
     String deletePost = "DELETE FROM dbo.POST\n"
-            + "WHERE PostID= ? AND UserID= ?";
+            + "WHERE PostID= ?";
     String deletePostShare = "DELETE dbo.POSTSHARE\n"
-            + "WHERE ShareID= ? AND UserID= ?";
+            + "WHERE ShareID= ?";
     String checkExistPostUser = "SELECT *\n"
             + "FROM dbo.POST\n"
             + "WHERE PostID= ? AND UserID= ? ";
@@ -171,13 +171,9 @@ public class PostUserDAO {
     }
 
     public boolean deletePostShare(String PostID, String UserID) {
-        if (!checkExistPosSharetUser(PostID, UserID)) {
-            return false;
-        }
         try {
             PreparedStatement ps = cnn.prepareStatement(deletePostShare);
             ps.setString(1, PostID);
-            ps.setString(2, UserID);
             ps.execute();
         } catch (Exception e) {
             System.out.println("dao.PostUserDAO.deletePost()");
@@ -185,15 +181,10 @@ public class PostUserDAO {
         }
         return true;
     }
-
     public boolean deletePost(String PostID, String UserID) {
-        if (!checkExistPostUser(PostID, UserID)) {
-            return false;
-        }
         try {
             PreparedStatement ps = cnn.prepareStatement(deletePost);
             ps.setString(1, PostID);
-            ps.setString(2, UserID);
             ps.execute();
         } catch (Exception e) {
             System.out.println("dao.PostUserDAO.deletePost()");

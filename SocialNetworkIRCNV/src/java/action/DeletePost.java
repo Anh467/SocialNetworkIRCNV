@@ -35,25 +35,28 @@ public class DeletePost extends HttpServlet {
         String Type = request.getParameter("Type");
         System.out.println("PostID: " + PostID);
         String UserID = (String) request.getSession().getAttribute("id");
+        String role = (String) request.getSession().getAttribute("userRole");
         dao.PostUserDAO api = new dao.PostUserDAO();
-        try ( PrintWriter out = response.getWriter()) {
+        try (PrintWriter out = response.getWriter()) {
             if (Type.equalsIgnoreCase("Post")) {
                 /* TODO output your page here. You may use following sample code. */
-                if (!api.deletePost(PostID, UserID)) {
+                if (!api.checkExistPostUser(PostID, UserID) && !role.equals("Admin") && !role.equals("Master Admin")) {
+
                     out.print("false");
                 } else {
+                    api.deletePost(PostID, UserID);
                     out.print("true");
                 }
 
             } else if (Type.equalsIgnoreCase("Share")) {
-                if (!api.deletePostShare(PostID, UserID)) {
+                if (!api.checkExistPostUser(PostID, UserID) && !role.equals("Admin") && !role.equals("Master Admin")) {
                     out.print("false");
                 } else {
+                    api.deletePostShare(PostID, UserID);
                     out.print("true");
                 }
             }
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
