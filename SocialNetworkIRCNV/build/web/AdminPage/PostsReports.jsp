@@ -73,7 +73,7 @@
                                 </li>
                                 <% }%>
                                 <li><a href="invoice.html"><i class="ti-receipt"></i> <span>Invoice Summary</span></a></li>
-                                
+
                             </ul>
                         </nav>
                     </div>
@@ -81,184 +81,190 @@
             </div>
             <!-- sidebar menu area end -->
             <!-- main content area start -->
-        <jsp:include page="header.jsp"></jsp:include>
-            <!-- page title area start -->
-            <div class="page-title-area">
-                <div class="row align-items-center">
-                    <div class="col-sm-6">
-                        <div class="breadcrumbs-area clearfix">
-                            <h4 class="page-title pull-left">PostReport</h4>
-                            <ul class="breadcrumbs pull-left">
-                                <li><a href="index.html">Home</a></li>
-                                <li><span>PostReport</span></li>
-                            </ul>
+            <jsp:include page="header.jsp"></jsp:include>
+                <!-- page title area start -->
+                <div class="page-title-area">
+                    <div class="row align-items-center">
+                        <div class="col-sm-6">
+                            <div class="breadcrumbs-area clearfix">
+                                <h4 class="page-title pull-left">PostReport</h4>
+                                <ul class="breadcrumbs pull-left">
+                                    <li><a href="index.html">Home</a></li>
+                                    <li><span>PostReport</span></li>
+                                </ul>
+                            </div>
                         </div>
+                    <jsp:include page="adminInfoInAnyPage.jsp"></jsp:include>
                     </div>
-                <jsp:include page="adminInfoInAnyPage.jsp"></jsp:include>
                 </div>
-            </div>
-            <!-- page title area end -->
-            <div class="main-content-inner">
-                <div class="row">
-                    <!-- Primary table start -->
-                    <div class="col-11 mt-5">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="header-title">Data Table Primary</h4>
-                                <div class="data-tables datatable-primary">
-                                    <table id="dataTable2" class="text-center">
-                                        <thead class="text-capitalize">
-                                            <tr>
-                                                <th>Image</th>
-                                                <th>Content</th>
-                                                <th>Report Number</th>
-                                                <th>Time</th>
-                                                <th>Action</th>
+                <!-- page title area end -->
+                <div class="main-content-inner">
+                    <div class="row">
+                        <!-- Primary table start -->
+                        <div class="col-11 mt-5">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="header-title">Data Table Primary</h4>
+                                    <div class="data-tables datatable-primary">
+                                        <table id="dataTable2" class="text-center">
+                                            <thead class="text-capitalize">
+                                                <tr>
+                                                    <th>Image</th>
+                                                    <th>Content</th>
+                                                    <th>Report Number</th>
+                                                    <th>Time</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            <%!PostReport elem;%>
+                                            <%PostReportDAO e = new PostReportDAO();
+                                                List<PostReport> list = e.getData();
+                                                for (PostReport elem : list) {
+                                            %>
+                                            <tr class="<%= elem.getPostID()%>">
+                                                <td class="post-image"><img style="width: 50px;" src="<%=elem.getImg()%>" alt="Không Có Ảnh"></td>
+                                                <td><%=elem.getContent()%></td>
+                                                <td><%=elem.getReportCount()%></td>
+                                                <td><%=elem.getTime()%></td>
+                                                <td><a href="#" onclick="deleteRow(this, '<%= elem.getPostID()%>', '<%=elem.getIsPostVerInt()%>')">Delete</a>/<a href="#" onclick="skipRow(this, '<%= elem.getPostID()%>')">Skip</a></td>
                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                        <%!PostReport elem;%>
-                                        <%PostReportDAO e = new PostReportDAO();
-                                            List<PostReport> list = e.getData();
-                                            for (PostReport elem : list) {
-                                        %>
-                                        <tr class="<%= elem.getPostID()%>">
-                                            <td class="post-image"><img style="width: 50px;" src="<%=elem.getImg()%>" alt="Không Có Ảnh"></td>
-                                            <td><%=elem.getContent()%></td>
-                                            <td><%=elem.getReportCount()%></td>
-                                            <td><%=elem.getTime()%></td>
-                                            <td><a href="#" onclick="deleteRow(this, '<%= elem.getPostID()%>', '<%=elem.getIsPostVerInt()%>')">Delete</a>/<a href="#" onclick="skipRow(this, '<%= elem.getPostID()%>')">Skip</a></td>
-                                        </tr>
-                                        <%
-                                            }
-                                        %>
-                                    <script>
-
-                                        function skipRow(link, id) {
-                                            var data = {
-                                                id: id
-                                            };
-                                            $.ajax({
-                                                url: '../SkipReport',
-                                                type: 'GET',
-                                                data: data,
-                                                success: function (response) {
-                                                    // Xử lý phản hồi từ servlet nếu cần
-                                                    console.log('Yêu cầu thành công');
-                                                },
-                                                error: function (xhr, status, error) {
-                                                    // Xử lý lỗi nếu có
-                                                    console.log('Lỗi yêu cầu: ' + error);
+                                            <%
                                                 }
-                                            });
-                                            var row = link.parentNode.parentNode; // Lấy thẻ <tr> chứa liên kết được nhấn
-                                            row = row.parentNode;
-                                            if (row !== null) {
+                                            %>
+                                        <script>
+
+                                            function skipRow(link, id) {
+                                                var data = {
+                                                    id: id
+                                                };
+                                                $.ajax({
+                                                    url: '../SkipReport',
+                                                    type: 'GET',
+                                                    data: data,
+                                                    success: function (response) {
+                                                        // Xử lý phản hồi từ servlet nếu cần
+                                                        console.log('Yêu cầu thành công');
+                                                    },
+                                                    error: function (xhr, status, error) {
+                                                        // Xử lý lỗi nếu có
+                                                        console.log('Lỗi yêu cầu: ' + error);
+                                                    }
+                                                });
+                                                var row = link.parentNode.parentNode; // Lấy thẻ <tr> chứa liên kết được nhấn
                                                 row = row.parentNode;
                                                 if (row !== null) {
                                                     row = row.parentNode;
                                                     if (row !== null) {
-                                                        var oldRow = row;
-                                                        row = row.previousElementSibling;
+                                                        row = row.parentNode;
                                                         if (row !== null) {
-                                                            if (row.nodeName === 'TR') {
-                                                                oldRow.remove();
-                                                                row.remove();
-                                                                alert('Thành công');
-                                                                return;
+                                                            var oldRow = row;
+                                                            row = row.previousElementSibling;
+                                                            if (row !== null) {
+                                                                if (row.nodeName === 'TR') {
+                                                                    oldRow.remove();
+                                                                    row.remove();
+                                                                    alert('Thành công');
+                                                                    return;
+                                                                }
                                                             }
                                                         }
                                                     }
                                                 }
+                                                row = link.parentNode.parentNode; // Lấy thẻ <tr> chứa liên kết được nhấn
+                                                row.remove();
+                                                alert('Thành công');
                                             }
-                                            row = link.parentNode.parentNode; // Lấy thẻ <tr> chứa liên kết được nhấn
-                                            row.remove();
-                                            alert('Thành công');
-                                        }
-                                        function deleteDB(id, isPost, link) {
-                                            var data = {
-                                                id: id
-                                            };
-                                            if (isPost === "1") {
-                                                $.ajax({
-                                                    url: 'servlet_xóa-post bằng id',
-                                                    type: 'POST',
-                                                    data: data,
-                                                    success: function (response) {
-                                                        // Xử lý phản hồi từ servlet nếu cần
-                                                        console.log('Yêu cầu thành công');
-                                                        skipRow(link);
-                                                    },
-                                                    error: function (xhr, status, error) {
-                                                        // Xử lý lỗi nếu có
-                                                        console.log('Lỗi yêu cầu: ' + error);
-                                                        console.log('true');
-                                                    }
-                                                });
-                                            } else {
-                                                $.ajax({
-                                                    url: 'servlet_xóa-postShare bằng id',
-                                                    type: 'POST',
-                                                    data: data,
-                                                    success: function (response) {
-                                                        // Xử lý phản hồi từ servlet nếu cần
-                                                        console.log('Yêu cầu thành công');
-                                                        skipRow(link);
-                                                    },
-                                                    error: function (xhr, status, error) {
-                                                        // Xử lý lỗi nếu có
-                                                        console.log('Lỗi yêu cầu: ' + error);
-                                                        console.log('false');
-                                                    }
-                                                });
+                                            function deleteDB(id, isPost, link) {
+
+                                                if (isPost === "1") {
+                                                    var data = {
+                                                        PostID: id,
+                                                        Type: 'Post'
+                                                    };
+                                                    $.ajax({
+                                                        url: '../DeletePost',
+                                                        type: 'POST',
+                                                        data: data,
+                                                        success: function (response) {
+                                                            // Xử lý phản hồi từ servlet nếu cần
+                                                            console.log('Yêu cầu thành công');
+                                                            skipRow(link,id);
+                                                        },
+                                                        error: function (xhr, status, error) {
+                                                            // Xử lý lỗi nếu có
+                                                            console.log('Lỗi yêu cầu: ' + error);
+                                                            console.log('true');
+                                                        }
+                                                    });
+                                                } else {
+                                                    var data = {
+                                                        PostID: id,
+                                                        Type: 'Share'
+                                                    };
+                                                    $.ajax({
+                                                        url: '../DeletePost',
+                                                        type: 'POST',
+                                                        data: data,
+                                                        success: function (response) {
+                                                            // Xử lý phản hồi từ servlet nếu cần
+                                                            console.log('Yêu cầu thành công');
+                                                            skipRow(link,id);
+                                                        },
+                                                        error: function (xhr, status, error) {
+                                                            // Xử lý lỗi nếu có
+                                                            console.log('Lỗi yêu cầu: ' + error);
+                                                            console.log('false');
+                                                        }
+                                                    });
+                                                }
                                             }
-                                        }
-                                        function deleteRow(link, id, isPost) {
-                                            deleteDB(id, isPost, link)
-                                        }
-                                    </script>
-                                    <!-- Add more rows as needed -->
-                                    </tbody>
-                                </table>
+                                            function deleteRow(link, id, isPost) {
+                                                deleteDB(id, isPost, link)
+                                            }
+                                        </script>
+                                        <!-- Add more rows as needed -->
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <!-- Primary table end -->
                 </div>
-                <!-- Primary table end -->
             </div>
         </div>
+        <!-- main content area end -->
+        <!-- footer area start-->
+        <footer>
+            <div class="footer-area">
+                <p>© Copyright 2023.</p>
+            </div>
+        </footer>
+        <!-- footer area end-->
     </div>
-    <!-- main content area end -->
-    <!-- footer area start-->
-    <footer>
-        <div class="footer-area">
-            <p>© Copyright 2023.</p>
-        </div>
-    </footer>
-    <!-- footer area end-->
-</div>
-<!-- page container area end -->
-<!-- offset area start -->
-<!-- offset area end -->
-<!-- jquery latest version -->
-<script src="assets/js/vendor/jquery-2.2.4.min.js"></script>
-<!-- bootstrap 4 js -->
-<script src="assets/js/popper.min.js"></script>
-<script src="assets/js/bootstrap.min.js"></script>
-<script src="assets/js/owl.carousel.min.js"></script>
-<script src="assets/js/metisMenu.min.js"></script>
-<script src="assets/js/jquery.slimscroll.min.js"></script>
-<script src="assets/js/jquery.slicknav.min.js"></script>
+    <!-- page container area end -->
+    <!-- offset area start -->
+    <!-- offset area end -->
+    <!-- jquery latest version -->
+    <script src="assets/js/vendor/jquery-2.2.4.min.js"></script>
+    <!-- bootstrap 4 js -->
+    <script src="assets/js/popper.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/owl.carousel.min.js"></script>
+    <script src="assets/js/metisMenu.min.js"></script>
+    <script src="assets/js/jquery.slimscroll.min.js"></script>
+    <script src="assets/js/jquery.slicknav.min.js"></script>
 
-<!-- Start datatable js -->
-<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
-<script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
-<script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
-<script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
-<!-- others plugins -->
-<script src="assets/js/plugins.js"></script>
-<script src="assets/js/scripts.js"></script>
+    <!-- Start datatable js -->
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+    <script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
+    <!-- others plugins -->
+    <script src="assets/js/plugins.js"></script>
+    <script src="assets/js/scripts.js"></script>
 </body>
 
 </html>

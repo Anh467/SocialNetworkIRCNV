@@ -53,7 +53,7 @@ public final class adminInfoInAnyPage_jsp extends org.apache.jasper.runtime.Http
       out.write("    <body>\r\n");
       out.write("        <div class=\"col-sm-6 clearfix\">\r\n");
       out.write("            <div class=\"user-profile pull-right\">\r\n");
-      out.write("                <img class=\"avatar user-thumb\" src=\"assets/images/author/avatar.png\" alt=\"avatar\">\r\n");
+      out.write("                <img class=\"avatar user-thumb\" src=\"assets/images/icon/logo.png\" alt=\"avatar\">\r\n");
       out.write("                <h4 class=\"user-name dropdown-toggle\" data-toggle=\"dropdown\"><i class=\"fa fa-angle-down\"></i></h4>\r\n");
       out.write("                <div class=\"dropdown-menu\">\r\n");
       out.write("                    <a class=\"dropdown-item\" href=\"../HomePage/HomePage.jsp\">USER CHANGE</a>\r\n");
