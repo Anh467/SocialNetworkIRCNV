@@ -98,19 +98,24 @@ SELECT
     RP.IsPost,
 	MAX(CASE 
         WHEN RP.IsPost = 1 THEN P.ImageComment
+        ELSE PS.ImageComment
     END) AS ImageComment,
     MAX(CASE 
         WHEN RP.IsPost = 1 THEN P.Content
+        ELSE PS.Content
     END) AS Content,
 	COUNT(RP.UserID) AS UserCount,
     MAX(CASE 
         WHEN RP.IsPost = 1 THEN P.TimeComment
+        ELSE PS.TimeComment
     END) AS TimeComment,
 	RP.UserID2 AS UserID,
 	MAX(CAST(RP.Status AS INT)) AS Status
 FROM 
     dbo.ReportComment1686 RP
     LEFT JOIN dbo.COMMENT P ON RP.CommentID = P.CmtID AND RP.IsPost = 1
+    LEFT JOIN dbo.COMMENTSHARE PS ON RP.CommentID = PS.CmtID AND RP.IsPost = 0
+    LEFT JOIN COMMENT P2 ON PS.ShareID = P2.PostID
 GROUP BY 
     RP.CommentID,
     RP.IsPost,

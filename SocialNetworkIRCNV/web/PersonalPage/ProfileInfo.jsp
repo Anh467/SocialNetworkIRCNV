@@ -6,7 +6,7 @@
 <%@page import="model.Post"%>
 <%@page import="model.PostShare"%>
 <%@page import="model.PostUser"%>
-<%@ page errorPage="../block/errorPage.jsp" %>  
+<%@ page errorPage="../error/errorPage.jsp" %>  
 <!DOCTYPE html>
 <!--
 Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -40,6 +40,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
     <link rel="stylesheet" href="/SocialNetworkIRCNV/css/post.css">
     <link rel="stylesheet" href="/SocialNetworkIRCNV/css/postshare.css">
     <style>
+        ol, ul{
+            padding: 0;
+        }
         .profile-container{
             padding: 20px 17%;
             background-color: #cdf1ff;
@@ -366,8 +369,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                         <a href ="#" onclick="changeInfo('<%=user.getUserID()%>')" style = "font-size: 17px; text-decoration: none; color:#626262;">  <i class="icon fa-solid fa-pen " style = " background:#e4e6eb;
                                                                                                                                                          color:#000;"></i> Change Information</a></button>
                     <br>
-                    <a href =""> <i class="more fa-solid fa-ellipsis" style  = "            background:#e4e6eb;
-                                    color:#000;"></i> </a>
+                    
                 </div>
             </div>
 
@@ -379,11 +381,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
 
                         <!-- Introduce -->
                         <h3>Intro</h3>
-                        <p class = "intro-text">hihi</p>
+                        <p class = "intro-text"><%=user.getIntro()%></p>
                         <hr>
                         <ul>
-                            <li><i class="intro fa-solid fa-house" style="width: 26px;"></i>Lives in <%=user.getAddress()%>, <%=user.getNation()%></li>
-                            <li><i class="intro fa-solid fa-location-dot" style="width: 26px;"></i>From <%=user.getNation()%></li>
+                            <li><i class="intro fa-solid fa-house" style="width: 26px; margin: 0"></i><span>Lives in</span>  <span style="margin-right: 5px;"></span><span><strong><%=user.getAddress()%></strong></span></li>
+                            <li><i class="intro fa-solid fa-location-dot" style="width: 26px; margin: 0"></i><span>From</span> <span style="margin-right: 5px;"></span> <span><strong><%=user.getNation()%></strong></span></li>
                         </ul>
                     </div>
                     <div class = "profile-intro">
@@ -424,7 +426,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                             <div class ="post-input-container" id="post-input-container">
                                 <textarea id="NewPostTextarea" rows ="3" placeholder="What's on your mind?"></textarea>    
                                 <img id="previewImage" src="#" alt="Preview Image" style="display: none">
-                                <input type="file" name="photo" id="fileInput">
+                                <input type="file" accept="image/*,capture=camera" name="photo" id="fileInput">
                             </div> 
                             <button onclick="load('Post')">add new post</button>
                         </div>
@@ -455,12 +457,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                         <div class="form-group">
                                             <label for="cover-image" class="col-form-label">Cover Image:</label>
                                             <img id="previewImage3" src="<%=user.getCoverImg()%>" alt="Preview Image" style="width: 100%;
-                                                                                                                                                border-radius: 3px;
-                                                                                                                                                margin-bottom: 14px;
-                                                                                                                                                object-fit: cover;
-                                                                                                                                                height: 200px;
-                                                                                                                                            }">
-                                            <input  type="file" name="coverimage" id="fileInput3">
+                                                                                                                            border-radius: 3px;
+                                                                                                                            margin-bottom: 14px;
+                                                                                                                            object-fit: cover;
+                                                                                                                            height: 200px;
+                                                                                                                        }">
+                                            <input  type="file" accept="image/*,capture=camera" name="coverimage" id="fileInput3">
                                         </div>
 
                                         <div class="form-group">
@@ -470,17 +472,19 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                                                                                                             margin-right: 30px;
                                                                                                                             border-radius: 3px;
                                                                                                                             object-fit: cover;">
-                                            <input  type="file" name="avatar" id="fileInput4">
+                                            <input  type="file" accept="image/*,capture=camera" name="avatar" id="fileInput4">
                                         </div>
 
                                         <div class="form-group">
                                             <label for="full-name" class="col-form-label">Full Name:</label>
                                             <input value = "<%=user.getFullName()%>"type="text" id="fullname" name="fullname" class="form-control border-primary">
                                         </div>
+                                        
+                                        
 
                                         <div class="form-group">
                                             <label for="date-of-birth" class="col-form-label">Date of Birth:</label>
-                                            <input value = "<%=user.getDOB()%>"type="date" id="dateofbirth" name="dateofbirth" class="form-control border-primary">
+                                            <input value = "<%=user.getDOB()%>"type="date" id="dateofbirth" name="dob" class="form-control border-primary">
                                         </div>
 
                                         <div class="form-group">
@@ -510,6 +514,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                         <div class="form-group">
                                             <label for="email-address" class="col-form-label">Email Address:</label>
                                             <input value = "<%=user.getMail()%> " type="email" id="email-address" name="emailaddress" class="form-control border-primary">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="intro" class="col-form-label">Introduce:</label>
+                                            <textarea class="form-control border-primary" id="intro" name="intro"  rows="8" cols="60"><%=user.getIntro()%></textarea>
                                         </div>
                                         <input type="submit" class="btn btn-primary" value="Save changes">
                                         <!--<button type="submit" class="btn btn-primary">Save  changes</button>-->
@@ -653,7 +661,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                         <textarea rows ="2" style="width: 100%; border: none;" id="contentPost"></textarea>
                                         <img id="imgPost" src="" style=" max-width: 660px; max-height: 660px;"/>
                                         <br>
-                                        <input type="file" name="photoPost" id="fileInput2" />
+                                        <input type="file" accept="image/*,capture=camera" name="photoPost" id="fileInput2" />
                                         <button class="btn btn-primary" style="font-size: 15px;" type="button" onclick="clearFileInput()">Clear File Input</button>
                                     </div>
                                 </div>

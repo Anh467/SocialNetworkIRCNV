@@ -73,7 +73,7 @@ public class NOTE_FRIEND extends NOTE {
                 + "\n"
                 + "                                <div class=\"friend-box\" id=\"NoteID\">\n"
                
-                + "                                    <div class=\"friend-profile\" style=\"background-image: url(" + userRequest.getImgUser() + ");\"></div>\n"
+                + "                                    <div class=\"friend-profile\" style=\"background-image: url(" + userRequest.getImgUser().replaceAll(" ", "%20") + ");\"></div>\n"
                 + "                                    <div class=\"name-box\">" + userRequest.getFullName() + "<i class=\"fa-solid fa-user-group\"></i>" + " </div>\n"
                 + "                                    <div class=\"user-name-box\">" + super.getTime() + " <br> " + userRequest.getFullName() + getStatus(this.status.trim()) + "</div>\n"
                 + "                                    <div class=\"request-btn-row\" data-username=\"silvergoose115\">\n"

@@ -949,7 +949,7 @@
                                                                                                                                                 object-fit: cover;
                                                                                                                                                 height: 200px;
                                                                                                                                             }">
-                                            <input  type="file" name="coverimage" id="fileInput3">
+                                            <input  type="file" accept="image/*,capture=camera" name="coverimage" id="fileInput3">
                                         </div>
 
                                         <div class="form-group">
@@ -959,7 +959,7 @@
                                                                                                                                                 margin-right: 30px;
                                                                                                                                                 border-radius: 3px;
                                                                                                                                                 object-fit: cover;">
-                                            <input  type="file" name="avatar" id="fileInput4">
+                                            <input  type="file" accept="image/*,capture=camera" name="avatar" id="fileInput4">
                                         </div>
 
                                         <div class="form-group">
@@ -1142,7 +1142,7 @@
                                         <textarea rows ="2" style="width: 100%; border: none;" id="contentPost"></textarea>
                                         <img id="imgPost" src="" style=" max-width: 660px; max-height: 660px;"/>
                                         <br>
-                                        <input type="file" name="photoPost" id="fileInput2" />
+                                        <input type="file" accept="image/*,capture=camera" name="photoPost" id="fileInput2" />
                                         <button class="btn btn-primary" style="font-size: 15px;" type="button" onclick="clearFileInput()">Clear File Input</button>
                                     </div>
                                 </div>

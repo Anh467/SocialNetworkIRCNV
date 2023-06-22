@@ -122,7 +122,13 @@ public class UpdateInfo extends HttpServlet {
             } else {
                 user.setNation(nation);
             }
-          
+            String intro = text.changeUTF8(request.getParameter("intro"));
+            if (intro == null || intro.trim().isEmpty()) {
+                intro = user.getIntro();
+            } else {
+                user.setNation(intro);
+            }
+            
             Part part = request.getPart("avatar");
             if (part != null && part.getSubmittedFileName() != null && !part.getSubmittedFileName().trim().isEmpty()) {
                 //khởi tạo controldata
@@ -154,7 +160,7 @@ public class UpdateInfo extends HttpServlet {
                 System.out.println("path: " + data.getRealPath());
             }
             new dao.UserDAO().updateInfo(user);
-            response.sendRedirect("../PersonalPage/ProfileInfo.jsp");
+            response.sendRedirect("PersonalPage/ProfileInfo.jsp");
         } catch (Exception e) {
             e.printStackTrace();
         }

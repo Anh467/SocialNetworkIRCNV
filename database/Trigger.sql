@@ -98,7 +98,7 @@
 
 -- NumInterface: tigger khi huy like va like (casi nay khong can trigger)
 -- trigger neu user1 va user2 dong thoi yeu cau kb cho nhau thi chuyen bit = 1;
-	
+	go
 	/*CREATE TRIGGER ChangeToFriend
 	ON USERRELATION AFTER UPDATE
 	AS
@@ -108,7 +108,6 @@
 			SET U1RequestU2= 0, U2RequestU1= 0, isFriend= 1
 			WHERE UserID1= (SELECT UserID1 FROM dbo.USERRELATION) AND UserID2= (SELECT UserID2 FROM dbo.USERRELATION)
     END;*/
-	go
 	CREATE TRIGGER ChangeToFriend
 	ON USERRELATION AFTER UPDATE
 	AS
@@ -128,7 +127,25 @@
 	END;
 	
 -- NumComment: trigger khi comment va xoa comment
-	
+	GO
+	CREATE TRIGGER delete_comment_of_POSTSHARE
+	ON dbo.COMMENTSHARE AFTER DELETE
+	as
+	BEGIN
+		UPDATE dbo.POSTSHARE
+		SET NumComment= NumComment -1
+		WHERE ShareID= (SELECT ShareID FROM Deleted)
+	END;
+	GO
+
+	CREATE TRIGGER insert_comment_of_POSTSHARE
+	ON dbo.COMMENTSHARE AFTER INSERT 
+	AS
+	BEGIN
+		UPDATE dbo.POSTSHARE
+		SET NumComment= NumComment +1
+		WHERE ShareID= (SELECT ShareID FROM Inserted)
+	END;
 -- new path for image
 	
 	GO
@@ -162,6 +179,22 @@
 		END
 	END
 	
+	GO
+   CREATE TRIGGER Add_Path_For_UPDATE_Comment
+	ON dbo. AFTER UPDATE
+	AS
+	BEGIN
+		IF UPDATE(ImagePost) 
+			BEGIN
+			UPDATE p
+			SET ImagePost = CASE
+					WHEN p.ImagePost = '' THEN ''
+					ELSE 'data/post/'+p.PostID+'/'+p.ImagePost
+				END
+			FROM dbo.POST p
+			INNER JOIN INSERTED i ON p.PostID = i.PostID
+		END
+	END
 		-- add path for comment
 	GO
     CREATE TRIGGER Add_Path_For_INSERT_Comment

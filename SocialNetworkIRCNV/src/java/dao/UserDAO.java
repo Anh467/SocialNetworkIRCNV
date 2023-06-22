@@ -51,7 +51,7 @@ public class UserDAO {
     }
 
     public User getUserByID(String userId) {
-        String Query = "SELECT UserID, FullName, Address, Mail, PhoneNumber, Dob, Gender, Nation, ImageUser, ImageBackGround, NumFriend, NumPost"
+        String Query = "SELECT UserID, FullName, Address, Mail, PhoneNumber, Dob, Gender, Nation, ImageUser, ImageBackGround, NumFriend, NumPost, intro "
                 + " FROM  dbo.UserInfor WHERE UserID = ? ";
         try {
             PreparedStatement ps = cnn.prepareStatement(Query);
@@ -62,7 +62,7 @@ public class UserDAO {
                         rs.getString(10), rs.getString(1),
                         rs.getNString(2), rs.getString(3),
                         rs.getString(4), rs.getString(5),
-                        rs.getString(6), rs.getBoolean(7), rs.getInt(11), rs.getInt(12));
+                        rs.getString(6), rs.getBoolean(7), rs.getInt(11), rs.getInt(12), rs.getString(13));
             }
         } catch (Exception e) {
             System.out.println("dao.UserDAO.getUserByID()");
@@ -107,7 +107,8 @@ public class UserDAO {
                 + "PhoneNumber = ? ,\n"
                 + "Dob = ? ,\n"
                 + "Gender = ? ,\n"
-                + "Nation =      ? \n"
+                + "Nation =      ? ,\n"
+                + "intro =      ? \n"
                 //                + "ImageUser = ? ,\n"
                 //                + "ImageBackGround = ? \n"
                 + "where UserID = ? ;";
@@ -131,9 +132,10 @@ public class UserDAO {
             ps.setString(5, user.getDOB());
             ps.setBoolean(6, user.isGender());
             ps.setNString(7, user.getNation());
+            ps.setNString(8, user.getNation());
 //            ps.setString(8, user.getImgUser());
 //            ps.setString(9, user.getCoverImg());
-            ps.setString(8, user.getUserID());
+            ps.setString(9, user.getUserID());
             ps.executeUpdate();
         } catch (Exception e) {
             System.out.println("dao.UserDAO.updateInfo()");
@@ -173,7 +175,7 @@ public class UserDAO {
         String query = "DECLARE @UserID VARCHAR(11)= ? ;\n"
                 + "	DECLARE @Offset INT = ? ; -- Số bài post đã hiển thị trước đó = @FetchCount* (offset-1)\n"
                 + "	DECLARE @FetchCount INT = 5; -- Số bài post muốn lấy thêm\n"
-                + "	SELECT  UserInfor.UserID,FullName, Address, Mail, PhoneNumber, Dob, Gender, Nation, ImageUser, ImageBackGround, NumFriend, NumPost\n"
+                + "	SELECT  UserInfor.UserID,FullName, Address, Mail, PhoneNumber, Dob, Gender, Nation, ImageUser, ImageBackGround, NumFriend, NumPost, intro\n"
                 + "	FROM(\n"
                 + "	SELECT UserID2\n"
                 + "	FROM dbo.USERRELATION\n"
@@ -196,8 +198,8 @@ public class UserDAO {
                         rs.getString(10), rs.getString(1),
                         rs.getNString(2), rs.getString(3),
                         rs.getString(4), rs.getString(5),
-                        rs.getString(6), rs.getBoolean(7), rs.getInt(11), rs.getInt(12));
-                user.toString();
+                        rs.getString(6), rs.getBoolean(7), rs.getInt(11), rs.getInt(12), rs.getString(13));
+                
                 profile.add(user);
             }
         } catch (Exception e) {
@@ -211,7 +213,7 @@ public class UserDAO {
         String query = "DECLARE @UserID VARCHAR(11)= ? ;\n"
                 + "	DECLARE @Offset INT = ? ; -- Số bài post đã hiển thị trước đó = @FetchCount* (offset-1)\n"
                 + "	DECLARE @FetchCount INT = ?; -- Số bài post muốn lấy thêm\n"
-                + "	SELECT  UserInfor.UserID,FullName, Address, Mail, PhoneNumber, Dob, Gender, Nation, ImageUser, ImageBackGround, NumFriend, NumPost\n"
+                + "	SELECT  UserInfor.UserID,FullName, Address, Mail, PhoneNumber, Dob, Gender, Nation, ImageUser, ImageBackGround, NumFriend, NumPost, intro\n"
                 + "	FROM(\n"
                 + "	SELECT UserID2\n"
                 + "	FROM dbo.USERRELATION\n"
@@ -235,7 +237,7 @@ public class UserDAO {
                         rs.getString(10), rs.getString(1),
                         rs.getNString(2), rs.getString(3),
                         rs.getString(4), rs.getString(5),
-                        rs.getString(6), rs.getBoolean(7), rs.getInt(11), rs.getInt(12));
+                        rs.getString(6), rs.getBoolean(7), rs.getInt(11), rs.getInt(12), rs.getString(13));
                 user.toString();
                 profile.add(user);
             }

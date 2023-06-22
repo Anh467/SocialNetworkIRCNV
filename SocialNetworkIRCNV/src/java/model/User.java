@@ -13,6 +13,7 @@ public class User extends Person {
     private String Nation, imgUser, coverImg;
     private int NumFriend, NumPost;
     private Role role;
+    private String intro;
     public User() {
     }
 
@@ -26,7 +27,8 @@ public class User extends Person {
 
     }
 
-    public User(String Nation, String imgUser, String UserID, String FullName, String Address, String Mail, String PhoneNumber, String DOB, boolean Gender, int  NumFriend, int NumPost) {
+    public User(String Nation, String imgUser, String UserID, String FullName, String Address, String Mail, String PhoneNumber, 
+            String DOB, boolean Gender, int  NumFriend, int NumPost, String intro) {
         super(UserID, FullName, Address, Mail, PhoneNumber, DOB, Gender);
         this.Nation = Nation;
 //        this.imgUser = "/SocialNetworkIRCNV/"+imgUser;
@@ -37,9 +39,12 @@ public class User extends Person {
         }
         this.NumFriend= NumFriend;
         this.NumPost= NumPost;
+        this.intro= intro;
+        //intro, Address
     }
 
-    public User(String Nation, String imgUser, String coverImg, String UserID, String FullName, String Address, String Mail, String PhoneNumber, String DOB, boolean Gender, int  NumFriend, int NumPost) {
+    public User(String Nation, String imgUser, String coverImg, String UserID, String FullName, String Address, String Mail, String PhoneNumber, 
+            String DOB, boolean Gender, int  NumFriend, int NumPost, String intro) {
         super(UserID, FullName, Address, Mail, PhoneNumber, DOB, Gender);
         this.Nation = Nation;
 //         this.imgUser = "/SocialNetworkIRCNV/"+imgUser;
@@ -56,6 +61,7 @@ public class User extends Person {
         }
          this.NumFriend= NumFriend;
         this.NumPost= NumPost;
+        this.intro= intro;
     }
 
     public Role getRole() {
@@ -76,6 +82,14 @@ public class User extends Person {
 
     public int getNumPost() {
         return NumPost;
+    }
+
+    public String getIntro() {
+        return intro;
+    }
+
+    public void setIntro(String intro) {
+        this.intro = intro;
     }
 
     public void setNumPost(int NumPost) {
