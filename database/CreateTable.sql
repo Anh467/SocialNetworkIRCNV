@@ -1,4 +1,4 @@
-﻿CREATE DATABASE SocialMedia
+﻿--CREATE DATABASE SocialMedia12
 --------------------------------------------------------------UserInfor------------------------------------------------------------------
 --phan quyen nguoi dung
 CREATE TABLE Role(
@@ -195,6 +195,7 @@ CREATE TABLE InterFaceObject(
 	InterFaceID VARCHAR(11) DEFAULT 'none'
 	CONSTRAINT fk_InterFaceID_InterFaceObject FOREIGN KEY (InterFaceID) REFERENCES dbo.InterFace(InterFaceID),
 );
+
 --------------------------------------------------------------DBO.Notificate------------------------------------------------------------------
 CREATE TABLE NOTE_COUNT(
 	UserID VARCHAR(11) PRIMARY KEY,
@@ -230,23 +231,6 @@ CREATE TABLE NOTE_COMMENT(
 	TimeComment DATETIME DEFAULT GETDATE(),
 	isRead BIT DEFAULT 0
 )
---------------------------------------------------------------DBO.LIKE------------------------------------------------------------------
-CREATE TABLE InterFace(
-	InterFaceID VARCHAR(11) PRIMARY KEY NOT NULL,
-	InterFaceName VARCHAR(30),
-	InterFaceDiv VARCHAR(100),
-)
-INSERT INTO dbo.InterFace
-VALUES
-(   'like', 'like', '<i class="fa-solid fa-thumbs-up"></i>'),
-(   'love', 'love', '<i class="fa-solid fa-heart"></i>'),
-(   'haha', 'haha','<i class="fa-solid fa-face-laugh-squint"></i>'),
-(   'sad', 'sad', '<i class="fa-solid fa-face-sad-cry"></i>'),
-(   'angry', 'angry', '<i class="fa-regular fa-face-nose-steam"></i>'),
-(   'wow', 'wow', '<i class="fa-solid fa-face-explode"></i>'),
-(   'none', 'none', '<i class="fa-regular fa-thumbs-up"></i>')
-
-<<<<<<< HEAD
 
 CREATE TABLE NOTE_lIKE(
 	ID INT IDENTITY(1,1) NOT NULL,
@@ -263,30 +247,7 @@ CREATE TABLE NOTE_lIKE(
 )
 
 
-=======
-CREATE TABLE InterFaceObject(
-	UserID VARCHAR(11) NOT NULL,
-	CONSTRAINT fk_user_id_InterFaceObject FOREIGN KEY (UserID) REFERENCES dbo.UserInfor(UserID),
-	ObjectID VARCHAR(11),
-	PRIMARY KEY(ObjectID, UserID),
-	InterFaceID VARCHAR(11) DEFAULT 'none'
-	CONSTRAINT fk_InterFaceID_InterFaceObject FOREIGN KEY (InterFaceID) REFERENCES dbo.InterFace(InterFaceID),
-);
 
-CREATE VIEW UserReportSummary
-AS
-SELECT
-    u.UserID,
-    u.ImageUser,
-    u.FullName,
-    u.Account,
-    u.Mail,
-    u.PhoneNumber,
-    u.Address,
-    (SELECT COUNT(*) FROM ReportComment1686 WHERE UserID2 = u.UserID) AS NumCommentReported,
-    (SELECT COUNT(*) FROM ReportPost WHERE UserID2 = u.UserID) AS NumPostReported
-FROM
-    UserInfor u;
 
-	SELECT * FROM UserReportSummary
->>>>>>> AdminPage
+
+

@@ -975,6 +975,58 @@ GO
 	FROM dbo.UserInfor
 	INNER JOIN dbo.Role ON Role.RoleID = UserInfor.RoleID
 	WHERE UserID= @UserID
+
+	go
+	DECLARE @UserID NVARCHAR(11) ='UID00000001'
+	IF NOT EXISTS(SELECT UserID, MESS, NOTE
+                FROM dbo.NOTE_COUNT
+                WHERE UserID= @UserID)
+				BEGIN
+					INSERT INTO dbo.NOTE_COUNT
+					(
+					    UserID,
+					    NOTE,
+					    MESS
+					)
+					VALUES
+					(   @UserID,   -- UserID - varchar(11)
+					    0, -- NOTE - int
+					    0  -- MESS - int
+					    )
+                END 
+   SELECT UserID, MESS, NOTE
+                FROM dbo.NOTE_COUNT
+                WHERE UserID= @UserID
 	
-   
-	
+
+	 DECLARE @UserID NVARCHAR(11) = 'UID00000001'
+                DECLARE @isLock BIT = CASE
+					WHEN ((SELECT TOP(1) DATEADD(MINUTE, LockDurationMinute, DATEADD(HOUR, LockDurationHour, DATEADD(DAY, LockDurationDay, LockTime)))
+                           FROM UserLock
+                          WHERE UserID = @UserID) > GETDATE()) THEN 1
+                    ELSE 0
+                END
+               
+                DECLARE @Role VARCHAR(11)
+                
+                SELECT @Role = UserInfor.RoleID
+                FROM dbo.UserInfor
+                WHERE UserInfor.UserID = @UserID
+                
+                iF (@isLock = 0 AND @Role = 'LOCK')
+                BEGIN
+                    UPDATE dbo.UserInfor
+					    SET UserInfor.RoleID = 'USER'
+                   WHERE UserInfor.UserID = @UserID
+                	DELETE FROM dbo.UserLock WHERE UserLock.UserID=@UserID
+                END
+                
+                SELECT Role.RoleID, RoleName, @isLock
+                FROM dbo.UserInfor
+                INNER JOIN dbo.Role ON Role.RoleID = UserInfor.RoleID
+                wHERE UserID = @UserID
+                
+                SELECT Role.RoleID, RoleName, @isLock
+                FROM dbo.UserInfor
+                iNNER JOIN dbo.Role ON Role.RoleID = UserInfor.RoleID
+                WHERE UserID = @UserID
