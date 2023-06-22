@@ -3,7 +3,7 @@
     Created on : Jun 8, 2023, 8:54:03?PM
     Author     : LENOVO
 --%>
-<%@ page errorPage="../block/errorPage.jsp" %>  
+<%@ page errorPage="../error/errorPage.jsp" %>  
 
 <!DOCTYPE html>
 <html>

@@ -10,33 +10,21 @@ package connection;
  */
 import java.sql.Connection;
 import java.sql.DriverManager;
-
 public class connection {
 
-    private Connection cnn;
-
-    public connection() {
-        Config c = new Config();
+    public Connection getConnection() {
+        Config c= new Config();
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String connectionUrl = "jdbc:sqlserver://" + "DESKTOP-ULQ9JUL\\TCNJK:1433" + ";databaseName=" + c.databaseName + "; Encrypt=false;";
-            Connection con = DriverManager.getConnection(connectionUrl, "sa", "lioooo0000");
+            String connectionUrl = "jdbc:sqlserver://" + c.serverName + ";databaseName=" + c.databaseName + "; Encrypt=false;";
+            Connection con = DriverManager.getConnection(connectionUrl, c.user, c.password);
             System.out.println("True at connection/ connect2");
-            this.cnn = con;
+            return con;
         } catch (Exception e) {
             System.out.println("false at connection/ connect2");
             e.printStackTrace();
-            cnn = null;
         }
-        
-    }
+        return null;
 
-    public Connection getConnection() {
-
-        return cnn;
-    }
-
-    public void closeConnection() throws Exception {
-        cnn.close();
     }
 }

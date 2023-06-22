@@ -85,7 +85,7 @@
 <body>
 
   <div class="headd">
-      <jsp:include page="../block/header.jsp" />
+      <jsp:include page="block/header.jsp" />
   </div>
   <div class="bodyy" style="margin-top: 15vw;">
     <div class="Container">

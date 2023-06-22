@@ -10,11 +10,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class Config {
-    public final String userImg= "https://cdn-icons-png.flaticon.com/512/1946/1946429.png";
-    public final String backGround= "https://static.vecteezy.com/system/resources/thumbnails/005/572/340/small/foggy-landscape-forest-in-the-morning-beautiful-sunrise-mist-cover-mountain-background-at-countryside-winter-free-photo.jpg";
-    public final String databaseName = "SocialMedia";
-    public final String user = "sa";
-    public final String password = "lioooo0000";
-    public final String serverName = "DESKTOP-ULQ9JUL\\TCNJK:1433";
+
+    public String databaseName = "SocialMedia";
+    public String user = "viet080702";
+    public String password = "nguyenanhviet";
+    public String serverName = "MSI\\SQLEXPRESS:1433";
 
 }

@@ -6,7 +6,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
 -->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="model.User"%>
-<%@ page errorPage="../block/errorPage.jsp" %>  
+<%@ page errorPage="../error/errorPage.jsp" %>  
 <%@page import="model.PostShare"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="model.PostUser"%>
@@ -37,6 +37,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
     <link rel="stylesheet" href="/SocialNetworkIRCNV/css/post.css">
     <link rel="stylesheet" href="/SocialNetworkIRCNV/css/postshare.css">
     <style>
+        ol, ul{
+            padding: 0;
+        }
         .profile-container{
             padding: 20px 17%;
             background-color: #cdf1ff;
@@ -468,7 +471,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
             <%@include file="../block/header.jsp" %>
         </header>
         <%            if (profileUser == null) {
-                response.sendRedirect("../block/errorPage.jsp");
+                response.sendRedirect("/error/errorPage.jsp");
+                return;
             }
             System.out.println("id and UID" + id + UID);
             String FriendStatus = new dao.RelationDao("relate").getDivRelation(id, UID);
@@ -506,7 +510,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                         </a>
                         
                     </span><br>
-                    <a href =""> <i class="more fa-solid fa-ellipsis"></i> </a>
+                    <a href =""> 
+                        <i class="more fa-solid fa-ellipsis" style  = "background:#e4e6eb;color:#000;"></i> 
+                    </a>
                 </div>
             </div>
 
@@ -514,11 +520,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                 <div class ="info-col">
                     <div class ="profile-intro">
                         <h3>Intro</h3>
-                        <p class = "intro-text">hihi</p>
+                        <p class = "intro-text"><%=profileUser.getIntro()%></p>
                         <hr>
                         <ul>
-                            <li><i class="intro fa-solid fa-house" style="width: 26px;"></i>Lives in DaNang, VietNam</li>
-                            <li><i class="intro fa-solid fa-location-dot" style="width: 26px;"></i>From Hue, VietNam</li>
+                            <li><i class="intro fa-solid fa-house" style="width: 26px;  margin: 0" ></i>Lives in  <span style="margin-right: 5px;"></span><strong><%=profileUser.getAddress()%></strong></li>
+                            <li><i class="intro fa-solid fa-location-dot" style="width: 26px; margin: 0"></i>From  <span style="margin-right: 5px;"></span><strong><%=profileUser.getNation()%></strong></li>
                         </ul>
                     </div>
                     <div class = "profile-intro">
@@ -573,7 +579,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                                                                                                                                 object-fit: cover;
                                                                                                                                                 height: 200px;
                                                                                                                                             }">
-                                            <input  type="file" name="coverimage" id="fileInput3">
+                                            <input  type="file" accept="image/*,capture=camera" name="coverimage" id="fileInput3">
                                         </div>
 
                                         <div class="form-group">
@@ -583,7 +589,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                                                                                                             margin-right: 30px;
                                                                                                                             border-radius: 3px;
                                                                                                                             object-fit: cover;">
-                                            <input  type="file" name="avatar" id="fileInput4">
+                                            <input  type="file" accept="image/*,capture=camera" name="avatar" id="fileInput4">
                                         </div>
 
                                         <div class="form-group">
@@ -766,7 +772,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                         <textarea rows ="2" style="width: 100%; border: none;" id="contentPost"></textarea>
                                         <img id="imgPost" src="" style=" max-width: 660px; max-height: 660px;"/>
                                         <br>
-                                        <input type="file" name="photoPost" id="fileInput2" />
+                                        <input type="file" accept="image/*,capture=camera" name="photoPost" id="fileInput2" />
                                         <button class="btn btn-primary" style="font-size: 15px;" type="button" onclick="clearFileInput()">Clear File Input</button>
                                     </div>
                                 </div>

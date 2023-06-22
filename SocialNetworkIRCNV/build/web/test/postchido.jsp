@@ -792,7 +792,7 @@
                                             <div id="button-load-comment" style="width: 10%" onclick="loadComment('')"><a href=""><i style="font-size:27px;color:#00abfd" class="fa-solid fa-paper-plane"></i></a></div> 
                                         </div>
                                         <img id="previewImage" src="#" alt="Preview Image" style="display: none">
-                                        <input type="file" name="photo" id="fileInput">
+                                        <input type="file" accept="image/*,capture=camera" name="photo" id="fileInput">
                                     </div> 
                                 </div>
 

@@ -21,10 +21,10 @@
             <div class="col-xl-5 col-lg-6 col-md-7 col-sm-9 col-11  login-sec container">
                 <h2 class="text-center">Sign up now</h2>
                 <form action="/SocialNetworkIRCNV/Verify" method="get" class="login-form" onsubmit="return validateForm()">
-
                     <div class="form-group">
-                        <label >User Name</label>
-                        <input name="user" value="${user}" type="text" class="form-control" placeholder="Enter user name">
+                        <label>User Name</label>
+                        <input name="user" id="username" value="${user}" type="text" class="form-control" placeholder="Enter user name" onblur="validateUsername()">
+                        <small id="usernameError" style="color: red;"></small>
                     </div>
                     <div class="form-group">
                         <label >Password</label>
@@ -75,7 +75,23 @@
                     <a href="${pageContext.request.contextPath}/Authen/forgotpass.jsp">Forgot password</a> <br>
                     <a href="${pageContext.request.contextPath}/Authen/login.jsp">You already have account?</a>
                 </div>
-                
+                <script>
+                    function validateForm() {
+                        var username = document.getElementById("username").value;
+                        var regex = /^[a-zA-Z0-9]+$/;
+                        var errorElement = document.getElementById("usernameError");
+
+                        if (!regex.test(username)) {
+                            errorElement.textContent = "Invalid username!";
+                            return false;
+                        } else {
+                            errorElement.textContent = "";
+                            return true;
+                        }
+                    }
+
+                </script>
+
 
         </section>
     </body>
