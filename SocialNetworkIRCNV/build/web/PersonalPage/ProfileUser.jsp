@@ -510,8 +510,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                         </a>
                         
                     </span><br>
-                    <a href =""> 
-                        <i class="more fa-solid fa-ellipsis" style  = "background:#e4e6eb;color:#000;"></i> 
+                    <a href ="" onclick="askReportUser('<%=UID%>', '<%=id%>')"> 
+                        <i class="fa-sharp fa-solid fa-flag more" style= "background:#e4e6eb;color:#000;" ></i>
+                        
                     </a>
                 </div>
             </div>

@@ -35,6 +35,10 @@ function reportPost(rpID, userID) {
     });
 }
 
+function askreportComment(rpID, userID, isPost){
+    if(confirm('Are you sure to report this comment!!!'))
+        reportComment(rpID, userID, isPost);
+}
 function reportComment(rpID, userID, isPost) {
     var data = {
         rpID: rpID,
@@ -57,7 +61,10 @@ function reportComment(rpID, userID, isPost) {
         }
     });
 }
-
+function askReportUser(rpID, userID){
+    if(confirm('Are you sure to report this user!!!'))
+        reportUser(rpID, userID);
+}
 function reportUser(rpID, userID) {
     var data = {
         rpID: rpID,

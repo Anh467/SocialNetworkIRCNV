@@ -977,4 +977,5 @@ GO
 	WHERE UserID= @UserID
 	
    
-	
+	select *
+	from dbo.ReportCommentView

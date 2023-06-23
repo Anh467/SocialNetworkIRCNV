@@ -388,7 +388,7 @@ function addChart(labels,Counts,mod, id) {
 
         var item = {
             "date": formattedDate,
-            "value": Math.round(Counts[i]*1000/mod)/1000
+            "value": Math.round(Counts[i]*10/mod)/10
         };
         newData.push(item);
     }

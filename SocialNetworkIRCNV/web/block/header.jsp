@@ -28,7 +28,7 @@
     <%       String id = (String) session.getAttribute("id");
         String UID = request.getParameter("UID");
         User profileUser = new dao.UserDAO().getUserByID(UID);
-        NOTE_COUNT note = new dao.NoteDao().getNOTE_COUNT(id);
+        NOTE_COUNT note = new dao.NoteDao(id).getNOTE_COUNT(id);
         /*if (id == null || id.equals("")) {
                     response.sendRedirect("/SocialNetworkIRCNV/Authen/login.jsp");
                     return;

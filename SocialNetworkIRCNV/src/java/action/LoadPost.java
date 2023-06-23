@@ -139,7 +139,7 @@ public class LoadPost extends HttpServlet {
         for (int i = 0; i < commentList.size(); i++) {
             str += "<ul>"
                     + "<li id='comment-" + commentList.get(i).getCmtID() + "'>"
-                    + "<div class=\"comment\" id=\"" +  commentList.get(i).getCmtID()+ "\">\n"
+                    + "<div class=\"comment\" id=\"" + commentList.get(i).getCmtID() + "\">\n"
                     + commentList.get(i).getUpdateDiv(id)
                     + "        </div>\n";
             ArrayList<CommentChild> commentChildList = commentList.get(i).getCommentChild();
@@ -361,6 +361,7 @@ public class LoadPost extends HttpServlet {
                     + "<script src=\"/SocialNetworkIRCNV/js/controlComment.js\"></script>\n"
                     + "            <script src=\"/SocialNetworkIRCNV/js/controlPost.js\"></script>\n"
                     + "            <script src=\"/SocialNetworkIRCNV/js/like.js\"></script>"
+                    + "             <script src=\"/SocialNetworkIRCNV/js/report.js\"></script>"
                     + "    </body>\n"
                     + "\n"
                     + "</html>"

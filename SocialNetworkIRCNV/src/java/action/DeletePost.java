@@ -37,23 +37,31 @@ public class DeletePost extends HttpServlet {
         String UserID = (String) request.getSession().getAttribute("id");
         String role = (String) request.getSession().getAttribute("userRole");
         dao.PostUserDAO api = new dao.PostUserDAO();
-        try (PrintWriter out = response.getWriter()) {
+        boolean checkExist= api.checkExistPostUser(PostID, UserID);
+        try ( PrintWriter out = response.getWriter()) {
             if (Type.equalsIgnoreCase("Post")) {
                 /* TODO output your page here. You may use following sample code. */
-                if (!api.checkExistPostUser(PostID, UserID) && !role.equals("Admin") && !role.equals("Master Admin")) {
-
-                    out.print("false");
-                } else {
+                if (checkExist || role.equals("Admin") || role.equals("Master Admin")) {
                     api.deletePost(PostID, UserID);
                     out.print("true");
+
+                } else {
+                    if(!checkExist)
+                        out.print("You can't delete other post");
+                    else
+                    out.print("false");
                 }
 
             } else if (Type.equalsIgnoreCase("Share")) {
-                if (!api.checkExistPostUser(PostID, UserID) && !role.equals("Admin") && !role.equals("Master Admin")) {
-                    out.print("false");
-                } else {
+                if (api.checkExistPostUser(PostID, UserID) || role.equals("Admin") || role.equals("Master Admin")) {
                     api.deletePostShare(PostID, UserID);
                     out.print("true");
+
+                } else {
+                    if(!checkExist)
+                        out.print("You can't delete other post");
+                    else
+                    out.print("false");
                 }
             }
         }

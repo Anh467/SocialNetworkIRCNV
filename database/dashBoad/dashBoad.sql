@@ -114,7 +114,7 @@ SELECT
 FROM 
     dbo.ReportComment1686 RP
     LEFT JOIN dbo.COMMENT P ON RP.CommentID = P.CmtID AND RP.IsPost = 1
-    LEFT JOIN dbo.COMMENTSHARE PS ON RP.CommentID = PS.CmtID AND RP.IsPost = 0
+    LEFT JOIN dbo.COMMENTSHARE		 PS ON RP.CommentID = PS.CmtID AND RP.IsPost = 0
     LEFT JOIN COMMENT P2 ON PS.ShareID = P2.PostID
 GROUP BY 
     RP.CommentID,

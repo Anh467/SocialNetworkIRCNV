@@ -132,7 +132,7 @@ public class UserDAO {
             ps.setString(5, user.getDOB());
             ps.setBoolean(6, user.isGender());
             ps.setNString(7, user.getNation());
-            ps.setNString(8, user.getNation());
+            ps.setNString(8, user.getIntro());
 //            ps.setString(8, user.getImgUser());
 //            ps.setString(9, user.getCoverImg());
             ps.setString(9, user.getUserID());

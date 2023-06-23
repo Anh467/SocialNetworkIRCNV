@@ -24,7 +24,7 @@ public class PostDAO {
         cnn = new connection.connection().getConnection();
         text = new Text();
     }
-    public PostDAO(Connection cnn) {
+    public PostDAO(Connection cnn, String IDUserCurrent) {
          this.cnn= cnn;
         text = new Text();
     }
