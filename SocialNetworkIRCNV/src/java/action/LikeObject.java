@@ -47,11 +47,11 @@ public class LikeObject extends HttpServlet {
         new dao.InterFaceObjectDAO().setInterFaceObjectBy(ObejectID, id, getInterfaceID(Type));
         String div="";
         if(ObejectID.substring(0, 3).equalsIgnoreCase("PID")){
-            PostUser postUser= new dao.PostDAO().getPostUserByPostID(ObejectID);
-            div= postUser.getUpdateDiv(id);
+            PostUser postUser= new dao.PostDAO(id).getPostUserByPostID(ObejectID);
+            div= postUser.getUpdateDiv();
         }else if(ObejectID.substring(0, 3).equalsIgnoreCase("SID")){
-            PostShare postShare= new dao.PostDAO().getPostShareByShareID(ObejectID);
-            div= postShare.getUpdateDiv(id);
+            PostShare postShare= new dao.PostDAO(id).getPostShareByShareID(ObejectID);
+            div= postShare.getUpdateDiv();
         }else if(ObejectID.substring(0, 3).equalsIgnoreCase("ILD")){
             CommentChild commentChild= new dao.CommentDAO().getCommentChildByChildID(ObejectID);
             div= commentChild.getUpdateDiv(id);

@@ -35,7 +35,7 @@ public class GetLoadPost extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     public void loadProfileUser(String id, String uid, HttpServletResponse response, HttpServletRequest request, int offset) throws Exception {
-        dao.PostDAO api = new dao.PostDAO();
+        dao.PostDAO api = new dao.PostDAO(id);
         ArrayList<Post> post = api.getPostForProfileUser(id, uid, offset);
         if (post.isEmpty()) {
             User user = new dao.UserDAO().getUserByID(uid);
@@ -46,16 +46,16 @@ public class GetLoadPost extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             for (int i = 0; i < post.size(); i++) {
                 if (post.get(i) instanceof PostUser) {
-                    out.append(((PostUser) post.get(i)).getDiv(id));
+                    out.append(((PostUser) post.get(i)).getDiv());
                 } else {
-                    out.append(((PostShare) post.get(i)).getDiv(id));
+                    out.append(((PostShare) post.get(i)).getDiv());
                 }
             }
         }
     }
 
     public void loadProfileinfo(String id, HttpServletResponse response, HttpServletRequest request, int offset) throws Exception {
-        dao.PostDAO api = new dao.PostDAO();
+        dao.PostDAO api = new dao.PostDAO(id);
         ArrayList<Post> post = api.getPostForProfileInfo(id, offset);
         if (post.isEmpty()) {
             try ( PrintWriter out = response.getWriter()) {
@@ -65,16 +65,16 @@ public class GetLoadPost extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             for (int i = 0; i < post.size(); i++) {
                 if (post.get(i) instanceof PostUser) {
-                    out.append(((PostUser) post.get(i)).getDiv(id));
+                    out.append(((PostUser) post.get(i)).getDiv());
                 } else {
-                    out.append(((PostShare) post.get(i)).getDiv(id));
+                    out.append(((PostShare) post.get(i)).getDiv());
                 }
             }
         }
     }
 
     public void loadHomePage(String id, HttpServletResponse response, HttpServletRequest request, int offset) throws Exception {
-        dao.PostDAO api = new dao.PostDAO();
+        dao.PostDAO api = new dao.PostDAO(id);
         ArrayList<Post> post = api.getPostForHomePage(id, offset);
         if (post.isEmpty()) {
             try ( PrintWriter out = response.getWriter()) {
@@ -84,9 +84,9 @@ public class GetLoadPost extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             for (int i = 0; i < post.size(); i++) {
                 if (post.get(i) instanceof PostUser) {
-                    out.append(((PostUser) post.get(i)).getDiv(id));
+                    out.append(((PostUser) post.get(i)).getDiv());
                 } else {
-                    out.append(((PostShare) post.get(i)).getDiv(id));
+                    out.append(((PostShare) post.get(i)).getDiv());
                 }
             }
         }

@@ -76,7 +76,7 @@ public class ModifyPost extends HttpServlet {
         } else {
             PublicPost = "0";
         }
-        new dao.PostUserDAO().updatePost(PostID, UserID, Content, ImagePost);
+        new dao.PostUserDAO(UserID).updatePost(PostID, UserID, Content, ImagePost);
     }
  
 
@@ -104,7 +104,7 @@ public class ModifyPost extends HttpServlet {
                 ControlData data = new ControlData(part, getServletContext());
                 // save to db
            
-                new dao.PostUserDAO().updatePost(PostID, id, content, data.getFilename());
+                new dao.PostUserDAO(id).updatePost(PostID, id, content, data.getFilename());
                 //khowri tao cho viec bai post
                 data.createInitForPost(PostID);
                 //create folder
@@ -113,7 +113,7 @@ public class ModifyPost extends HttpServlet {
                 data.SaveImage();
                 System.out.println("path: " + data.getRealPath());
             } else {
-                new dao.PostUserDAO().updatePost(PostID, id, content);
+                new dao.PostUserDAO(id).updatePost(PostID, id, content);
             }
             request.getRequestDispatcher("ProfileInfo.jsp").forward(request, response);
         } catch (Exception e) {

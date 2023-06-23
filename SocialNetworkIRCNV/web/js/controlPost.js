@@ -128,7 +128,7 @@ function deletePost(PostID, Type) {
         type: "POST",
         data: {PostID: PostID, Type: Type},
         success: function (data) {
-            if (data.trim() === "false") {
+            if (data.trim() === "null") {
                 alert("Can't delete other user post " + PostID);
             } else {
                 //    alert("true " + PostID);

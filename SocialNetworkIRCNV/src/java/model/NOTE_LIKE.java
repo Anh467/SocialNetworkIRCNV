@@ -16,12 +16,13 @@ public class NOTE_LIKE extends NOTE {
     String ObjectID;
     String statusNote;
     String PostID;
-
-    public NOTE_LIKE(String Note_ID, String ObjectID, String User_ID, String statusNote, String time, boolean isRead, String PostID) {
+    private String IDUserCurrent;
+    public NOTE_LIKE(String Note_ID, String ObjectID, String User_ID, String statusNote, String time, boolean isRead, String PostID, String IDUserCurrent) {
         super(Note_ID, User_ID, time, isRead);
         this.ObjectID = ObjectID;
         this.statusNote = statusNote;
         this.PostID = PostID;
+        this.IDUserCurrent= IDUserCurrent;
     }
 //    public NOTE_LIKE(String Note_ID, String ObjectID,String User_ID,  String statusNote, String time, boolean isRead) {
 //        super(Note_ID, User_ID, time, isRead);
@@ -77,14 +78,17 @@ public class NOTE_LIKE extends NOTE {
         }
         return "";
     }
+     public String getDivPost(Post post) {
+        return (post==null)?"<div class=\"user-name-box\">"+"This post has been deleted"+"</div>\n":"<div class=\"user-name-box\">" + super.getTime() + " <br > " +"<strong>"+ post.getNumInterface()+ "</strong> " + getStatus(this.statusNote.trim()) + "</div>\n";
 
+     }
     public String getDiv() {
 //       String href= this.ObjectID;
 //       if(href.substring(0, 3).equalsIgnoreCase("CID"))
 //           href= this.PostID;
         Connection cnn = new connection().getConnection();
         User user = new dao.UserDAO(cnn).getUserByID(this.getUser_ID());
-        Post post = new dao.PostDAO().getPostByID(this.PostID);
+        Post post = new dao.PostDAO(this.IDUserCurrent).getPostByID(this.PostID);
 
 //       if(this.ObjectID.substring(0, 3).equalsIgnoreCase("CID")){
 //           href= new dao.
@@ -95,8 +99,9 @@ public class NOTE_LIKE extends NOTE {
                 + "                                <div class=\"friend-box\" id=\"NoteID\">\n"
                 + "                                    <div class=\"friend-profile\" style=\"background-image: url(" + user.getImgUser().replaceAll(" ", "%20") + ");\"></div>\n"
                 + getDivIcon(this.statusNote.trim(), user)
-                + "                                    <div class=\"user-name-box\">" + super.getTime() + " <br > " +"<strong>"+ post.getNumInterface()+ "</strong> " + getStatus(this.statusNote.trim()) + "</div>\n"
+                + getDivPost(post)
                 + "                                    <div class=\"request-btn-row\" data-username=\"silvergoose115\">\n"
+                
                 + "\n"
                 + "                                    </div>\n"
                 + "                                </div>\n"

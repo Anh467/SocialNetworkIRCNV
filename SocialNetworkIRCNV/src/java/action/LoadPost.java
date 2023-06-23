@@ -74,7 +74,7 @@ public class LoadPost extends HttpServlet {
             response.sendRedirect("Authen/login.jsp");
             return;
         }
-        PostDAO api = new PostDAO();
+        PostDAO api = new PostDAO(id);
         Post post;
         try {
             if (PostID.substring(0, 3).equalsIgnoreCase("PID")) {
@@ -107,7 +107,7 @@ public class LoadPost extends HttpServlet {
             try ( PrintWriter out = response.getWriter()) {
                 if (post instanceof PostUser) {
                     try {
-                        show(request, response, ((PostUser) post).getDiv(id), getHeader(user), post, user);
+                        show(request, response, ((PostUser) post).getDiv(), getHeader(user), post, user);
                         //out.print(((PostUser) post).getDiv(id));
                     } catch (Exception e) {
                         System.out.println("action.LoadPost.doGet()");
@@ -116,7 +116,7 @@ public class LoadPost extends HttpServlet {
 
                 } else if (post instanceof PostShare) {
                     try {
-                        show(request, response, ((PostShare) post).getDiv(id), getHeader(user), post, user);
+                        show(request, response, ((PostShare) post).getDiv(), getHeader(user), post, user);
                         //out.print(((PostUser) post).getDiv(id));
                     } catch (Exception e) {
                         System.out.println("action.LoadPost.doGet()");

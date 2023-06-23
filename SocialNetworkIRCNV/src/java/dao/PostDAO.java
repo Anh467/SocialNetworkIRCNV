@@ -20,13 +20,16 @@ public class PostDAO {
 
     private Connection cnn;
     Text text;
-    public PostDAO() {
+    private String IDUserCurrent;
+    public PostDAO(String IDUserCurrent) {
         cnn = new connection.connection().getConnection();
         text = new Text();
+        this.IDUserCurrent= IDUserCurrent;
     }
     public PostDAO(Connection cnn, String IDUserCurrent) {
          this.cnn= cnn;
         text = new Text();
+        this.IDUserCurrent= IDUserCurrent;
     }
     String getPostUser = "SELECT PostID, POST.UserID, Content, ImagePost, TimePost, NumInterface, NumComment, NumShare, PrivacyName, FullName, ImageUser\n"
             + "            FROM dbo.POST\n"
@@ -70,7 +73,7 @@ public class PostDAO {
                         rs.getString(5), rs.getInt(6),
                         rs.getInt(7), rs.getInt(8),
                         rs.getString(9), text.changeUTF8(rs.getNString(10)),
-                        rs.getString(11)));
+                        rs.getString(11), IDUserCurrent));
 
             }
         } catch (Exception e) {
@@ -90,7 +93,7 @@ public class PostDAO {
                 postUser.add(new PostShare(rs.getString(1), rs.getString(2), rs.getString(3),
                         rs.getString(4), text.changeUTF8(rs.getNString(5)), rs.getString(6), rs.getString(7), rs.getString(8),
                         text.changeUTF8(rs.getNString(9)), rs.getString(10), text.changeUTF8(rs.getNString(11)),
-                        rs.getString(12), rs.getInt(13), rs.getInt(14), rs.getString(15), rs.getString(16)));
+                        rs.getString(12), rs.getInt(13), rs.getInt(14), rs.getString(15), rs.getString(16), this.IDUserCurrent));
             }
         } catch (Exception e) {
             System.out.println("dao.PostDAO.getPostShareUser()");
@@ -118,7 +121,7 @@ public class PostDAO {
                         rs.getString(5), rs.getInt(6),
                         rs.getInt(7), rs.getInt(8),
                         rs.getString(9), rs.getNString(10),
-                        rs.getString(11)));
+                        rs.getString(11), IDUserCurrent));
 
             }
         } catch (Exception e) {
@@ -138,7 +141,7 @@ public class PostDAO {
                 postUser.add(new PostShare(rs.getString(1), rs.getNString(2), rs.getString(3),
                         rs.getString(4), rs.getNString(5), rs.getString(6), rs.getString(7), rs.getString(8),
                         rs.getNString(9), rs.getString(10), rs.getNString(11),
-                        rs.getString(12), rs.getInt(13), rs.getInt(14), rs.getString(15), rs.getString(16)));
+                        rs.getString(12), rs.getInt(13), rs.getInt(14), rs.getString(15), rs.getString(16), this.IDUserCurrent));
             }
         } catch (Exception e) {
             System.out.println("dao.PostDAO.getPostShareUser()");
@@ -179,7 +182,7 @@ public class PostDAO {
                         rs.getString(5), rs.getInt(6),
                         rs.getInt(7), rs.getInt(8),
                         rs.getString(9), rs.getNString(10),
-                        rs.getString(11));
+                        rs.getString(11), this.IDUserCurrent);
 
             }
         } catch (Exception e) {
@@ -212,7 +215,7 @@ public class PostDAO {
                 return new PostShare(rs.getString(1), rs.getString(2), rs.getString(3),
                         rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8),
                         rs.getString(9), rs.getString(10), rs.getString(11),
-                        rs.getString(12), rs.getInt(13), rs.getInt(14), rs.getString(15), rs.getString(16));
+                        rs.getString(12), rs.getInt(13), rs.getInt(14), rs.getString(15), rs.getString(16), this.IDUserCurrent);
             }
         } catch (Exception e) {
             System.out.println("dao.PostDAO.getPostShareUser()");

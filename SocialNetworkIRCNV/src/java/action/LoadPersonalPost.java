@@ -64,7 +64,7 @@ public class LoadPersonalPost extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session= request.getSession();
         String id= (String) session.getAttribute("id");
-        PostUserDAO post = new PostUserDAO();
+        PostUserDAO post = new PostUserDAO(id);
         
         
         ArrayList<PostUser> puser = post.getAllPost(id);

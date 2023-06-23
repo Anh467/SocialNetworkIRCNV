@@ -455,7 +455,7 @@ WHERE UserID1 = 'UID00000002' AND UserID2 = 'UID00000001'
 	 FROM dbo.POST
 	 INNER JOIN dbo.UserInfor ON UserInfor.UserID = POST.UserID
 	INNER JOIN dbo.Privacy ON Privacy.PrivacyID = POST.PrivacyID
-	WHERE PostID = 'PID00000018'
+	WHERE PostID = 'PID00000060'
 -- lấy bài share 
 	SELECT c.UserID, c.FullName, c.ImageUser, 
 	b.TimePost, b.Content, a.PostID, a.ShareID, a.UserID, 

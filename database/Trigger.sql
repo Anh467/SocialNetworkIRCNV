@@ -62,6 +62,9 @@
 		UPDATE dbo.POST
 		SET NumComment= NumComment -1
 		WHERE PostID= (SELECT PostID FROM Deleted)
+		UPDATE dbo.PostShare
+		SET NumComment= NumComment -1
+		WHERE PostID= (SELECT PostID FROM Deleted)
 	END;
 	-- giảm NumComment của post kkhi xáo bình luận
 	GO
@@ -70,6 +73,9 @@
 	as
 	BEGIN
 		UPDATE dbo.POST
+		SET NumComment= NumComment +1
+		WHERE PostID= (SELECT PostID FROM Inserted)
+		UPDATE dbo.PostShare
 		SET NumComment= NumComment +1
 		WHERE PostID= (SELECT PostID FROM Inserted)
 	END;

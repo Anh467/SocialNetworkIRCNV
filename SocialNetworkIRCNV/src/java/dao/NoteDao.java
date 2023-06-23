@@ -17,13 +17,15 @@ import model.*;
 public class NoteDao {
 
     Connection cnn;
-
-    public NoteDao() {
+    private String IDUserCurrent;
+    public NoteDao(String IDUserCurrent) {
         this.cnn = new connection.connection().getConnection();
+        this.IDUserCurrent= IDUserCurrent;
     }
 
-    public NoteDao(Connection cnn) {
+    public NoteDao(Connection cnn, String IDUserCurrent) {
         this.cnn = cnn;
+        this.IDUserCurrent= IDUserCurrent;
     }
 
     private NOTE_FRIEND getNOTE_FRIEND(String NoteID) {
@@ -128,7 +130,7 @@ public class NoteDao {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 return new NOTE_LIKE(rs.getString(1), rs.getString(2), rs.getString(3),
-                        rs.getString(4), rs.getString(5), rs.getBoolean(6), rs.getString(7));
+                        rs.getString(4), rs.getString(5), rs.getBoolean(6), rs.getString(7), IDUserCurrent);
             }
         } catch (Exception e) {
             System.out.println("dao.NoteDao.getNOTE_FRIEND()");

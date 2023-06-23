@@ -34,34 +34,30 @@ public class DeletePost extends HttpServlet {
         String PostID = request.getParameter("PostID");
         String Type = request.getParameter("Type");
         System.out.println("PostID: " + PostID);
-        String UserID = (String) request.getSession().getAttribute("id");
+        String id = (String) request.getSession().getAttribute("id");
         String role = (String) request.getSession().getAttribute("userRole");
-        dao.PostUserDAO api = new dao.PostUserDAO();
-        boolean checkExist= api.checkExistPostUser(PostID, UserID);
+        dao.PostUserDAO api = new dao.PostUserDAO(id);
+
         try ( PrintWriter out = response.getWriter()) {
             if (Type.equalsIgnoreCase("Post")) {
+                boolean checkExist = api.checkExistPostUser(PostID, id);
                 /* TODO output your page here. You may use following sample code. */
                 if (checkExist || role.equals("Admin") || role.equals("Master Admin")) {
-                    api.deletePost(PostID, UserID);
+                    api.deletePost(PostID, id);
                     out.print("true");
 
                 } else {
-                    if(!checkExist)
-                        out.print("You can't delete other post");
-                    else
-                    out.print("false");
+                    out.print("null");
                 }
 
             } else if (Type.equalsIgnoreCase("Share")) {
-                if (api.checkExistPostUser(PostID, UserID) || role.equals("Admin") || role.equals("Master Admin")) {
-                    api.deletePostShare(PostID, UserID);
+                boolean checkExist = api.checkExistPosSharetUser(PostID, id);
+                if (checkExist || role.equals("Admin") || role.equals("Master Admin")) {
+                    api.deletePostShare(PostID, id);
                     out.print("true");
 
                 } else {
-                    if(!checkExist)
-                        out.print("You can't delete other post");
-                    else
-                    out.print("false");
+                    out.print("null");
                 }
             }
         }

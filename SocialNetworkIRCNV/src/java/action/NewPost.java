@@ -69,7 +69,7 @@ public class NewPost extends HttpServlet {
                     //khởi tạo controldata
                     ControlData data = new ControlData(part, getServletContext());
                     // save to db
-                    PostID = new PostUserDAO().newPost(id, content, data.getFilename(), isPublic);
+                    PostID = new PostUserDAO(id).newPost(id, content, data.getFilename(), isPublic);
                     //khowri tao cho viec bai post
                     data.createInitForPost(PostID);
                     //create folder
@@ -78,12 +78,12 @@ public class NewPost extends HttpServlet {
                     data.SaveImage();
                     System.out.println("path: " + data.getRealPath());
                 } else {
-                    PostID = new PostUserDAO().newPost(id, content, "", isPublic);
+                    PostID = new PostUserDAO(id).newPost(id, content, "", isPublic);
                 }
                 //respone
 //                String publicpost = isPublic.endsWith("1") ? "Public" : "Private";
                 User user = new dao.UserDAO().getUserByID(id);
-                PostUser postUser = new dao.PostUserDAO().getPost(PostID);
+                PostUser postUser = new dao.PostUserDAO(id).getPost(PostID);
 //                String pathImg = "..s/SocialNetworkIRCNV/data/post/" + postUser.getImagePost();
                 out.println("<div class=\"post\" style=\"margin: 10px; background: white; border-radius: 10px\" id=\"" + postUser.getPostID() + "\">\n"
                         + "            <div class=\"post-top\">\n"
@@ -170,11 +170,11 @@ public class NewPost extends HttpServlet {
                 String ShareID = "";
                 String PostID = request.getParameter("PostID");
 
-                ShareID = new dao.PostUserDAO().newPostShare(id, PostID, content, isPublic);
+                ShareID = new dao.PostUserDAO(id).newPostShare(id, PostID, content, isPublic);
                 //respone
 //                String publicpost = isPublic.endsWith("1") ? "Public" : "Private";
                 User userOwn = new dao.UserDAO().getUserByID(id);
-                PostShare postShare = new dao.PostDAO().getPostShareByShareID(ShareID);
+                PostShare postShare = new dao.PostDAO(id).getPostShareByShareID(ShareID);
                 User userShare = new dao.UserDAO().getUserByID(postShare.getUserID());
 
 //                String pathImg = "../SocialNetworkIRCNV/data/post/" + postUser.getImagePost();

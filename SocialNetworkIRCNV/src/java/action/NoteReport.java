@@ -31,7 +31,7 @@ public class NoteReport extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     public void load(HttpServletRequest request, HttpServletResponse response, String id, int offset) throws Exception {
-        ArrayList<NOTE> note = new dao.NoteDao().getNote(id, offset);
+        ArrayList<NOTE> note = new dao.NoteDao(id).getNote(id, offset);
         if (note.size() == 0) {
             try ( PrintWriter out = response.getWriter()) {
                 out.print("null");
@@ -54,7 +54,7 @@ public class NoteReport extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String id = (String) request.getSession().getAttribute("id");
         String type = request.getParameter("Type");
-        new dao.NoteDao().setNOTE_ZERO(id);
+        new dao.NoteDao(id).setNOTE_ZERO(id);
         int offset= Integer.parseInt(request.getParameter("offset"));
         if (type.equalsIgnoreCase("load"))
             try {
