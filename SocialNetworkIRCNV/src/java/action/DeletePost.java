@@ -36,8 +36,9 @@ public class DeletePost extends HttpServlet {
         System.out.println("PostID: " + PostID);
         String id = (String) request.getSession().getAttribute("id");
         String role = (String) request.getSession().getAttribute("userRole");
+        if( role == null) role= "user";
         dao.PostUserDAO api = new dao.PostUserDAO(id);
-
+        
         try ( PrintWriter out = response.getWriter()) {
             if (Type.equalsIgnoreCase("Post")) {
                 boolean checkExist = api.checkExistPostUser(PostID, id);

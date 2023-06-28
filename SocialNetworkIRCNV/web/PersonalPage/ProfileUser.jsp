@@ -531,7 +531,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                     <div class = "profile-intro">
                         <div class ="title-box">
                             <h3>Friends</h3>
-                            <a href ="" style="margin-top:-18px;">All Friends</a>
+                            <a href ="/SocialNetworkIRCNV/PersonalPage/FriendList.jsp" style="margin-top:-18px;">All Friends</a>
                         </div>
 
                         <div class = "friend-box">

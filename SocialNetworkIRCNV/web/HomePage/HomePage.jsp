@@ -268,7 +268,7 @@
                 font-size:16px;
                 font-weight:normal;
                 padding:10px;
-                max-height: 600px;
+                max-height: 1000px;
             }
 
             .post .post-content > img{
@@ -413,22 +413,7 @@
                 </div>
             </div>
             <div class="middle-panel" style="   ">
-                <div class="post create">
-                    <div class="post-top" style="">
-                        <div class="dp">
-                            <img src="<%=user.getImgUser()%>" alt="" style="width: 106%;">
-                        </div>
-                        <input type="text" placeholder="What's on your mind, Aashish ?" />
-                    </div>
-
-                    <div class="post-bottom">
-
-                        <div class="action" style="color:  #00abfd;">
-                            <i class="fa fa-image"></i>
-                            <span>Photo/Video</span>
-                        </div>
-                    </div>
-                </div>
+                
                 <div>
                     <div class ="post-container"  id="post" style="margin: 0; padding: 0">
 

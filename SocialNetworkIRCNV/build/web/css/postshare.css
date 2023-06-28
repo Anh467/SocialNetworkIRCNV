@@ -73,13 +73,13 @@ body{
     font-size:20px;
     font-weight:normal;
     padding:10px;
-    max-height: 600px;
+    max-height: 1000px;
 }
 
 .share .share-body .share-content  > img{
     height: 95%;
     margin:5px 0px;
-    max-height: 530px;
+    max-height: 930px;
 }
 .share .share-bottom, .share .counter{
     box-shadow: 1px solid #ddd;

@@ -26,13 +26,14 @@ public class CommentDAO {
 /// get infor comment
 
     public CommentChild getCommentChildByChildID(String ChildID) {
-        String query = "SELECT ChildID, UserID, CmtID, Content, \n"
+        String query = "DECLARE @ChildID VARCHAR(11)= ? ;"
+                + "SELECT ChildID, UserID, CmtID, Content, \n"
                 + "	TimeComment, ImageComment, NumInterface, (SELECT TOP(1) PostID\n"
                 + "												FROM dbo.COMMENTCHILD\n"
                 + "												INNER JOIN dbo.COMMENT ON COMMENT.CmtID = COMMENTCHILD.CmtID\n"
-                + "												WHERE ChildID= 'ILD00000009' ) AS PostID														\n"
+                + "												WHERE ChildID= @ChildID ) AS PostID														\n"
                 + "	FROM dbo.COMMENTCHILD\n"
-                + "	WHERE ChildID= ? ";
+                + "	WHERE ChildID= @ChildID ";
         try {
             PreparedStatement ps = cnn.prepareStatement(query);
             ps.setString(1, ChildID);
@@ -115,18 +116,18 @@ public class CommentDAO {
                 + "	ORDER BY TimeComment DESC\n"
                 + "    OFFSET (@Offset-1)* @FetchCount ROWS\n"
                 + "    FETCH NEXT @FetchCount ROWS ONLY\n"
-                + "\n"
-                + "	SELECT *\n"
-                + "	FROM dbo.COMMENTCHILD";
+                + "\n";
         ArrayList<Comment> commentList = new ArrayList<>();
         try {
             PreparedStatement ps = cnn.prepareStatement(query);
             ps.setString(1, PostID);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
+                
                 Comment comment = new Comment(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
                         rs.getString(5), rs.getString(6), rs.getInt(7));
                 comment.setCommentChild(getCommentChildByCmtID(rs.getString(1), 1));
+                System.out.println("comment-log: "+ comment.getTimeComment());
                 commentList.add(comment);
             }
         } catch (Exception e) {

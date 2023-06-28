@@ -92,7 +92,16 @@ public class PostUser extends Post {
     }
 
     public String getUpdateDiv() {
-        String href= (!IDUserCurrent.equalsIgnoreCase(this.getUserID()))?"<a class=\"suggestion-href\" href=\"/SocialNetworkIRCNV/PersonalPage/ProfileUser.jsp?UID="+this.getUserID()+"\" style=\"display: inline\">\n":"<a class=\"suggestion-href\" href=\"/SocialNetworkIRCNV/PersonalPage/ProfileInfo.jsp\" style=\"display: inline\">\n";
+        String href;
+        String modify;
+        if(IDUserCurrent.equalsIgnoreCase(this.getUserID())){
+            modify= "<a href=\"#\" onclick=\"modifyPost('" + this.getPostID() + "', '" + this.getImgUser() + "', '" + this.getFullNameUser() + "', '" + this.getTimePost() + "',\n"
+                + "'" + this.getPrivacyName() + "', '" + this.getContent().trim() + "', '" + this.getImagePost() + "')\">Modify</a>\n";
+            href ="<a class=\"suggestion-href\" href=\"/SocialNetworkIRCNV/PersonalPage/ProfileInfo.jsp\" style=\"display: inline\">\n";
+        }else{
+            href ="<a class=\"suggestion-href\" href=\"/SocialNetworkIRCNV/PersonalPage/ProfileUser.jsp?UID="+this.getUserID()+"\" style=\"display: inline\">\n";
+            modify = "";
+        }
         InterFaceObject interFaceObject = new InterFaceObjectDAO().getInterFaceObjectByID(super.getPostID(), IDUserCurrent);
         return "            <div class=\"post-top\">\n"
                 + "                <p style=\"display: none\">" + this.getPostID() + "</p>\n"
@@ -111,8 +120,7 @@ public class PostUser extends Post {
                 + "\n"
                 + "                        <div class=\"dropdown-content\">\n"
                 + "                            <a href=\"#\" onclick=\"deletePost('" + this.getPostID() + "', 'Post')\">Delete</a>\n"
-                + "                            <a href=\"#\" onclick=\"modifyPost('" + this.getPostID() + "', '" + this.getImgUser() + "', '" + this.getFullNameUser() + "', '" + this.getTimePost() + "',\n"
-                + "                                            '" + this.getPrivacyName() + "', '" + this.getContent().trim() + "', '" + this.getImagePost() + "')\">Modify</a>\n"
+                + modify
                 + "                            <a href=\"#\" onclick=\"askReportPost('" + this.getPostID() + "', '"+IDUserCurrent+"')\">Report</a>\n"
                 + "                        </div>\n"
                 + "                    </div>\n"

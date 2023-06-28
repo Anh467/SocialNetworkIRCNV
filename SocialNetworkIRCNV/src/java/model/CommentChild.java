@@ -14,9 +14,9 @@ public class CommentChild {
     int NumInterface;
     private String PostID;
 
-    public CommentChild() {
+    public CommentChild(){
+        
     }
-
     public CommentChild(String ChilID, String UserID, String CmtID, String Content, String TimeComment, String ImageComment, int NumInterface, String PostID) {
         this.ChilID = ChilID;
         this.UserID = UserID;
@@ -24,7 +24,9 @@ public class CommentChild {
         this.Content = Content;
         this.TimeComment = TimeComment;
 
-        this.ImageComment = ImageComment;
+        if(!ImageComment.isEmpty())
+            this.ImageComment ="/SocialNetworkIRCNV/"+ ImageComment;
+        else  this.ImageComment = "";
         this.NumInterface = NumInterface;
         this.PostID = PostID;
     }
@@ -103,7 +105,21 @@ public class CommentChild {
         InterFaceObject interFaceObject = new dao.InterFaceObjectDAO().getInterFaceObjectByID(this.getChilID(), id);
         return "<ul><li id='comment-" + this.ChilID + "'>\n"
                 + "    <div class=\"comment\" id='" + this.ChilID + "'>\n"
-                + "        <div class=\"comment-img\">\n"
+                + getUpdateDiv(id)
+                + "        </div>\n"
+                + "</li></ul>";
+    }
+
+    public String getUpdateDiv(String id) {
+        String href = (!id.equalsIgnoreCase(this.getUserID())) ? "<a class=\"suggestion-href\" href=\"/SocialNetworkIRCNV/PersonalPage/ProfileUser.jsp?UID=" + this.getUserID() + "\" style=\"display: inline\">\n" : "<a class=\"suggestion-href\" href=\"/SocialNetworkIRCNV/PersonalPage/ProfileInfo.jsp\" style=\"display: inline\">\n";
+
+        String str = "";
+        if (this.getImageComment() != null && !this.getImageComment().isEmpty()) {
+            str = "<img src=\"" + this.getImageComment() + "\">\n";
+        }
+        User user = new dao.UserDAO().getUserByID(this.getUserID());
+        InterFaceObject interFaceObject = new dao.InterFaceObjectDAO().getInterFaceObjectByID(this.getChilID(), id);
+        return "        <div class=\"comment-img\">\n"
                 + "            <img src=\"" + user.getImgUser() + "\" alt=\"\">\n"
                 + "        </div>\n"
                 + "        <div class=\"comment-content\">\n"
@@ -133,52 +149,6 @@ public class CommentChild {
                 + "                    <a href=\"#!\">Report</a>\n"
                 + "                </div>\n"
                 + "            </div>\n"
-                + "        </div>\n"
-                + "    </div>\n"
-                + "</li></ul>";
-    }
-
-    public String getUpdateDiv(String id) {
-        String href = (!id.equalsIgnoreCase(this.getUserID())) ? "<a class=\"suggestion-href\" href=\"/SocialNetworkIRCNV/PersonalPage/ProfileUser.jsp?UID=" + this.getUserID() + "\" style=\"display: inline\">\n" : "<a class=\"suggestion-href\" href=\"/SocialNetworkIRCNV/PersonalPage/ProfileInfo.jsp\" style=\"display: inline\">\n";
-
-        String str = "";
-        if (this.getImageComment() != null && !this.getImageComment().isEmpty()) {
-            str = "<img src=\"" + this.getImageComment() + "\">\n";
-        }
-        User user = new dao.UserDAO().getUserByID(this.getUserID());
-        InterFaceObject interFaceObject = new dao.InterFaceObjectDAO().getInterFaceObjectByID(this.getChilID(), id);
-        return "    <div class=\"comment\">\n"
-                + "        <div class=\"comment-img\">\n"
-                + "            <img src=\"" + user.getImgUser() + "\" alt=\"\">\n"
-                + "        </div>\n"
-                + "        <div class=\"comment-content\">\n"
-                + "            <div class=\"comment-details\">\n"
-                +href
-                + "                <h4 class=\"comment-name\">" + user.getFullName() + "</h4>\n"
-                + "</a>"
-                + "                <span class=\"comment-log\">" + this.getTimeComment() + "</span>\n"
-                + "            </div>\n"
-                + "            <div class=\"comment-desc\">\n"
-                + "                <p>" + this.getContent() + "<br>\n"
-                + str
-                + "                </p>\n"
-                + "            </div>\n"
-                + "            <div class=\"comment-data\">\n"
-                + "                <div class=\"comment-likes\">\n"
-                + "                    <div class=\"comment-likes-up\" onclick=\"like('" + this.getChilID() + "', '" + interFaceObject.getInterFaceID() + "')\">\n"
-                + interFaceObject.getInterFaceDiv()
-                + "\n"
-                + "                    </div>\n"
-                + "                    <span>" + this.getNumInterface() + "</span>\n"
-                + "                </div>\n"
-                + "                <div class=\"comment-reply\" onclick=\"reply('" + this.getCmtID() + "', '" + user.getFullName() + "')\">\n"
-                + "                    <a href=\"#!\">Reply</a>\n"
-                + "                </div>\n"
-                + "                <div class=\"comment-report\">\n"
-                + "                    <a href=\"#!\">Report</a>\n"
-                + "                </div>\n"
-                + "            </div>\n"
-                + "        </div>\n"
                 + "    </div>\n";
     }
 }

@@ -130,10 +130,12 @@ function deletePost(PostID, Type) {
         success: function (data) {
             if (data.trim() === "null") {
                 alert("Can't delete other user post " + PostID);
+                console.log("null");
             } else {
                 //    alert("true " + PostID);
                 if (post) {
                     post.setAttribute('style', 'display: none');
+                    console.log("true");
                 }
             }
         },
@@ -146,7 +148,12 @@ function deletePost(PostID, Type) {
 function changeInfo() {
     $('#changeinfo').modal('show');
 }
-
+function openchangeimageavatar() {
+    $('#change-image-avatar').modal('show');
+}
+function openchangeimagebackground() {
+    $('#change-image-background').modal('show');
+}
 function SharePost(PostIDown, imgUserDown, name_userDown, contentDown, img_postDown) {
     var imgUser = document.getElementById('imgUserDown');
     var content = document.getElementById('contentDown');

@@ -84,12 +84,12 @@
     font-size:20px;
     font-weight:normal;
     padding: 10px;
-    max-height: 600px;
+    max-height: 1000px;
 }
 
 .post .post-content > img{
     margin:5px 0px;
-    max-height: 530px;
+    max-height: 930px;
 }
 .post .post-content p{
                 margin-left: 20px;

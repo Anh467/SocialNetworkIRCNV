@@ -18,8 +18,12 @@ public class Comment {
         this.UserID = UserID;
         this.PostID = PostID;
         this.Content = Content;
+        
+        if(!ImageComment.isEmpty())
+            this.ImageComment ="/SocialNetworkIRCNV/"+ ImageComment;
+        else  this.ImageComment = "";
+        
         this.TimeComment = TimeComment;
-        this.ImageComment = ImageComment;
         this.NumInterface = NumInterface;
         this.commentChild = commentChild;
     }
@@ -30,8 +34,12 @@ public class Comment {
         this.UserID = UserID;
         this.PostID = PostID;
         this.Content = Content;
+        
+         if(!ImageComment.isEmpty())
+            this.ImageComment ="/SocialNetworkIRCNV/"+ ImageComment;
+        else  this.ImageComment = "";
+         
         this.TimeComment = TimeComment;
-        this.ImageComment = ImageComment;
         this.NumInterface = NumInterface;
 
     }
@@ -112,37 +120,7 @@ public class Comment {
         InterFaceObject interFaceObject = new dao.InterFaceObjectDAO().getInterFaceObjectByID(this.CmtID, id);
         return  "<ul><li id=\"comment-"+this.getCmtID()+"\">"
                 + "    <div class=\"comment\" id=\""+this.getCmtID()+"\">\n"
-                + "        <div class=\"comment-img\">\n"
-                + href
-                + "            <img src=\""+user.getImgUser()+"\" alt=\"\">\n"
-                + "</a>"
-                + "        </div>\n"
-                + "        <div class=\"comment-content\">\n"
-                + "            <div class=\"comment-details\">\n"
-                + "                <h4 class=\"comment-name\">"+user.getFullName()+"</h4>\n"
-                + "                <span class=\"comment-log\">"+this.getTimeComment()+"</span>\n"
-                + "            </div>\n"
-                + "            <div class=\"comment-desc\">\n"
-                + "                <p>"+this.getContent()+"<br>\n"
-                + str
-                + "                </p>\n"
-                + "            </div>\n"
-                + "            <div class=\"comment-data\">\n"
-                + "                <div class=\"comment-likes\">\n"
-                + "                    <div class=\"comment-likes-up\" onclick=\"like('"+this.getCmtID()+"', '"+interFaceObject.getInterFaceID()+"')\">\n"
-                + "                        "+interFaceObject.getInterFaceDiv()+"\n"
-                + "\n"
-                + "                    </div>\n"
-                + "                    <span>"+this.NumInterface+"</span>\n"
-                + "                </div>\n"
-                + "                <div class=\"comment-reply\" onclick=\"reply('"+this.getCmtID()+"', '"+user.getFullName()+"')\">\n"
-                + "                    <a href=\"#!\">Reply</a>\n"
-                + "                </div>\n"
-                + "                <div class=\"comment-report\" onclick=\"askreportComment('"+this.getCmtID()+"', '"+id+"','1')\">\n"
-                + "                    <a href=\"#!\" >Report</a>\n"
-                + "                </div>\n"
-                + "            </div>\n"
-                + "        </div>\n"
+                + getUpdateDiv(id)
                 + "    </div>\n"
                 + "</li></ul>";
     }
@@ -155,6 +133,7 @@ public class Comment {
         }
         User user = new dao.UserDAO().getUserByID(this.getUserID());
         InterFaceObject interFaceObject = new dao.InterFaceObjectDAO().getInterFaceObjectByID(this.CmtID, id);
+        System.out.println("comment-log: "+this.getTimeComment());
         return  "        <div class=\"comment-img\">\n"
                 + "            <img src=\""+user.getImgUser()+"\" alt=\"\">\n"
                 + "        </div>\n"

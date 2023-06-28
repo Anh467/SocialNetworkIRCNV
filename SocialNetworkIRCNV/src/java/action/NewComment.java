@@ -74,6 +74,8 @@ public class NewComment extends HttpServlet {
         commentChild.setUserID(id);
         commentChild.setContent(content);
         commentChild.setCmtID(object);
+        //Comment comment= new dao.CommentDAO().getCommentByCmtID(object);
+        //commentChild.setPostID(comment.getPostID());
         try {
             if (part != null && part.getSubmittedFileName() != null) {
                 //khởi tạo controldata
@@ -88,6 +90,7 @@ public class NewComment extends HttpServlet {
                 // save image
                 data.SaveImage();
                 System.out.println("path: " + data.getRealPath());
+                System.out.println("path: " + data.getRealPathBuild());
             } else {
                 commentChild = new dao.CommentDAO().newCommentChildWithoutImage(commentChild);
             }

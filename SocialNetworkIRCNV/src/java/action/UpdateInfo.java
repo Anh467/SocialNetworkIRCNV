@@ -129,37 +129,37 @@ public class UpdateInfo extends HttpServlet {
                 user.setIntro(intro);
             }
             
-            Part part = request.getPart("avatar");
-            if (part != null && part.getSubmittedFileName() != null && !part.getSubmittedFileName().trim().isEmpty()) {
-                //khởi tạo controldata
-                ControlData data = new ControlData(part, getServletContext());
-                // save to db
-                new dao.UserDAO().updateAvatar(data.getFilename(), id);
-                //khowri tao cho viec bai post
-                data.createInitForAvatar(id);
-                //create folder
-                data.creatFolder();
-                // save image
-                data.SaveImage();
-                System.out.println("path: " + data.getRealPath());
-            }
-
-            
-            Part part2 = request.getPart("coverimage");
-            if (part2 != null && part2.getSubmittedFileName() != null && !part2.getSubmittedFileName().trim().isEmpty()) {
-                //khởi tạo controldata
-                ControlData data = new ControlData(part2, getServletContext());
-                // save to db
-                new dao.UserDAO().updateBackground(data.getFilename(), id);
-                //khowri tao cho viec bai post
-                data.createInitForBackGround(id);
-                //create folder
-                data.creatFolder();
-                // save image
-                data.SaveImage();
-                System.out.println("path: " + data.getRealPath());
-            }
-            new dao.UserDAO().updateInfo(user);
+//            Part part = request.getPart("avatar");
+//            if (part != null && part.getSubmittedFileName() != null && !part.getSubmittedFileName().trim().isEmpty()) {
+//                //khởi tạo controldata
+//                ControlData data = new ControlData(part, getServletContext());
+//                // save to db
+//                new dao.UserDAO().updateAvatar(data.getFilename(), id);
+//                //khowri tao cho viec bai post
+//                data.createInitForAvatar(id);
+//                //create folder
+//                data.creatFolder();
+//                // save image
+//                data.SaveImage();
+//                System.out.println("path: " + data.getRealPath());
+//            }
+//
+//            
+//            Part part2 = request.getPart("coverimage");
+//            if (part2 != null && part2.getSubmittedFileName() != null && !part2.getSubmittedFileName().trim().isEmpty()) {
+//                //khởi tạo controldata
+//                ControlData data = new ControlData(part2, getServletContext());
+//                // save to db
+//                new dao.UserDAO().updateBackground(data.getFilename(), id);
+//                //khowri tao cho viec bai post
+//                data.createInitForBackGround(id);
+//                //create folder
+//                data.creatFolder();
+//                // save image
+//                data.SaveImage();
+//                System.out.println("path: " + data.getRealPath());
+//            }
+//            new dao.UserDAO().updateInfo(user);
             response.sendRedirect("PersonalPage/ProfileInfo.jsp");
         } catch (Exception e) {
             e.printStackTrace();

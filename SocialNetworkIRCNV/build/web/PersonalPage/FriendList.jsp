@@ -95,7 +95,7 @@
                 
             </div>
         </div>
-        <button id="load-more-friend-list" onclick="loadFriendList()" >
+        <button id="load-more-button" onclick="loadFriendList()" >
             load more
         </button>
         <script>
@@ -103,15 +103,15 @@
             document.addEventListener('DOMContentLoaded', function () {
                 var offset = document.getElementById('offset-friendList');
                 var conntain = document.getElementById('container-friendList');
-                var btnloadmore = document.getElementById('load-more-friend-list');
+                var btnloadmore = document.getElementById('load-more-button');
                 $.ajax({
                     url: "/SocialNetworkIRCNV/LoadListFriend",
                     type: "POST",
                     data: {offset:'1'},
                     success: function (data) {
-                        if (data === "null") {
+                        if (data.trim() === "null") {
                             btnloadmore.setAttribute('style', 'display: none');
-                            conntain.innerHTML = conntain.innerHTML + "That all";
+                             conntain.innerHTML +="That all";
                         } else {
                             var currentOffset = parseInt(offset.innerHTML);
                             offset.innerHTML = currentOffset + 1;
@@ -130,19 +130,19 @@
             function loadFriendList() {
                 var offset = document.getElementById('offset-friendList');
                 var conntain = document.getElementById('container-friendList');
-                var btnloadmore = document.getElementById('load-more-friend-list');
+                var btnloadmore = document.getElementById('load-more-button');
                 $.ajax({
                     url: "/SocialNetworkIRCNV/LoadListFriend",
                     type: "POST",
                     data: {offset: offset.innerHTML},
                     success: function (data) {
-                        if (data === "null") {
+                        if (data.trim() === "null") {
                             btnloadmore.setAttribute('style', 'display: none');
-                            conntain.innerHTML = conntain.innerHTML + "That all";
+                             conntain.innerHTML += "That all";
                         } else {
                             var currentOffset = parseInt(offset.innerHTML);
                             offset.innerHTML = currentOffset + 1;
-                            conntain.innerHTML = conntain.innerHTML + data;
+                            conntain.innerHTML += data;
                         }
 
 //            var currentOffset = parseInt(offsett.innerHTML);

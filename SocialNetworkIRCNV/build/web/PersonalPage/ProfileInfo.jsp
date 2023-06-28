@@ -197,11 +197,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
             margin-top: 20px;
         }
         .info-col{
-/*            flex-basis:36%;*/
+            /*            flex-basis:36%;*/
             margin-right:20px;
         }
         .post-col{
-/*            flex-basis: 63%;*/
+            /*            flex-basis: 63%;*/
         }
         .profile-intro{
             background: white;
@@ -341,18 +341,17 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
         </header>
 
         <jsp:include page = "/GetInfor"></jsp:include>
-        <%
-        ArrayList<User> friendList = new dao.UserDAO().getUserFriend(id, 1, 9);
+        <%            ArrayList<User> friendList = new dao.UserDAO().getUserFriend(id, 1, 9);
         %>
-       
+
         <div class ="profile-container ">
 
-            <img src="<%=user.getCoverImg()%>"  class="cover-img"/> <!-- ?nh b?a -->
+            <img src="<%=user.getCoverImg()%>"  onclick="openchangeimagebackground()" class="cover-img"/> <!-- ?nh b?a -->
             <!-- Ph?n ??u -->
             <div class = "profile-details">
                 <div class ="pd-left">
                     <div class ="pd-row">
-                        <img src ="<%=user.getImgUser()%>" class ="pd-image">
+                        <img src ="<%=user.getImgUser()%>" class ="pd-image" onclick="openchangeimageavatar()">
                         <div class = "profile-name">
                             <h3><a href="" style="text-decoration: none; color:#626262;"><%=user.getFullName()%></a></h3>
                             <p><%= user.getNumFriend()%> Friends</p>
@@ -366,10 +365,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                 </div>
                 <div class = "pd-right">
                     <button type = "button"> 
-                        <a href ="#" onclick="changeInfo('<%=user.getUserID()%>')" style = "font-size: 17px; text-decoration: none; color:#626262;">  <i class="icon fa-solid fa-pen " style = " background:#e4e6eb;
-                                                                                                                                                         color:#000;"></i> Change Information</a></button>
+                        <a href ="#" onclick="changeInfo()" style = "font-size: 17px; text-decoration: none; color:#626262;">  <i class="icon fa-solid fa-pen " style = " background:#e4e6eb;
+                                                                                                                                  color:#000;"></i> Change Information</a></button>
                     <br>
-                    
+
                 </div>
             </div>
 
@@ -392,22 +391,22 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                         <!--                         Friends -->
                         <div class ="title-box">
                             <h3>Friends</h3>
-                            <a href ="" style="margin-top:-18px;">All Friends</a>
+                            <a href ="/SocialNetworkIRCNV/PersonalPage/FriendList.jsp" style="margin-top:-18px;">All Friends</a>
                         </div>
                         <div class = "friend-box">
-                             <%
+                            <%
                                 size = (9 > friendList.size()) ? friendList.size() : 9;
                                 for (int i = 0; i < size; i++) {%>
                             <div onclick="otherProfile('<%=friendList.get(i).getUserID()%>')">
                                 <img src="<%=friendList.get(i).getImgUser()%>">
-                                
+
                             </div>
                             <%}%>
                         </div>
 
                     </div>
                 </div>
-                
+
                 <!-- Up bài -->
                 <div class ="post-col " style="width: 100%;">
                     <div class ="write-post-container">
@@ -442,19 +441,17 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                         <button onclick="loadMorePost('profileinfo', '<%=id%>', document.getElementById('offset').innerHTML)">load more </button>
                     </div>
                 </div>
-                               
-                <div>
-                    <div class="modal" id = "changeinfo" tabindex="-1" role="dialog">
+                <div class="modal" id = "change-image-background" tabindex="-1" role="dialog">
 
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Change Information</h5>
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Change Back ground</h5>
 
-                                </div>
-                                <div class="modal-body">
-                                    <form action="/SocialNetworkIRCNV/UpdateInfo" method = "post" enctype="multipart/form-data">
-                                        <div class="form-group">
+                            </div>
+                            <div class="modal-body">
+                                <form action="/SocialNetworkIRCNV/UpdateImage" method = "post" enctype="multipart/form-data">
+                                    <div class="form-group">
                                             <label for="cover-image" class="col-form-label">Cover Image:</label>
                                             <img id="previewImage3" src="<%=user.getCoverImg()%>" alt="Preview Image" style="width: 100%;
                                                                                                                             border-radius: 3px;
@@ -462,79 +459,168 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                                                                                                             object-fit: cover;
                                                                                                                             height: 200px;
                                                                                                                         }">
-                                            <input  type="file" accept="image/*,capture=camera" name="coverimage" id="fileInput3">
+                                            <input type="hidden" name="type"value="cover"> 
+                                            <input  type="file" accept="image/*,capture=camera" name="image" id="fileInput3">
+                                            
                                         </div>
+                                    <input type="submit" class="btn btn-primary" value="Save changes">
+                                    <!--<button type="submit" class="btn btn-primary">Save  changes</button>-->
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>     
+                                </form>
+                            </div>
 
-                                        <div class="form-group">
-                                            <label for="avatar" class="col-form-label">Avatar:</label>
-                                            <img id="previewImage4" src="<%=user.getImgUser()%>" alt="Preview Image" style="width: 130px;
-                                                                                                                            height: 130px;
-                                                                                                                            margin-right: 30px;
-                                                                                                                            border-radius: 3px;
-                                                                                                                            object-fit: cover;">
-                                            <input  type="file" accept="image/*,capture=camera" name="avatar" id="fileInput4">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="full-name" class="col-form-label">Full Name:</label>
-                                            <input value = "<%=user.getFullName()%>"type="text" id="fullname" name="fullname" class="form-control border-primary">
-                                        </div>
-                                        
-                                        
-
-                                        <div class="form-group">
-                                            <label for="date-of-birth" class="col-form-label">Date of Birth:</label>
-                                            <input value = "<%=user.getDOB()%>"type="date" id="dateofbirth" name="dob" class="form-control border-primary">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="gender" class="col-form-label">Gender:</label>
-                                            <select id="gender" name="gender" class="form-control border-primary">
-                                                <option value="male">Male</option>
-                                                <option value="female">Female</option>
-
-                                            </select>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="current-city" class="col-form-label">Address:</label>
-                                            <input value = "<%=user.getAddress()%>"type="text" id="address" name="address" class="form-control border-primary">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="nationality" class="col-form-label">Nationality:</label>
-                                            <input value = "<%=user.getNation()%> "type="text" id="nation" name="nation" class="form-control border-primary">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="phone-number" class="col-form-label">Phone Number:</label>
-                                            <input value = "<%=user.getPhoneNumber()%> " type="tel" id="phone-number" name="phonenumber" class="form-control border-primary">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="email-address" class="col-form-label">Email Address:</label>
-                                            <input value = "<%=user.getMail()%> " type="email" id="email-address" name="emailaddress" class="form-control border-primary">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="intro" class="col-form-label">Introduce:</label>
-                                            <textarea class="form-control border-primary" id="intro" name="intro"  rows="8" cols="60"><%=user.getIntro()%></textarea>
-                                        </div>
-                                        <input type="submit" class="btn btn-primary" value="Save changes">
-                                        <!--<button type="submit" class="btn btn-primary">Save  changes</button>-->
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    </form>
-                                </div>
-
-                                <div class="modal-footer">
-
-                                </div>
+                            <div class="modal-footer">
 
                             </div>
-                        </div>             
+
+                        </div>
+                    </div>             
+
+                    <script>
+                        document.getElementById('fileInput3').addEventListener('change', function (event) {
+                            var file = event.target.files[0];
+                            // T?o ??i t??ng FileReader ?? ??c t?p tin
+                            var reader = new FileReader();
+                            reader.onload = function (e) {
+                                var previewImage = document.getElementById('previewImage3');
+                                previewImage.src = e.target.result;
+                            };
+                            reader.readAsDataURL(file);
+                        });
+
+                    </script>
+                </div>          
+                <div class="modal" id = "change-image-avatar" tabindex="-1" role="dialog">
+
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Change Information</h5>
+
+                            </div>
+                            <div class="modal-body">
+                                <form action="/SocialNetworkIRCNV/UpdateImage" method = "post" enctype="multipart/form-data">
+                                    <div class="form-group">
+                                        <label for="avatar" class="col-form-label">Avatar:</label>
+                                        <img id="previewImage4" src="<%=user.getImgUser()%>" alt="Preview Image" style="width: 130px;
+                                             height: 130px;
+                                             margin-right: 30px;
+                                             border-radius: 3px;
+                                             object-fit: cover;">
+                                        <input  type="file" accept="image/*,capture=camera" name="image" id="fileInput4">
+                                    </div>
+                                    <input type="hidden"  name="type"value="avatar"> 
+                                    <input type="submit" class="btn btn-primary" value="Save changes">
+                                    
+                                    <!--<button type="submit" class="btn btn-primary">Save  changes</button>-->
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>     
+                                </form>
+                            </div>
+
+                            <div class="modal-footer">
+
+                            </div>
+
+                        </div>
+                    </div>             
+
+                    <script>
+                        document.getElementById('fileInput4').addEventListener('change', function (event) {
+                            var file = event.target.files[0];
+                            // T?o ??i t??ng FileReader ?? ??c t?p tin
+                            var reader = new FileReader();
+                            reader.onload = function (e) {
+                                var previewImage = document.getElementById('previewImage4');
+                                previewImage.src = e.target.result;
+                            };
+                            reader.readAsDataURL(file);
+                        });
+
+                    </script>
+                </div>     
+                <div class="modal" id = "changeinfo" tabindex="-1" role="dialog">
+
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Change Information</h5>
+
+                            </div>
+                            <div class="modal-body">
+                                <form action="/SocialNetworkIRCNV/UpdateInfo" method = "post" enctype="multipart/form-data">
+
+                                    <div class="form-group">
+                                        <label for="full-name" class="col-form-label">Full Name:</label>
+                                        <input value = "<%=user.getFullName()%>"type="text" id="fullname" name="fullname" class="form-control border-primary">
+                                    </div>
 
 
-                    </div>
+
+                                    <div class="form-group">
+                                        <label for="date-of-birth" class="col-form-label">Date of Birth:</label>
+                                        <input value = "<%=user.getDOB()%>"type="date" id="dateofbirth" name="dob" class="form-control border-primary">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="gender" class="col-form-label">Gender:</label>
+                                        <select id="gender" name="gender" class="form-control border-primary">
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="current-city" class="col-form-label">Address:</label>
+                                        <input value = "<%=user.getAddress()%>"type="text" id="address" name="address" class="form-control border-primary">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="nationality" class="col-form-label">Nationality:</label>
+                                        <input value = "<%=user.getNation()%> "type="text" id="nation" name="nation" class="form-control border-primary">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="phone-number" class="col-form-label">Phone Number:</label>
+                                        <input value = "<%=user.getPhoneNumber()%> " type="tel" id="phone-number" name="phonenumber" class="form-control border-primary">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="email-address" class="col-form-label">Email Address:</label>
+                                        <input value = "<%=user.getMail()%> " type="email" id="email-address" name="emailaddress" class="form-control border-primary">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="intro" class="col-form-label">Introduce:</label>
+                                        <textarea class="form-control border-primary" id="intro" name="intro"  rows="8" cols="60"><%=user.getIntro()%></textarea>
+                                    </div>
+                                    <input type="submit" class="btn btn-primary" value="Save changes">
+                                    <!--<button type="submit" class="btn btn-primary">Save  changes</button>-->
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </form>
+                            </div>
+
+                            <div class="modal-footer">
+
+                            </div>
+
+                        </div>
+                    </div>             
+
+                    <script>
+                        document.getElementById('fileInput4').addEventListener('change', function (event) {
+                            var file = event.target.files[0];
+                            // T?o ??i t??ng FileReader ?? ??c t?p tin
+                            var reader = new FileReader();
+                            reader.onload = function (e) {
+                                var previewImage = document.getElementById('previewImage4');
+                                previewImage.src = e.target.result;
+                            };
+                            reader.readAsDataURL(file);
+                        });
+
+                    </script>
                 </div>
+
                 <div class="modal" id = "modalShare" tabindex="-1" role="dialog">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
@@ -564,12 +650,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                     <div class="share-content" style="margin-bottom: 20px">
                                         <input id="contentPostShareModel" type="text" name="contentPostShareModel" style="width: 100%">
                                     </div>
-                                    
+
                                     <select id="privacyPostShareModel" name = "privacyPostShareModel" style="color:#626262;">
-                                    <c:forEach items="${apiPrivacy.allPrivacy}" var="ele">
-                                        <option style="color:#626262; background-color:#cdf1ff;  ">${ele.getPrivacyName()}</option>
-                                    </c:forEach>
-                                </select>
+                                        <c:forEach items="${apiPrivacy.allPrivacy}" var="ele">
+                                            <option style="color:#626262; background-color:#cdf1ff;  ">${ele.getPrivacyName()}</option>
+                                        </c:forEach>
+                                    </select>
                                     <div class="share-body" style="border: 1px solid black">
                                         <div class="share-top"  style="margin-left: 10px">
                                             <div class="dp">
@@ -673,14 +759,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                         </div>
                     </div>
                 </div>
-              </div>
-                                          </div>
-            <script src="/SocialNetworkIRCNV/js/loadpost.js" ></script>
-            <script src="/SocialNetworkIRCNV/js/controlPost.js"></script>
-             <script src="/SocialNetworkIRCNV/PersonalPage/ProfileInfo.js" >
-
-
-            </script>
-                <script src="/SocialNetworkIRCNV/js/like.js" ></script>
-                </body>
-                </html>
+            </div>
+        </div>
+        <script src="/SocialNetworkIRCNV/js/loadpost.js" ></script>
+        <script src="/SocialNetworkIRCNV/js/controlPost.js"></script>
+        <script src="/SocialNetworkIRCNV/PersonalPage/ProfileInfo.js" ></script>
+        <script src="/SocialNetworkIRCNV/js/like.js" ></script>
+    </body>
+</html>
