@@ -12,7 +12,10 @@ function report() {
         reportUser(rpID, userID);
     }
 }
-
+function askReportPost(rpID, userID){
+    if(confirm("Do you want to report this post!!!"))
+        reportPost(rpID, userID);
+}
 function reportPost(rpID, userID) {
     var data = {
         rpID: rpID,

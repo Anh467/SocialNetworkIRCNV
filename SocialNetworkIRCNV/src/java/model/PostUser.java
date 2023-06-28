@@ -113,7 +113,7 @@ public class PostUser extends Post {
                 + "                            <a href=\"#\" onclick=\"deletePost('" + this.getPostID() + "', 'Post')\">Delete</a>\n"
                 + "                            <a href=\"#\" onclick=\"modifyPost('" + this.getPostID() + "', '" + this.getImgUser() + "', '" + this.getFullNameUser() + "', '" + this.getTimePost() + "',\n"
                 + "                                            '" + this.getPrivacyName() + "', '" + this.getContent().trim() + "', '" + this.getImagePost() + "')\">Modify</a>\n"
-                + "                            <a href=\"#\" onclick=\"reportPost('" + this.getPostID() + "', '"+IDUserCurrent+"')\">Report</a>\n"
+                + "                            <a href=\"#\" onclick=\"askReportPost('" + this.getPostID() + "', '"+IDUserCurrent+"')\">Report</a>\n"
                 + "                        </div>\n"
                 + "                    </div>\n"
                 + "                </i>\n"

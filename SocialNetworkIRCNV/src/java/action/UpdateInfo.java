@@ -126,7 +126,7 @@ public class UpdateInfo extends HttpServlet {
             if (intro == null || intro.trim().isEmpty()) {
                 intro = user.getIntro();
             } else {
-                user.setNation(intro);
+                user.setIntro(intro);
             }
             
             Part part = request.getPart("avatar");

@@ -41,7 +41,7 @@ public class ModifyPost extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -78,7 +78,6 @@ public class ModifyPost extends HttpServlet {
         }
         new dao.PostUserDAO(UserID).updatePost(PostID, UserID, Content, ImagePost);
     }
- 
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -96,26 +95,29 @@ public class ModifyPost extends HttpServlet {
             String CONTENT = request.getParameter("contentPost");
             System.out.println(CONTENT + "    hoahsohdaosahkshdk");
             String content = text.changeUTF8((String) request.getParameter("contentPost"));
-            
+            dao.PostUserDAO api = new dao.PostUserDAO(id);
             //get path image
-            
-            if (part != null && part.getSubmittedFileName() != null) {
-                //khởi tạo controldata
-                ControlData data = new ControlData(part, getServletContext());
-                // save to db
-           
-                new dao.PostUserDAO(id).updatePost(PostID, id, content, data.getFilename());
-                //khowri tao cho viec bai post
-                data.createInitForPost(PostID);
-                //create folder
-                data.creatFolder();
-                // save image
-                data.SaveImage();
-                System.out.println("path: " + data.getRealPath());
-            } else {
-                new dao.PostUserDAO(id).updatePost(PostID, id, content);
+            boolean checkExist = api.checkExistPostUser(PostID, id);
+            if (checkExist) {
+                if (part != null && part.getSubmittedFileName() != null) {
+                    //khởi tạo controldata
+                    ControlData data = new ControlData(part, getServletContext());
+                    // save to db
+
+                    new dao.PostUserDAO(id).updatePost(PostID, id, content, data.getFilename());
+                    //khowri tao cho viec bai post
+                    data.createInitForPost(PostID);
+                    //create folder
+                    data.creatFolder();
+                    // save image
+                    data.SaveImage();
+                    System.out.println("path: " + data.getRealPath());
+                } else {
+                    new dao.PostUserDAO(id).updatePost(PostID, id, content);
+                }
+                request.getRequestDispatcher("ProfileInfo.jsp").forward(request, response);
             }
-            request.getRequestDispatcher("ProfileInfo.jsp").forward(request, response);
+
         } catch (Exception e) {
             System.out.println("");
             e.printStackTrace();

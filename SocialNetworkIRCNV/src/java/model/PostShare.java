@@ -150,7 +150,7 @@ public class PostShare extends Post {
                 + "                            <a href=\"#\" onclick=\"deletePost('" + this.IDshare + "', 'Share')\">Delete</a>\n"
                 + "                            <a href=\"#\" onclick=\"modifyPost('" + this.IDshare + "', '" + this.getImg_UserShare() + "', '" + this.getNameShare() + "', '" + this.getTimePostDown() + "',\n"
                 + "                                            '" + this.getPrivacyName() + "', '" + this.getContent().trim() + "', '" + this.img_post + "')\">Modify</a>\n"
-                + "                            <a href=\"#\" onclick=\"reportPost('" + this.IDshare + "', '"+IDUserCurrent+"')\">Report</a>\n"
+                + "                            <a href=\"#\" onclick=\"askReportPost('" + this.IDshare + "', '"+IDUserCurrent+"')\">Report</a>\n"
                 + "                        </div>\n"
                 + "                    </div>\n"
                 + "                </i>\n"
