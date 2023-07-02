@@ -133,25 +133,7 @@
 	END;
 	
 -- NumComment: trigger khi comment va xoa comment
-	GO
-	CREATE TRIGGER delete_comment_of_POSTSHARE
-	ON dbo.COMMENTSHARE AFTER DELETE
-	as
-	BEGIN
-		UPDATE dbo.POSTSHARE
-		SET NumComment= NumComment -1
-		WHERE ShareID= (SELECT ShareID FROM Deleted)
-	END;
-	GO
-
-	CREATE TRIGGER insert_comment_of_POSTSHARE
-	ON dbo.COMMENTSHARE AFTER INSERT 
-	AS
-	BEGIN
-		UPDATE dbo.POSTSHARE
-		SET NumComment= NumComment +1
-		WHERE ShareID= (SELECT ShareID FROM Inserted)
-	END;
+	
 -- new path for image
 	
 	GO
@@ -185,22 +167,7 @@
 		END
 	END
 	
-	GO
-   CREATE TRIGGER Add_Path_For_UPDATE_Comment
-	ON dbo. AFTER UPDATE
-	AS
-	BEGIN
-		IF UPDATE(ImagePost) 
-			BEGIN
-			UPDATE p
-			SET ImagePost = CASE
-					WHEN p.ImagePost = '' THEN ''
-					ELSE 'data/post/'+p.PostID+'/'+p.ImagePost
-				END
-			FROM dbo.POST p
-			INNER JOIN INSERTED i ON p.PostID = i.PostID
-		END
-	END
+ 
 		-- add path for comment
 	GO
     CREATE TRIGGER Add_Path_For_INSERT_Comment

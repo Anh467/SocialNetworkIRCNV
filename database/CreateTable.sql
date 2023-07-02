@@ -1,6 +1,7 @@
-﻿CREATE DATABASE SocialMedia
+﻿﻿-- CREATE DATABASE SocialMsfd
 --------------------------------------------------------------UserInfor------------------------------------------------------------------
---phan quyen nguoi dung
+-- phan quyen nguoi dung
+
 CREATE TABLE Role(
 	RoleID VARCHAR(11) PRIMARY KEY NOT NULL,
 	RoleName VARCHAR(30),
@@ -36,6 +37,7 @@ CREATE TABLE UserInfor(
 	NumPost INT DEFAULT 0,
 	TimeCreate DATETIME DEFAULT GETDATE(),
 	RoleID VARCHAR(11) DEFAULT 'USER',
+	intro nvarchar(300),
 	CONSTRAINT fk_RoleID_UserInfor FOREIGN KEY (RoleID) REFERENCES dbo.Role(RoleID),
 );
 
@@ -68,7 +70,7 @@ CREATE TABLE POST(
 	NumShare INT DEFAULT 0, 
 	PrivacyID VARCHAR(11) DEFAULT 'PUBLIC',
 	CONSTRAINT fk_PrivacyID_POST FOREIGN KEY (PrivacyID) REFERENCES dbo.Privacy(PrivacyID),
-)
+);
 
 
 --------------------------------------------------------------DBO.COMMENT------------------------------------------------------------------
@@ -82,7 +84,7 @@ CREATE TABLE COMMENT(
 	TimeComment DATETIME DEFAULT GETDATE(),
 	ImageComment varchar(255),
 	NumInterface INT DEFAULT 0,
-)
+);
 CREATE TABLE COMMENTCHILD(
 	ID INT IDENTITY(1,1) NOT NULL,
 	ChildID AS 'ILD' + RIGHT('00000000' + CAST(ID AS VARCHAR(8)), 8) PERSISTED PRIMARY KEY,
@@ -94,14 +96,14 @@ CREATE TABLE COMMENTCHILD(
 	TimeComment DATETIME DEFAULT GETDATE(),
 	ImageComment varchar(255),
 	NumInterface INT DEFAULT 0,
-)
+);
 
 
 --------------------------------------------------------------DBO.MAIL------------------------------------------------------------------
 CREATE TABLE MAIL(
 	Mail VARCHAR(255) PRIMARY KEY NOT NULL,
 	code CHAR(10),
-)
+);
 
 
 
@@ -120,7 +122,7 @@ CREATE TABLE USERRELATION(
 	isFriend BIT DEFAULT 0,
 	-- 0: da ket ban
 	-- 1: chua ket ban
-)
+);
 	
 
 
@@ -139,7 +141,7 @@ CREATE TABLE CHATCONTENT(
 	--ofUser1 sai thì đây sẽ là đoạn chat của user2 
 	CreateAt DATETIME DEFAULT GETDATE(),
 	-- rang buoc UserID1 luc nao cung lon hon UserID2
-)
+);
 --------------------------------------------------------------DBO.SHARE------------------------------------------------------------------
 --tao them 1 table share nua
 
@@ -156,7 +158,7 @@ ID INT IDENTITY(1,1) NOT NULL,
 	NumComment INT DEFAULT 0,
 	PrivacyID VARCHAR(11) DEFAULT 'PUBLIC',
 	CONSTRAINT fk_PrivacyID_POSTSHARE FOREIGN KEY (PrivacyID) REFERENCES dbo.Privacy(PrivacyID),
-)
+);
 
 /*CREATE TABLE COMMENTSHARE(
 	ID INT IDENTITY(1,1) NOT NULL,
@@ -185,7 +187,7 @@ VALUES
 (   'sad', 'sad', '<i class="fa-solid fa-face-sad-cry"></i>'),
 (   'angry', 'angry', '<i class="fa-regular fa-face-nose-steam"></i>'),
 (   'wow', 'wow', '<i class="fa-solid fa-face-explode"></i>'),
-(   'none', 'none', '<i class="fa-regular fa-thumbs-up"></i>')
+(   'none', 'none', '<i class="fa-regular fa-thumbs-up"></i>');
 
 CREATE TABLE InterFaceObject(
 	UserID VARCHAR(11) NOT NULL,
@@ -200,7 +202,7 @@ CREATE TABLE NOTE_COUNT(
 	UserID VARCHAR(11) PRIMARY KEY,
 	NOTE INT,
 	MESS INT 
-)
+);
 
 CREATE TABLE NOTE_FRIEND(
 	ID INT IDENTITY(1,1) NOT NULL,
@@ -217,7 +219,7 @@ CREATE TABLE NOTE_FRIEND(
 	 -- isFriend: minh chap nhan yeu cau
 	TimeRequest DATETIME DEFAULT GETDATE(),
 	isRead BIT DEFAULT 0
-)
+);
 CREATE TABLE NOTE_COMMENT(
 	ID INT IDENTITY(1,1) NOT NULL,
 	NoteID AS 'NCM' + RIGHT('00000000' + CAST(ID AS VARCHAR(8)), 8) PERSISTED PRIMARY KEY,
@@ -229,25 +231,7 @@ CREATE TABLE NOTE_COMMENT(
 	 -- comment: la binh luan tra loi comment
 	TimeComment DATETIME DEFAULT GETDATE(),
 	isRead BIT DEFAULT 0
-)
---------------------------------------------------------------DBO.LIKE------------------------------------------------------------------
-CREATE TABLE InterFace(
-	InterFaceID VARCHAR(11) PRIMARY KEY NOT NULL,
-	InterFaceName VARCHAR(30),
-	InterFaceDiv VARCHAR(100),
-)
-INSERT INTO dbo.InterFace
-VALUES
-(   'like', 'like', '<i class="fa-solid fa-thumbs-up"></i>'),
-(   'love', 'love', '<i class="fa-solid fa-heart"></i>'),
-(   'haha', 'haha','<i class="fa-solid fa-face-laugh-squint"></i>'),
-(   'sad', 'sad', '<i class="fa-solid fa-face-sad-cry"></i>'),
-(   'angry', 'angry', '<i class="fa-regular fa-face-nose-steam"></i>'),
-(   'wow', 'wow', '<i class="fa-solid fa-face-explode"></i>'),
-(   'none', 'none', '<i class="fa-regular fa-thumbs-up"></i>')
-
-<<<<<<< HEAD
-
+);
 CREATE TABLE NOTE_lIKE(
 	ID INT IDENTITY(1,1) NOT NULL,
 	NoteID AS 'NLI' + RIGHT('00000000' + CAST(ID AS VARCHAR(8)), 8) PERSISTED PRIMARY KEY,
@@ -260,10 +244,24 @@ CREATE TABLE NOTE_lIKE(
 	 -- comment (CID, ILD): là thong bao tuong tac cho binh luan post va sharepost
 	TimeComment DATETIME DEFAULT GETDATE(),
 	isRead BIT DEFAULT 0
-)
+);
+--------------------------------------------------------------DBO.LIKE------------------------------------------------------------------
+CREATE TABLE InterFace(
+	InterFaceID VARCHAR(11) PRIMARY KEY NOT NULL,
+	InterFaceName VARCHAR(30),
+	InterFaceDiv VARCHAR(100),
+);
+INSERT INTO dbo.InterFace
+VALUES
+(   'like', 'like', '<i class="fa-solid fa-thumbs-up"></i>'),
+(   'love', 'love', '<i class="fa-solid fa-heart"></i>'),
+(   'haha', 'haha','<i class="fa-solid fa-face-laugh-squint"></i>'),
+(   'sad', 'sad', '<i class="fa-solid fa-face-sad-cry"></i>'),
+(   'angry', 'angry', '<i class="fa-regular fa-face-nose-steam"></i>'),
+(   'wow', 'wow', '<i class="fa-solid fa-face-explode"></i>'),
+(   'none', 'none', '<i class="fa-regular fa-thumbs-up"></i>');
 
 
-=======
 CREATE TABLE InterFaceObject(
 	UserID VARCHAR(11) NOT NULL,
 	CONSTRAINT fk_user_id_InterFaceObject FOREIGN KEY (UserID) REFERENCES dbo.UserInfor(UserID),
@@ -273,20 +271,3 @@ CREATE TABLE InterFaceObject(
 	CONSTRAINT fk_InterFaceID_InterFaceObject FOREIGN KEY (InterFaceID) REFERENCES dbo.InterFace(InterFaceID),
 );
 
-CREATE VIEW UserReportSummary
-AS
-SELECT
-    u.UserID,
-    u.ImageUser,
-    u.FullName,
-    u.Account,
-    u.Mail,
-    u.PhoneNumber,
-    u.Address,
-    (SELECT COUNT(*) FROM ReportComment1686 WHERE UserID2 = u.UserID) AS NumCommentReported,
-    (SELECT COUNT(*) FROM ReportPost WHERE UserID2 = u.UserID) AS NumPostReported
-FROM
-    UserInfor u;
-
-	SELECT * FROM UserReportSummary
->>>>>>> AdminPage
