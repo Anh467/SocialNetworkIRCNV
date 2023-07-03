@@ -419,7 +419,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
             font-size:20px;
             font-weight:normal;
             padding: 10px;
-            max-height: 600px;
+            max-height: 1000px;
         }
 
         .post .post-content > img{
@@ -790,7 +790,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
 
 
         </script>
-        <script src="/SocialNetworkIRCNV/js/loadpost.js" >
+        <script src="/SocialNetworkIRCNV/js/load.js" >
 
 
         </script>

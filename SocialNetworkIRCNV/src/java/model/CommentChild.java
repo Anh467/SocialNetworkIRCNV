@@ -100,7 +100,17 @@ public class CommentChild {
         if (this.getImageComment() != null && !this.getImageComment().isEmpty()) {
             str = "<img src=\"" + this.getImageComment() + "\">\n";
         }
-        String href = (!id.equalsIgnoreCase(this.getUserID())) ? "<a class=\"suggestion-href\" href=\"/SocialNetworkIRCNV/PersonalPage/ProfileUser.jsp?UID=" + this.getUserID() + "\" style=\"display: inline\">\n" : "<a class=\"suggestion-href\" href=\"/SocialNetworkIRCNV/PersonalPage/ProfileInfo.jsp\" style=\"display: inline\">\n";
+        String href= "";
+        String commentAction = "";
+        if (id.equalsIgnoreCase(this.getUserID())) {
+            href =  "<a class=\"suggestion-href\" href=\"/SocialNetworkIRCNV/PersonalPage/ProfileInfo.jsp\" style=\"display: inline\">\n";
+            commentAction = "<a href=\"#\" onclick=\"askDeleteComment('" + this.getChilID() + "')\">Delete</a>\n"
+                    + "                            <a href=\"#\" onclick=\"askUpdateComment('" + this.getChilID() + "')\">Modify</a>\n";
+
+        } else {
+            href =  "<a class=\"suggestion-href\" href=\"/SocialNetworkIRCNV/PersonalPage/ProfileUser.jsp?UID=" + this.getUserID() + "\" style=\"display: inline\">\n";
+            commentAction = "<a href=\"#\" onclick=\"askreportComment('" + this.getChilID() + "', '" + id + "','1')\">Report</a>\n";
+        }
         User user = new dao.UserDAO().getUserByID(this.getUserID());
         InterFaceObject interFaceObject = new dao.InterFaceObjectDAO().getInterFaceObjectByID(this.getChilID(), id);
         return "<ul><li id='comment-" + this.ChilID + "'>\n"
@@ -111,8 +121,17 @@ public class CommentChild {
     }
 
     public String getUpdateDiv(String id) {
-        String href = (!id.equalsIgnoreCase(this.getUserID())) ? "<a class=\"suggestion-href\" href=\"/SocialNetworkIRCNV/PersonalPage/ProfileUser.jsp?UID=" + this.getUserID() + "\" style=\"display: inline\">\n" : "<a class=\"suggestion-href\" href=\"/SocialNetworkIRCNV/PersonalPage/ProfileInfo.jsp\" style=\"display: inline\">\n";
+        String href= "";
+        String commentAction = "";
+        if (id.equalsIgnoreCase(this.getUserID())) {
+            href =  "<a class=\"suggestion-href\" href=\"/SocialNetworkIRCNV/PersonalPage/ProfileInfo.jsp\" style=\"display: inline\">\n";
+            commentAction = "<a href=\"#\" onclick=\"askDeleteComment('" + this.getChilID() + "')\">Delete</a>\n"
+                    + "                            <a href=\"#\" onclick=\"askUpdateComment('" + this.getChilID() + "')\">Modify</a>\n";
 
+        } else {
+            href =  "<a class=\"suggestion-href\" href=\"/SocialNetworkIRCNV/PersonalPage/ProfileUser.jsp?UID=" + this.getUserID() + "\" style=\"display: inline\">\n";
+            commentAction = "<a href=\"#\" onclick=\"askreportComment('" + this.getChilID() + "', '" + id + "','1')\">Report</a>\n";
+        }
         String str = "";
         if (this.getImageComment() != null && !this.getImageComment().isEmpty()) {
             str = "<img src=\"" + this.getImageComment() + "\">\n";
@@ -128,6 +147,14 @@ public class CommentChild {
                 + "                <h4 class=\"comment-name\">" + user.getFullName() + "</h4>\n"
                 + "</a>"
                 + "                <span class=\"comment-log\">" + this.getTimeComment() + "</span>\n"
+                + "                <i class=\" dropdown fas fa-ellipsis-h\">\n"
+                + "                    <div >\n"
+                + "\n"
+                + "                        <div class=\"dropdown-content\">\n"
+                +commentAction
+                + "                        </div>\n"
+                + "                    </div>\n"
+                + "                </i>\n"
                 + "            </div>\n"
                 + "            <div class=\"comment-desc\">\n"
                 + "                <p>" + this.getContent() + "<br>\n"
@@ -144,9 +171,6 @@ public class CommentChild {
                 + "                </div>\n"
                 + "                <div class=\"comment-reply\" onclick=\"reply('" + this.getCmtID() + "', '" + user.getFullName() + "')\">\n"
                 + "                    <a href=\"#!\">Reply</a>\n"
-                + "                </div>\n"
-                + "                <div class=\"comment-report\">\n"
-                + "                    <a href=\"#!\">Report</a>\n"
                 + "                </div>\n"
                 + "            </div>\n"
                 + "    </div>\n";

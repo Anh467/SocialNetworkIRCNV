@@ -53,13 +53,13 @@ public class PostReport {
     }
 
     public String getImg() {
-        String imagePath = img;
-        String trimmedPath ="";
-        if (!img.isBlank()) {
-            int secondOccurrenceIndex = imagePath.indexOf("data/post", imagePath.indexOf("data/post") + 1);
-            trimmedPath = imagePath.substring(secondOccurrenceIndex);
-        }
-        return "../" + trimmedPath;
+//        String imagePath = img;
+//        String trimmedPath ="";
+//        if (!img.isBlank()) {
+//            int secondOccurrenceIndex = imagePath.indexOf("data/post", imagePath.indexOf("data/post") + 1);
+//            trimmedPath = imagePath.substring(secondOccurrenceIndex);
+//        }
+        return img;
     }
 
     public void setImg(String img) {

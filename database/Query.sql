@@ -978,4 +978,9 @@ GO
 	
    
 	select *
-	from dbo.ReportCommentView
+	from dbo.COMMENT
+
+	
+
+	DELETE dbo.COMMENTCHILD
+	WHERE ChildID = ?

@@ -1,7 +1,7 @@
-﻿﻿-- CREATE DATABASE SocialMsfd
+﻿﻿--CREATE DATABASE Socia
 --------------------------------------------------------------UserInfor------------------------------------------------------------------
--- phan quyen nguoi dung
-
+--phan quyen nguoi dung
+go 
 CREATE TABLE Role(
 	RoleID VARCHAR(11) PRIMARY KEY NOT NULL,
 	RoleName VARCHAR(30),
@@ -61,7 +61,7 @@ CREATE TABLE POST(
 	ID INT IDENTITY(1,1) NOT NULL,
 	PostID AS 'PID' + RIGHT('00000000' + CAST(ID AS VARCHAR(8)), 8) PERSISTED PRIMARY KEY,
 	UserID VARCHAR(11),
-	CONSTRAINT fk_user_id_dboPOST FOREIGN KEY (UserID) REFERENCES dbo.UserInfor(UserID),
+	CONSTRAINT fk_user_id_dboPOST FOREIGN KEY (UserID) REFERENCES dbo.UserInfor(UserID) ON DELETE CASCADE,
 	Content NVARCHAR(MAX),
 	ImagePost NVARCHAR(255),
 	TimePost DATETIME DEFAULT GETDATE(),
@@ -71,7 +71,6 @@ CREATE TABLE POST(
 	PrivacyID VARCHAR(11) DEFAULT 'PUBLIC',
 	CONSTRAINT fk_PrivacyID_POST FOREIGN KEY (PrivacyID) REFERENCES dbo.Privacy(PrivacyID),
 );
-
 
 --------------------------------------------------------------DBO.COMMENT------------------------------------------------------------------
 CREATE TABLE COMMENT(
@@ -85,13 +84,16 @@ CREATE TABLE COMMENT(
 	ImageComment varchar(255),
 	NumInterface INT DEFAULT 0,
 );
+
+
+
 CREATE TABLE COMMENTCHILD(
 	ID INT IDENTITY(1,1) NOT NULL,
 	ChildID AS 'ILD' + RIGHT('00000000' + CAST(ID AS VARCHAR(8)), 8) PERSISTED PRIMARY KEY,
 	UserID VARCHAR(11),
 	CONSTRAINT fk_user_id_dboCOMMENTCHILD FOREIGN KEY (UserID) REFERENCES dbo.UserInfor(UserID),
 	CmtID VARCHAR(11),
-	CONSTRAINT fk_post_id_dboCOMMENTCHILD FOREIGN KEY (CmtID) REFERENCES dbo.COMMENT(CmtID),
+	CONSTRAINT fk_post_id_dboCOMMENTCHILD FOREIGN KEY (CmtID) REFERENCES dbo.COMMENT(CmtID) ON DELETE CASCADE,
 	Content NVARCHAR(MAX),
 	TimeComment DATETIME DEFAULT GETDATE(),
 	ImageComment varchar(255),
@@ -126,6 +128,7 @@ CREATE TABLE USERRELATION(
 	
 
 
+
 --------------------------------------------------------------DBO.CHATCONTENT------------------------------------------------------------------
 CREATE TABLE CHATCONTENT(
 	ID INT IDENTITY(1,1) NOT NULL,
@@ -152,6 +155,7 @@ ID INT IDENTITY(1,1) NOT NULL,
 	UserID VARCHAR(11),
 	CONSTRAINT fk_user_id_dboPOSTSHARE FOREIGN KEY (UserID) REFERENCES dbo.UserInfor(UserID),
 	PostID VARCHAR(11),
+	CONSTRAINT  fk_post_id_dboPOSTSHARE FOREIGN KEY (PostID) REFERENCES dbo.POST(PostID),
 	Content NVARCHAR(MAX),
 	TimeShare DATETIME DEFAULT GETDATE(),
 	NumInterface INT DEFAULT 0,
@@ -159,7 +163,6 @@ ID INT IDENTITY(1,1) NOT NULL,
 	PrivacyID VARCHAR(11) DEFAULT 'PUBLIC',
 	CONSTRAINT fk_PrivacyID_POSTSHARE FOREIGN KEY (PrivacyID) REFERENCES dbo.Privacy(PrivacyID),
 );
-
 /*CREATE TABLE COMMENTSHARE(
 	ID INT IDENTITY(1,1) NOT NULL,
 	CmtID AS 'CID' + RIGHT('00000000' + CAST(ID AS VARCHAR(8)), 8) PERSISTED PRIMARY KEY,

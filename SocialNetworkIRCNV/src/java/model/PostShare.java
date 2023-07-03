@@ -132,14 +132,15 @@ public class PostShare extends Post {
 
     public String getUpdateDiv() {
         String href;
-        String modify;
+        String postAction;
         if(IDUserCurrent.equalsIgnoreCase(this.getUserID())){
-            modify= "<a href=\"#\" onclick=\"modifyPost('" + this.IDshare + "', '" + this.getImg_UserShare() + "', '" + this.getNameShare() + "', '" + this.getTimePostDown() + "',\n"
+            postAction= "<a href=\"#\" onclick=\"deletePost('" + this.IDshare + "', 'Share')\">Delete</a>\n"
+                    +"<a href=\"#\" onclick=\"modifyPost('" + this.IDshare + "', '" + this.getImg_UserShare() + "', '" + this.getNameShare() + "', '" + this.getTimePostDown() + "',\n"
                 + "'" + this.getPrivacyName() + "', '" + this.getContent().trim() + "', '" + this.img_post + "')\">Modify</a>\n";
             href ="<a class=\"suggestion-href\" href=\"/SocialNetworkIRCNV/PersonalPage/ProfileInfo.jsp\" style=\"display: inline\">\n";
         }else{
             href ="<a class=\"suggestion-href\" href=\"/SocialNetworkIRCNV/PersonalPage/ProfileUser.jsp?UID="+this.getUserID()+"\" style=\"display: inline\">\n";
-            modify = "";
+            postAction = "<a href=\"#\" onclick=\"askReportPost('" + this.IDshare + "', '"+IDUserCurrent+"')\">Report</a>\n";
         }
         
         InterFaceObject interFaceObject = new InterFaceObjectDAO().getInterFaceObjectByID(IDshare, IDUserCurrent);
@@ -156,15 +157,13 @@ public class PostShare extends Post {
                 + "                </div>\n"
                 + "                <i class=\" dropdown fas fa-ellipsis-h\">\n"
                 + "                    <div >\n"
-                + "                        <div class=\"dropdown-content\">\n"
-                + "                            <a href=\"#\" onclick=\"deletePost('" + this.IDshare + "', 'Share')\">Delete</a>\n"
-                + modify
-                + "                            <a href=\"#\" onclick=\"askReportPost('" + this.IDshare + "', '"+IDUserCurrent+"')\">Report</a>\n"
+                + "                        <div class=\"dropdown-content\">\n"                         
+                + postAction                   
                 + "                        </div>\n"
                 + "                    </div>\n"
                 + "                </i>\n"
                 + "            </div>\n"
-                + "            <div class=\"share-content\">\n"
+                + "            <div class=\"share-content\" style=\"text-align: left; word-wrap:break-word; \">\n"
                 + "                " + this.getContent().trim() + "\n"
                 + "            </div>\n"
                 + "            <div class=\"share-body\">\n"
@@ -181,7 +180,7 @@ public class PostShare extends Post {
                 + "                </div>\n"
                 + "\n"
                 + "                <div class=\"share-content\" style=\"text-align: center;\" >\n"
-                + "                    <p style=\"text-align: left;\">" + this.getContentDown().trim() + "</p>\n"
+                + "                    <p style=\"text-align: left; word-wrap:break-word; width: 100%\">" + this.getContentDown().trim() + "</p>\n"
                 + "                    <img style=\"max-width: 100%\" src=\"" + this.getImg_post() + "\" />\n"
                 + "                </div>\n"
                 + "            </div> \n"
@@ -219,7 +218,7 @@ public class PostShare extends Post {
         String href= (!IDUserCurrent.equalsIgnoreCase(this.getUserID()))?"<a class=\"suggestion-href\" href=\"/SocialNetworkIRCNV/PersonalPage/ProfileUser.jsp?UID="+this.getUserID()+"\" style=\"display: inline\">\n":"<a class=\"suggestion-href\" href=\"/SocialNetworkIRCNV/PersonalPage/ProfileInfo.jsp\" style=\"display: inline\">\n";
         InterFaceObject interFaceObject = new InterFaceObjectDAO().getInterFaceObjectByID(IDshare, IDUserCurrent);
         return 
-                 "        <div class=\"share\"  style=\"margin: 10px; width: 700px;\" id=\"" + this.IDshare + "\">\n"
+                 "        <div class=\"share\"  style=\"margin: 10px; \" id=\"" + this.IDshare + "\">\n"
                 + getUpdateDiv()
                 + "        </div>\n";
     }

@@ -90,7 +90,7 @@
                 font-size:20px;
                 font-weight:normal;
                 padding:10px;
-                max-height: 600px;
+                max-height: 1000px;
             }
 
             .share .share-body .share-content  > img{

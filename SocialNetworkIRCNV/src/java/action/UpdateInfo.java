@@ -23,7 +23,7 @@ import model.User;
  *
  * @author LENOVO
  */
-@MultipartConfig
+//@MultipartConfig
 @WebServlet(name = "UpdateInfo", urlPatterns = {"/UpdateInfo"})
 public class UpdateInfo extends HttpServlet {
 
@@ -159,7 +159,7 @@ public class UpdateInfo extends HttpServlet {
 //                data.SaveImage();
 //                System.out.println("path: " + data.getRealPath());
 //            }
-//            new dao.UserDAO().updateInfo(user);
+            new dao.UserDAO().updateInfo(user);
             response.sendRedirect("PersonalPage/ProfileInfo.jsp");
         } catch (Exception e) {
             e.printStackTrace();

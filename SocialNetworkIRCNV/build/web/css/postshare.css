@@ -77,9 +77,9 @@ body{
 }
 
 .share .share-body .share-content  > img{
-    height: 95%;
+   
     margin:5px 0px;
-    max-height: 930px;
+    max-height: 430px;
 }
 .share .share-bottom, .share .counter{
     box-shadow: 1px solid #ddd;

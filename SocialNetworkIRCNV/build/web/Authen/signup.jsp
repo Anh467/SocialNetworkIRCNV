@@ -28,16 +28,18 @@
                     </div>
                     <div class="form-group">
                         <label >Password</label>
-                        <input name="pass" value="${pass}" type="password" class="form-control" placeholder="Enter password"id="pass" 
+                        <input name="pass" value="${pass}" type="password" class="form-control" placeholder="Enter password"id="pass" onsubmit="return validateForm()" 
                                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" 
                                title="Must contain at least one number and one uppercase and lowercase letter, 
                                and at least 8 or more characters" required> 
+                            <small id="usernameError" style="color: red;"></small>
                     </div>
                     <div class="form-group">
 
-                        <input type="password" class="form-control" placeholder="Repeat Password"id="repeat"
+                        <input type="password" class="form-control" placeholder="Repeat Password"id="repeat" onsubmit="return validateForm()"
                                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" 
                                title="Password are not same" required>
+                        <small id="usernameError" style="color: red;"></small>
                     </div>
                     <div class="form-group">
                         <label >Full Name</label>
@@ -45,7 +47,7 @@
                     </div>
                     <div class="form-group">
                         <label >Mail</label>
-                        <input name="mail" value="${mail}" type="text" class="form-control" placeholder="Enter your mail" required>
+                        <input name="mail" value="${mail}" type="email" class="form-control" placeholder="Enter your mail" required>
                     </div>
                     <div class="form-group">
                         <label >Date of birth</label>
@@ -75,9 +77,11 @@
                     <a href="${pageContext.request.contextPath}/Authen/forgotpass.jsp">Forgot password</a> <br>
                     <a href="${pageContext.request.contextPath}/Authen/login.jsp">You already have account?</a>
                 </div>
-                <script>
+               <script>
                     function validateForm() {
                         var username = document.getElementById("username").value;
+                        var pass = document.getElementById("pass").value;
+                        var repeat = document.getElementById("repeat").value;
                         var regex = /^[a-zA-Z0-9]+$/;
                         var errorElement = document.getElementById("usernameError");
 
@@ -88,9 +92,25 @@
                             errorElement.textContent = "";
                             return true;
                         }
+                         if (!regex.test(pass)) {
+                             errorElement.textContent = "Invalid Password!";
+                            return false;
+                        } else {
+                            errorElement.textContent = "";
+                            return true;
+                        }
+                         if (!regex.test(repeat)) {
+                            errorElement.textContent = "Invalid Password Repeat!";
+                            return false;
+                        } else {
+                            errorElement.textContent = "";
+                            return true;
+                        }
                     }
 
                 </script>
+
+
 
 
         </section>

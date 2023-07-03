@@ -93,14 +93,15 @@ public class PostUser extends Post {
 
     public String getUpdateDiv() {
         String href;
-        String modify;
+        String postAction;
         if(IDUserCurrent.equalsIgnoreCase(this.getUserID())){
-            modify= "<a href=\"#\" onclick=\"modifyPost('" + this.getPostID() + "', '" + this.getImgUser() + "', '" + this.getFullNameUser() + "', '" + this.getTimePost() + "',\n"
+            postAction= "<a href=\"#\" onclick=\"deletePost('" + this.getPostID() + "', 'Post')\">Delete</a>\n" 
+                    +"<a href=\"#\" onclick=\"modifyPost('" + this.getPostID() + "', '" + this.getImgUser() + "', '" + this.getFullNameUser() + "', '" + this.getTimePost() + "',\n"
                 + "'" + this.getPrivacyName() + "', '" + this.getContent().trim() + "', '" + this.getImagePost() + "')\">Modify</a>\n";
             href ="<a class=\"suggestion-href\" href=\"/SocialNetworkIRCNV/PersonalPage/ProfileInfo.jsp\" style=\"display: inline\">\n";
         }else{
             href ="<a class=\"suggestion-href\" href=\"/SocialNetworkIRCNV/PersonalPage/ProfileUser.jsp?UID="+this.getUserID()+"\" style=\"display: inline\">\n";
-            modify = "";
+            postAction = "<a href=\"#\" onclick=\"askReportPost('" + this.getPostID() + "', '"+IDUserCurrent+"')\">Report</a>\n";
         }
         InterFaceObject interFaceObject = new InterFaceObjectDAO().getInterFaceObjectByID(super.getPostID(), IDUserCurrent);
         return "            <div class=\"post-top\">\n"
@@ -119,16 +120,14 @@ public class PostUser extends Post {
                 + "                    <div >\n"
                 + "\n"
                 + "                        <div class=\"dropdown-content\">\n"
-                + "                            <a href=\"#\" onclick=\"deletePost('" + this.getPostID() + "', 'Post')\">Delete</a>\n"
-                + modify
-                + "                            <a href=\"#\" onclick=\"askReportPost('" + this.getPostID() + "', '"+IDUserCurrent+"')\">Report</a>\n"
+                + postAction                            
                 + "                        </div>\n"
                 + "                    </div>\n"
                 + "                </i>\n"
                 + "            </div>\n"
                 + "\n"
                 + "            <div class=\"post-content\" style=\"text-align: center;\">\n"
-                + "                <p style=\"text-align: left;\">" + this.getContent().trim() + "</p>\n"
+                + "                <p style=\"text-align: left; word-wrap:break-word; margin-right: 20px;\">" + this.getContent().trim() + "</p>\n"
                 + "                    <img src=\"" + this.getImagePost() + "\"style=\"margin: 0 auto; max-width: 100%\"/>\n"
                 + "            </div>\n"
                 + "            <div class=\"counter\">\n"

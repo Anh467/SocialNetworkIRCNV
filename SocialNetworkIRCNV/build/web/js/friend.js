@@ -25,4 +25,10 @@ function askAgainUnfiend(Type, UID) {
         relate(Type, UID);
     }
 }
+function displayName(x) {
+    x.setAttribute('style', 'display: block');
+}
+function hideName(x) {
+    x.setAttribute('style', 'display: none');
+}
 

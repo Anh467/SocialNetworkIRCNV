@@ -38,7 +38,7 @@
                             </div>
                         </form>
                         <div style="margin-top: 10px">
-                            <a href="${pageContext.request.contextPath}/Authen/forgotpass.jsp">Forgot password</a> <br>
+                            <a href="${pageContext.request.contextPath}/Authen/login.jsp">Already have account?</a> <br>
                             <a href="${pageContext.request.contextPath}/Authen/signup.jsp">You dont have account?</a>
                         </div>
                         <p style="text-align: center; color: red">${status}</p>

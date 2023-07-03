@@ -48,6 +48,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
             background-color: #cdf1ff;
         }
         body{
+             background-color: #cdf1ff;
         }
         .cover-img{
             width:100%;
@@ -198,10 +199,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
         }
         .info-col{
             /*            flex-basis:36%;*/
-            margin-right:20px;
+           padding-left: 0;
         }
         .post-col{
             /*            flex-basis: 63%;*/
+             padding-right: 0;
         }
         .profile-intro{
             background: white;
@@ -358,7 +360,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                             <%
                                 int size = (5 > friendList.size()) ? friendList.size() : 5;
                                 for (int i = 0; i < size; i++) {%>
-                            <img src="<%=friendList.get(i).getImgUser()%>" alt="alt" onclick="otherProfile('<%=friendList.get(i).getUserID()%>')"/>
+                                <img src="<%=friendList.get(i).getImgUser()%>" alt="alt" onclick="otherProfile('<%=friendList.get(i).getUserID()%>')"  />
+                                
                             <%}%>  
                         </div>
                     </div>
@@ -374,8 +377,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
 
 
             <!-- Ph?n bên trái c?a trang (bao g?m introduce và b?n bè... -->
-            <div class ="profile-info ">
-                <div class ="info-col ">
+            <div class ="profile-info col-md-12" style="padding: 0;">
+                <div class ="info-col col-md-4" style="">
                     <div class ="profile-intro">
 
                         <!-- Introduce -->
@@ -388,7 +391,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                         </ul>
                     </div>
                     <div class = "profile-intro">
-                        <!--                         Friends -->
+                        <!--  Friends -->
                         <div class ="title-box">
                             <h3>Friends</h3>
                             <a href ="/SocialNetworkIRCNV/PersonalPage/FriendList.jsp" style="margin-top:-18px;">All Friends</a>
@@ -399,7 +402,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                 for (int i = 0; i < size; i++) {%>
                             <div onclick="otherProfile('<%=friendList.get(i).getUserID()%>')">
                                 <img src="<%=friendList.get(i).getImgUser()%>">
-
+                                <span onmouseover="displayName(this)" onmouseout="hideName(this)" style="display: none"><%=friendList.get(i).getFullName()%></span>
                             </div>
                             <%}%>
                         </div>
@@ -408,7 +411,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                 </div>
 
                 <!-- Up bài -->
-                <div class ="post-col " style="width: 100%;">
+                <div class ="post-col col-md-8" style="">
                     <div class ="write-post-container">
                         <div class ="user-profile">
                             <img src="<%=user.getImgUser()%>" >
@@ -757,13 +760,28 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                 </div>
                             </div>
                         </div>
+                        <script>
+                            document.getElementById('fileInput2').addEventListener('change', function (event) {
+                                var file = event.target.files[0];
+
+                                // T?o ??i t??ng FileReader ?? ??c t?p tin
+                                var reader = new FileReader();
+                                reader.onload = function (e) {
+                                    var previewImage = document.getElementById('imgPost');
+                                    previewImage.src = e.target.result;
+                                    previewImage.style = " max-width:660px; max-height:660px;";
+                                };
+                                reader.readAsDataURL(file);
+                            });
+                        </script>
                     </div>
                 </div>
             </div>
         </div>
-        <script src="/SocialNetworkIRCNV/js/loadpost.js" ></script>
+        <script src="/SocialNetworkIRCNV/js/load.js" ></script>
         <script src="/SocialNetworkIRCNV/js/controlPost.js"></script>
         <script src="/SocialNetworkIRCNV/PersonalPage/ProfileInfo.js" ></script>
         <script src="/SocialNetworkIRCNV/js/like.js" ></script>
+        <script src="/SocialNetworkIRCNV/js/friend.js" ></script>
     </body>
 </html>

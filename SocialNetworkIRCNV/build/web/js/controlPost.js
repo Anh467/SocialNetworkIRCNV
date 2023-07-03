@@ -160,8 +160,23 @@ function SharePost(PostIDown, imgUserDown, name_userDown, contentDown, img_postD
     var img_post = document.getElementById('img_postDown');
     var name_use = document.getElementById('name_userDown');
     var PostID = document.getElementById('PostIDPostShareModel');
+    
+    //////////////////////////////xử lí xuống dòng//////////////////////////////
+        // Thay thế các lần xuống dòng bằng <br>
+    let replacedLineBreaks = contentDown.replace(/\n/g, "<br>");
+
+    // Tách các phần bằng dòng trống
+    let sections = replacedLineBreaks.split("<br><br><br>");
+
+    // Tạo một mảng các phần trong thẻ div
+    let divSections = sections.map(section => `<div>${section}</div>`);
+
+    // Kết hợp các phần đã được đặt trong thẻ div
+    let result = divSections.join("<br>");
+    //////////////////////////////kết thúc xử lí xuống dòng//////////////////////////////
+     
     imgUser.src = imgUserDown;
-    content.innerHTML = contentDown;
+    content.innerHTML = result;
     img_post.src = img_postDown;
     name_use.innerHTML = name_userDown;
     PostID.value = PostIDown;

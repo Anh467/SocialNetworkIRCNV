@@ -206,10 +206,15 @@
                 flex-direction: column;
                 align-items:center;
             }
-
+            .share{
+                max-width:750px;
+                background:#fff;
+                border-radius:10px;
+                margin: 10px;
+            }
 
             .post{
-                width:700px;
+                max-width:750px;
                 background:#fff;
                 border-radius:10px;
                 margin: 10px 0;
@@ -669,7 +674,7 @@
                         </div>
                     </div>
                 </div>
-        <script src="/SocialNetworkIRCNV/js/loadpost.js" ></script>
+        <script src="/SocialNetworkIRCNV/js/load.js" ></script>
         <script src="/SocialNetworkIRCNV/js/controlPost.js"></script>
         <script src="/SocialNetworkIRCNV/HomePage/homepage.js" ></script>
         <script src="/SocialNetworkIRCNV/js/like.js" ></script>

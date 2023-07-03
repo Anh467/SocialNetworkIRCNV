@@ -40,7 +40,7 @@ public class CommentDAO {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 return new CommentChild(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
-                        rs.getString(5), rs.getString(6), rs.getInt(7),rs.getString(8));
+                        rs.getString(5), rs.getString(6), rs.getInt(7), rs.getString(8));
             }
         } catch (Exception e) {
             System.out.println("dao.CommentDAO.getCommentChildByChildID()");
@@ -56,10 +56,10 @@ public class CommentDAO {
                 + "    DECLARE @Offset INT = ? ; -- Số bài post đã hiển thị trước đó = @FetchCount* (offset-1)\n"
                 + "    DECLARE @FetchCount INT = 5; -- Số bài post muốn lấy thêm\n"
                 + "                \n"
-                + "	SELECT ChildID, UserID, CmtID, Content, TimeComment, ImageComment, NumInterface, (SELECT TOP(1) PostID\n" +
-"												FROM dbo.COMMENTCHILD\n" +
-"												INNER JOIN dbo.COMMENT ON COMMENT.CmtID = COMMENTCHILD.CmtID\n" +
-"												WHERE ChildID= 'ILD00000009' ) AS PostID	\n"
+                + "	SELECT ChildID, UserID, CmtID, Content, TimeComment, ImageComment, NumInterface, (SELECT TOP(1) PostID\n"
+                + "												FROM dbo.COMMENTCHILD\n"
+                + "												INNER JOIN dbo.COMMENT ON COMMENT.CmtID = COMMENTCHILD.CmtID\n"
+                + "												WHERE ChildID= 'ILD00000009' ) AS PostID	\n"
                 + "	FROM dbo.COMMENTCHILD\n"
                 + "	WHERE CmtID= @CmtID\n"
                 + "	ORDER BY TimeComment DESC\n"
@@ -105,9 +105,9 @@ public class CommentDAO {
         return null;
     }
 
-    public ArrayList<Comment> getCommentByPostID(String PostID) {
+    public ArrayList<Comment> getCommentByPostID(String PostID, int offset) {
         String query = "DECLARE @PostID VARCHAR(11)= ? ;\n"
-                + "    DECLARE @Offset INT = 1; -- Số bài post đã hiển thị trước đó = @FetchCount* (offset-1)\n"
+                + "    DECLARE @Offset INT = ? ; -- Số bài post đã hiển thị trước đó = @FetchCount* (offset-1)\n"
                 + "    DECLARE @FetchCount INT = 5; -- Số bài post muốn lấy thêm\n"
                 + "                \n"
                 + "	SELECT CmtID, UserID, PostID, Content, TimeComment, ImageComment, NumInterface\n"
@@ -121,13 +121,14 @@ public class CommentDAO {
         try {
             PreparedStatement ps = cnn.prepareStatement(query);
             ps.setString(1, PostID);
+            ps.setInt(2, offset);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                
+
                 Comment comment = new Comment(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
                         rs.getString(5), rs.getString(6), rs.getInt(7));
                 comment.setCommentChild(getCommentChildByCmtID(rs.getString(1), 1));
-                System.out.println("comment-log: "+ comment.getTimeComment());
+                System.out.println("comment-log: " + comment.getTimeComment());
                 commentList.add(comment);
             }
         } catch (Exception e) {
@@ -354,5 +355,31 @@ public class CommentDAO {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void deleteCommentByCmtID(String CmtID) {
+        String query = "DELETE dbo.COMMENT\n"
+                + "	WHERE CmtID= ?";
+        try {
+            PreparedStatement ps = cnn.prepareStatement(query);
+            ps.setString(1, CmtID);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("dao.CommentDAO.deleteCommentByCmtID()");
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteCommentChildByChildID(String ChildID) {
+        String query = "DELETE dbo.COMMENTCHILD\n"
+                + "	WHERE ChildID = ?";
+        try {
+            PreparedStatement ps = cnn.prepareStatement(query);
+            ps.setString(1, ChildID);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("dao.CommentDAO.deleteCommentChildByChildID()");
+            e.printStackTrace();
+        }
     }
 }

@@ -127,15 +127,11 @@ public class LoadPost extends HttpServlet {
         }
     }
 
-    public String getComment(String id, String PostID) {
+    public String getComment(String id, String PostID, int offset) {
         Connection cnn = new connection.connection().getConnection();
-        ArrayList<Comment> commentList = new dao.CommentDAO().getCommentByPostID(PostID);
+        ArrayList<Comment> commentList = new dao.CommentDAO().getCommentByPostID(PostID, offset);
 
-        String str = "                <div>\n"
-                + "                                         <div>\n"
-                + "           <div class=\"comment\" style=\"width: 100%;\">\n"
-                + "                <main>\n"
-                + "                    <section id=\"comment-" + PostID + "\" class=\"comment-module\" style=\" max-height: 700px; overflow-y: auto;\">\n";
+        String str = "";
         for (int i = 0; i < commentList.size(); i++) {
             str += "<ul>"
                     + "<li id='comment-" + commentList.get(i).getCmtID() + "'>"
@@ -153,26 +149,16 @@ public class LoadPost extends HttpServlet {
                         + "</ul>";
 
             }
-
             str += "</li></ul>";
+            if (commentChildList.size() >= 5) {
+
+                str += "<div id=\"btn-" + commentList.get(i).getCmtID() + "\" onclick=\"loadmorecomment('" + commentList.get(i).getCmtID() + "', '2')\" style=\"text-align: center\">\n"
+                        + "    <a>Load more</a>\n"
+                        + "</div>";
+            }
 
         }
-        str = str + "                    </section>\n"
-                + "                </main>\n"
-                + "                <div class=\"write-comment col-12\" style=\"background: white\">\n"
-                + "<div class =\"post-input-container\" style=\"width:100%\" id=\"post-input-container\">\n"
-                + "                                        <textarea id=\"NewPostTextarea\" rows =\"3\" placeholder=\"What's on your mind?\"></textarea>    \n"
-                + "<div onclick= \"loadComment('" + PostID + "')\" id='button-load-comment' class=\"col-1\"><i style=\"font-size:27px;color:#00abfd\" class=\"fa-solid fa-paper-plane\"></i></div> "
-                + "                                        <img id=\"previewImage\" src=\"#\" alt=\"Preview Image\" style=\"display: none\">\n"
-                + "<label for=\"fileInput\" class=\"custom-file-upload\">\n"
-                + "                    <i class=\"fa-solid fa-paperclip\" style=\"font-size:25px;color:#00abfd;margin-left:15px;\"></i> \n"
-                + "                    </label>\n"
-                + "                    <input id=\"fileInput\" type=\"file\" name=\"photo\" style=\"display: none;\">"
-                + "                                    </div> \n"
-                + "                </div>\n"
-                + "            </div>\n"
-                + "            </div>\n"
-                + "          </div> ";
+        //str = str 
         return str;
     }
 
@@ -341,6 +327,7 @@ public class LoadPost extends HttpServlet {
                     + "    </head>\n"
                     + "\n"
                     + "    <body>\n"
+                    + "<div id=\"offset\" style=\"display: none\"  >2</div>"
                     + "<header>\n"
                     + header
                     + "        </header>"
@@ -351,7 +338,31 @@ public class LoadPost extends HttpServlet {
                     + modelShare(post, user)
                     + "</div>"
                     + "  <div class = \"block-comment col-md-6\">"
-                    + getComment(user.getUserID(), post.getPostID())
+                    + "                <div>\n"
+                    + "                                         <div>\n"
+                    + "           <div class=\"comment\" style=\"width: 100%;\">\n"
+                    + "                <main>\n"
+                    + "                    <section id=\"comment-" + post.getPostID() + "\" class=\"comment-module\" style=\" max-height: 700px; overflow-y: auto;\">\n"
+                    + getComment(user.getUserID(), post.getPostID(), 1)
+                    + "                    </section>\n"
+                    + "<div id=\"btn-" + post.getPostID() + "\" onclick=\"loadmorecomment('" + post.getPostID() + "', '2')\" style=\"text-align: center\">\n"
+                    + "    <a>Load more</a>\n"
+                    + "</div>"
+                    + "                </main>\n"
+                    + "                <div class=\"write-comment col-12\" style=\"background: white\">\n"
+                    + "<div class =\"post-input-container\" style=\"width:100%\" id=\"post-input-container\">\n"
+                    + "                                        <textarea id=\"NewPostTextarea\" rows =\"3\" placeholder=\"What's on your mind?\"></textarea>    \n"
+                    + "<div onclick= \"loadComment('" + post.getPostID() + "')\" id='button-load-comment' class=\"col-1\"><i style=\"font-size:27px;color:#00abfd\" class=\"fa-solid fa-paper-plane\"></i></div> "
+                    + "                                        <img id=\"previewImage\" src=\"#\" alt=\"Preview Image\" style=\"display: none\">\n"
+                    + "<label for=\"fileInput\" class=\"custom-file-upload\">\n"
+                    + "                    <i class=\"fa-solid fa-paperclip\" style=\"font-size:25px;color:#00abfd;margin-left:15px;\"></i> \n"
+                    + "                    </label>\n"
+                    + "                    <input id=\"fileInput\" type=\"file\" name=\"photo\" style=\"display: none;\">"
+                    + "                                    </div> \n"
+                    + "                </div>\n"
+                    + "            </div>\n"
+                    + "            </div>\n"
+                    + "          </div> "
                     + "</div>"
                     + "</div>"
                     + "        <script src=\"/SocialNetworkIRCNV/js/loadpost.js\" ></script>\n"
