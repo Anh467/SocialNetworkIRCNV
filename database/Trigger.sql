@@ -55,7 +55,7 @@
 -- NumComment: trigger khi comment va xoa comment
 	-- tăng NumComment của post kkhi đăng bình luận
 	GO
-	CREATE TRIGGER delete_comment_of_post
+	CREATE  TRIGGER delete_comment_of_post
 	ON dbo.comment AFTER DELETE
 	as
 	BEGIN
@@ -65,10 +65,13 @@
 		UPDATE dbo.PostShare
 		SET NumComment= NumComment -1
 		WHERE PostID= (SELECT PostID FROM Deleted)
+		UPDATE dbo.Advertisement
+		SET NumComment= NumComment -1
+		WHERE AdvertiserID= (SELECT PostID FROM Deleted)
 	END;
 	-- giảm NumComment của post kkhi xáo bình luận
 	GO
-	CREATE TRIGGER insert_comment_of_post
+	CREATE  TRIGGER insert_comment_of_post
 	ON dbo.comment AFTER INSERT 
 	as
 	BEGIN
@@ -78,6 +81,9 @@
 		UPDATE dbo.PostShare
 		SET NumComment= NumComment +1
 		WHERE PostID= (SELECT PostID FROM Inserted)
+		UPDATE dbo.Advertisement
+		SET NumComment= NumComment +1
+		WHERE AdvertiserID= (SELECT PostID FROM Inserted)
 	END;
 
 -- NumShare: trigger khi share
@@ -210,9 +216,9 @@
 		UPDATE dbo.COMMENTCHILD
 		SET ImageComment= CASE
             WHEN ImageComment= '' THEN ''
-			else
+			ELSE
 			ImageComment
-			end
+			END
 		WHERE CmtID= (SELECT Inserted.CmtID FROM INSERTed)
 	END
 	GO
@@ -323,6 +329,15 @@
 								ELSE NumInterface + 1
 							END
 					WHERE ChildID= @ObjectID
+				END
+			ELSE IF (@ObjectID LIKE 'AID%')
+				BEGIN
+					UPDATE dbo.Advertisement
+					SET NumInterface= CASE 
+								WHEN @InterFaceID= 'none' THEN  NumInterface-1
+								ELSE NumInterface + 1
+							END
+					WHERE AdvertiserID= @ObjectID
 				END
 
 			-- Lấy hàng tiếp theo
@@ -489,21 +504,24 @@ go
 			FROM dbo.NOTE_COMMENT
 			WHERE UserID= @UserID AND ObjectID= @ObjectID)
 				BEGIN
-					INSERT INTO dbo.NOTE_COMMENT
-					(
-					    ObjectID,
-					    UserID,
-					    statusNote,
-					    TimeComment,
-					    isRead
-					)
-					VALUES
-					(   @ObjectID,    -- CmtID - varchar(11)
-					    @UserID,      -- UserID - varchar(11)
-					    'post',    -- statusNote - nvarchar(30)
-					    DEFAULT, -- TimeComment - datetime
-					    DEFAULT     -- isRead - bit
-					    )
+					IF(@UserID !=NULL)
+					BEGIN
+						INSERT INTO dbo.NOTE_COMMENT
+						(
+							ObjectID,
+							UserID,
+							statusNote,
+							TimeComment,
+							isRead
+						)
+						VALUES
+						(   @ObjectID,    -- CmtID - varchar(11)
+							@UserID,      -- UserID - varchar(11)
+							'post',    -- statusNote - nvarchar(30)
+							DEFAULT, -- TimeComment - datetime
+							DEFAULT     -- isRead - bit
+							)
+					END
 				END
 				ELSE
 				BEGIN

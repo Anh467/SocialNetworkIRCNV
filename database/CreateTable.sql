@@ -7,15 +7,16 @@ CREATE TABLE Role(
 	RoleName VARCHAR(30),
 	-- User - User
 	-- Admin - Admin
-	-- Master Admin - Master_Admin
+	-- Master_Admin - Master Admin
+	-- Business - Business
 );
 
 INSERT INTO dbo.Role
 VALUES
 (   'USER', 'User' ),
 (   'ADMIN', 'Admin' ),
-(   'MASTERADMIN', 'Master Admin' );
-
+(   'MASTERADMIN', 'Master Admin' ),
+(   'BUSINESSS', 'Business' );
 -- search INSERT INTO dbo.UserInfor
 CREATE TABLE UserInfor(
 	ID INT IDENTITY(1,1) NOT NULL,

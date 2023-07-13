@@ -160,8 +160,8 @@ VALUES
 	)
 	VALUES
 	(   'UID00000001',    -- UserID - varchar(11)
-	    'PID00000002',    -- PostID - varchar(11)
-	    NULL,    -- Content - nvarchar(max)
+	    'AID00000002',    -- PostID - varchar(11)
+	    'adf',    -- Content - nvarchar(max)
 	    DEFAULT, -- TimeComment - datetime
 	    NULL,    -- ImageComment - varchar(255)
 	    NULL     -- NumInterface - int
@@ -586,7 +586,7 @@ GO
 SELECT UserId,FullName, Address, Mail, PhoneNumber, Dob, Gender, Nation, ImageUser, ImageBackGround
 FROM dbo.UserInfor WHERE FullName COLLATE Latin1_General_CI_AI LIKE '%' + N'Nguyễn ' + '%'
 
-SELECT UserId,FullName, ImageUser
+SELECT UserId,FullName, ImageUser, NumFriend
 FROM dbo.UserInfor WHERE FullName COLLATE Latin1_General_CI_AI LIKE '%' + N'a' + '%'
 
 DECLARE @name NVARCHAR(11)= N'Nguyễn Hồ Ngọc Ấn';
@@ -725,25 +725,38 @@ go
 		DELETE dbo.NOTE_lIKE
 		
 
-		
-	INSERT INTO dbo.COMMENT
-	(
-	    UserID,
-	    PostID,
-	    Content,
-	    TimeComment,
-	    ImageComment,
-	    NumInterface
-	)
-	VALUES
-	(   'UID00000001',    -- UserID - varchar(11)
-	    'PID00000006',    -- PostID - varchar(11)
-	    NULL,    -- Content - nvarchar(max)
-	    DEFAULT, -- TimeComment - datetime
-	    NULL,    -- ImageComment - varchar(255)
-	    DEFAULT  -- NumInterface - int
-	    )
+		go
+		 DECLARE @InsertedIDs TABLE (CmtID VARCHAR(11));
+                		INSERT INTO dbo.COMMENT
+                		(
+                		    UserID,
+                		    PostID,
+                		    Content,
+                		    TimeComment,
+               		    ImageComment,
+                		    NumInterface
+                		)
+                		OUTPUT Inserted.CmtID INTO @InsertedIDs
+                		VALUES
+                		(   'UID00000001',    -- UserID - varchar(11)
+                		    'SID00000045',    -- PostID - varchar(11)
+                		    'adf',    -- Content - nvarchar(max)
+                		    DEFAULT, -- TimeComment - datetime
+                		    '',    -- ImageComment - varchar(255)
+                		    DEFAULT  -- NumInterface - int
+                		    )
+                SELECT CmtID FROM @InsertedIDs;
 
+
+
+
+
+
+
+
+
+
+		go
 		SELECT NoteID, TimeRequest
         FROM dbo.NOTE_FRIEND
 		UNION ALL
@@ -754,16 +767,16 @@ go
 
 				DECLARE @NoteID NVARCHAR(11)= 'NLI00000008'
 				SELECT NoteID, ObjectID, UserID, statusNote, TimeComment, isRead,  CASE
-																					WHEN ObjectID LIKE 'ILD%' THEN (SELECT TOP(1) PostID
-																														FROM dbo.COMMENTCHILD
-																														INNER JOIN dbo.COMMENT ON COMMENT.CmtID = COMMENTCHILD.CmtID
-																														WHERE ChildID= ObjectID
-																														)
-																					WHEN ObjectID LIKE 'CID%' THEN (SELECT TOP(1) PostID
-																														FROM dbo.COMMENT 
-																														WHERE CmtID=ObjectID)
-																					ELSE ObjectID
-																				END AS PostID
+					WHEN ObjectID LIKE 'ILD%' THEN (SELECT TOP(1) PostID
+														FROM dbo.COMMENTCHILD
+														INNER JOIN dbo.COMMENT ON COMMENT.CmtID = COMMENTCHILD.CmtID
+														WHERE ChildID= ObjectID
+														)
+					WHEN ObjectID LIKE 'CID%' THEN (SELECT TOP(1) PostID
+														FROM dbo.COMMENT 
+														WHERE CmtID=ObjectID)
+					ELSE ObjectID
+				END AS PostID
                 	FROM dbo.NOTE_lIKE
                 	WHERE NoteID= @NoteID
 
@@ -801,6 +814,7 @@ go
 
 	SELECT *
 	FROM dbo.NOTE_FRIEND
+
 
 GO
 SELECT UserID, MESS, NOTE
@@ -984,3 +998,11 @@ GO
 
 	DELETE dbo.COMMENTCHILD
 	WHERE ChildID = ?
+	go
+	UPDATE dbo.PostShare
+	SET Content= ?
+	WHERE ShareID= ? AND UserID= ?
+
+	SELECT Account
+	FROM dbo.UserInfor
+	WHERE UserID= 'UID00000001'
