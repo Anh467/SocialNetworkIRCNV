@@ -1,1 +1,1 @@
-github: https://github.com/Anh467/SocialNetworkIRCNV
+github: https://github.com/Anh467/SocialNetworkIRCNV.git
