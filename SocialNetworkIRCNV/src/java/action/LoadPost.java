@@ -4,6 +4,7 @@
  */
 package action;
 
+import dao.BusinessDAO;
 import dao.PostDAO;
 import dao.PrivacyDao;
 import java.io.IOException;
@@ -25,6 +26,7 @@ import model.Privacy;
 import model.Relation;
 import model.User;
 import java.sql.Connection;
+import model.Advertisement;
 
 /**
  *
@@ -81,6 +83,9 @@ public class LoadPost extends HttpServlet {
                 post = api.getPostUserByPostID(PostID);
             } else if (PostID.substring(0, 3).equalsIgnoreCase("SID")) {
                 post = api.getPostShareByShareID(PostID);
+            } else if (PostID.substring(0, 3).equalsIgnoreCase("AID")) {
+                post = new BusinessDAO().getAdvertisementByAdvertiserID(PostID);
+                ((Advertisement) post).setIDUserCurrent(id);
             } else {
                 post = null;
             }
@@ -95,12 +100,14 @@ public class LoadPost extends HttpServlet {
             System.out.println("action.LoadPost.doGet()");
             e.printStackTrace();
         } else {
-            if (!id.equalsIgnoreCase(post.getUserID())) {
-                if (!isAllow(new dao.RelationDao("relate").getRelation(id, post.getUserID()), post)) {
-                    try {
-                        errorPage(request, response, user);
-                        return;
-                    } catch (Exception e) {
+            if (!PostID.substring(0, 3).equalsIgnoreCase("AID")) {
+                if (!id.equalsIgnoreCase(post.getUserID())) {
+                    if (!isAllow(new dao.RelationDao("relate").getRelation(id, post.getUserID()), post)) {
+                        try {
+                            errorPage(request, response, user);
+                            return;
+                        } catch (Exception e) {
+                        }
                     }
                 }
             }
@@ -117,6 +124,14 @@ public class LoadPost extends HttpServlet {
                 } else if (post instanceof PostShare) {
                     try {
                         show(request, response, ((PostShare) post).getDiv(), getHeader(user), post, user);
+                        //out.print(((PostUser) post).getDiv(id));
+                    } catch (Exception e) {
+                        System.out.println("action.LoadPost.doGet()");
+                        e.printStackTrace();
+                    }
+                } else if (post instanceof Advertisement) {
+                    try {
+                        show(request, response, ((Advertisement) post).getDiv(), getHeader(user), post, user);
                         //out.print(((PostUser) post).getDiv(id));
                     } catch (Exception e) {
                         System.out.println("action.LoadPost.doGet()");
@@ -288,6 +303,7 @@ public class LoadPost extends HttpServlet {
 
     public boolean isAllow(Relation relate, Post post) {
 //        if(relate.getUser1().equalsIgnoreCase(relate.getUser2())) return true;
+
         if (post.getPrivacyName().equalsIgnoreCase("private")) {
             return false;
         }

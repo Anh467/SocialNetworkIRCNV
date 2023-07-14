@@ -123,7 +123,7 @@
                                                 for (PostReport elem : list) {
                                             %>
                                             <tr class="<%= elem.getPostID()%>">
-                                                <td class="post-image"><img style="width: 50px;" src="<%=elem.getImg()%>" alt="Không Có Ảnh"></td>
+                                                <td class="post-image"><img style="width: 50px;" src="/SocialNetworkIRCNV/<%=elem.getImg()%>" alt="Không Có Ảnh"></td>
                                                 <td><%=elem.getContent()%></td>
                                                 <td><%=elem.getReportCount()%></td>
                                                 <td><%=elem.getTime()%></td>
@@ -176,51 +176,37 @@
                                                 alert('Thành công');
                                             }
                                             function deleteDB(id, isPost, link) {
+                                                var type;
+                                                if (isPost=== "1")
+                                                    type = 'Post';
+                                                else
+                                                    type = 'Share';
 
-                                                if (isPost === "1") {
-                                                    var data = {
-                                                        PostID: id,
-                                                        Type: 'Post'
-                                                    };
-                                                    $.ajax({
-                                                        url: '../DeletePost',
-                                                        type: 'POST',
-                                                        data: data,
-                                                        success: function (response) {
-                                                            // Xử lý phản hồi từ servlet nếu cần
-                                                            console.log('Yêu cầu thành công');
-                                                            skipRow(link,id);
-                                                        },
-                                                        error: function (xhr, status, error) {
-                                                            // Xử lý lỗi nếu có
-                                                            console.log('Lỗi yêu cầu: ' + error);
-                                                            console.log('true');
-                                                        }
-                                                    });
-                                                } else {
-                                                    var data = {
-                                                        PostID: id,
-                                                        Type: 'Share'
-                                                    };
-                                                    $.ajax({
-                                                        url: '../DeletePost',
-                                                        type: 'POST',
-                                                        data: data,
-                                                        success: function (response) {
-                                                            // Xử lý phản hồi từ servlet nếu cần
-                                                            console.log('Yêu cầu thành công');
-                                                            skipRow(link,id);
-                                                        },
-                                                        error: function (xhr, status, error) {
-                                                            // Xử lý lỗi nếu có
-                                                            console.log('Lỗi yêu cầu: ' + error);
-                                                            console.log('false');
-                                                        }
-                                                    });
-                                                }
+                                                var data = {
+                                                    PostID: id,
+                                                    Type: type
+                                                };
+
+                                                $.ajax({
+                                                    url: '/SocialNetworkIRCNV/DeletePost',
+                                                    type: 'POST',
+                                                    data: data,
+                                                    success: function (response) {
+                                                        // Xử lý phản hồi từ servlet nếu cần
+                                                        console.log('Yêu cầu thành công');
+                                                        skipRow(link, id, isPost);
+                                                    },
+                                                    error: function (xhr, status, error) {
+                                                        // Xử lý lỗi nếu có
+                                                        console.log('Lỗi yêu cầu: ' + error);
+                                                        console.log('true');
+                                                    }
+                                                });
+
                                             }
                                             function deleteRow(link, id, isPost) {
-                                                deleteDB(id, isPost, link)
+                                                if (confirm("Are you sure to delete this post?"))
+                                                    deleteDB(id, isPost, link);
                                             }
                                         </script>
                                         <!-- Add more rows as needed -->

@@ -99,15 +99,33 @@ public class AccountDAO {
 
     public void resetPass(String user, String pass) {
         try {
-            PreparedStatement ps= cnn.prepareStatement(resetPass);
+            PreparedStatement ps = cnn.prepareStatement(resetPass);
             ps.setString(1, new controller.Argon().convertArgon2(pass).trim());
             ps.setString(2, user);
-            
+
             ps.executeUpdate();
         } catch (Exception e) {
             System.out.println("dao.AccountDAO.resetPass()");
         }
-        
+
+    }
+
+    public String getAccountByUserID(String UserID) {
+        String query = "SELECT Account\n"
+                + "	FROM dbo.UserInfor\n"
+                + "	WHERE UserID= ?";
+        try {
+            PreparedStatement ps = cnn.prepareStatement(query);
+            ps.setString(1, UserID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                return rs.getString(1);
+            }
+        } catch (Exception e) {
+            System.out.println("dao.AccountDAO.getAccountByUserID()");
+            e.printStackTrace();
+        }
+        return "";
     }
 
     public String checkExistMail(String user, String mail) {

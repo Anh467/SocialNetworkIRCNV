@@ -70,17 +70,23 @@ public class UserReportDAO {
 
     public void AddReport(String urpid, String uid) {
         try {
-            PreparedStatement ps = cnn.prepareStatement("INSERT INTO dbo.ReportUser1686\n"
-                    + "	(\n"
-                    + "	    UserID,\n"
-                    + "	    UserIDRP,\n"
-                    + "	    Status\n"
-                    + "	)\n"
-                    + "	VALUES\n"
-                    + "	(   ?,  -- UserID - varchar(11)\n"
-                    + "	    ?,  -- UserIDRP - varchar(11)\n"
-                    + "	    1 -- Status - bit\n"
-                    + "	    )");
+            PreparedStatement ps = cnn.prepareStatement("	"
+                    + "declare @UserID varchar(11) = ? ;\n"
+                    + "	declare @UserIDRP varchar(11) = ? ;\n"
+                    + "	IF NOT EXISTS(select *\n"
+                    + "		from dbo.ReportUser1686\n"
+                    + "		where UserID= @UserID and UserIDRP= @UserIDRP)\n"
+                    + "		begin \n"
+                    + "			insert into dbo.ReportUser1686\n"
+                    + "			values\n"
+                    + "			(@UserID , @UserIDRP , 1)\n"
+                    + "		end \n"
+                    + "	else \n"
+                    + "		begin \n"
+                    + "			update dbo.ReportUser1686\n"
+                    + "			set Status= 1\n"
+                    + "			where UserID= @UserID and UserIDRP= @UserIDRP\n"
+                    + "		end ");
             ps.setString(1, urpid);
             ps.setString(2, uid);
             ps.executeUpdate();
@@ -115,7 +121,7 @@ public class UserReportDAO {
             ps.setInt(4, minute);
 
             ps.executeUpdate();
-            
+
             ps = cnn.prepareStatement("UPDATE dbo.UserInfor SET UserInfor.RoleID = 'LOCK' WHERE UserID = ?;");
             ps.setString(1, id);
             ps.executeUpdate();
@@ -127,6 +133,7 @@ public class UserReportDAO {
         }
         return false;
     }
+
     public boolean DeleteUser(String id) {
         try {
             PreparedStatement ps;

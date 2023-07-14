@@ -3,6 +3,8 @@
 <%@page import="model.PostShare"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="model.PostUser"%>
+<%@page import="model.Business"%>
+<%@page import="dao.BusinessDAO"%>
 <%@page import="model.Post"%>
 <%@page import="model.PostShare"%>
 <%@page import="model.PostUser"%>
@@ -149,6 +151,7 @@
 
             .container .left-panel ul{
                 padding:10px 0px;
+                margin-left: 10px
             }
 
             .container .left-panel ul li{
@@ -358,6 +361,47 @@
                 cursor:pointer;
                 margin-left:8px;
             }
+            .left-panel .pages-section,
+            .right-panel .friends-section{
+                margin:1rem 0px;
+                margin-left: 20px;
+            }
+
+            .left-panel .pages-section h4
+            {
+                margin-bottom:10px;
+            }
+
+            .left-panel .pages-section .page{
+                display: flex;
+                align-items:center;
+                text-decoration: none;
+                transition: .3s ease-in-out;
+                border-radius: 5px;
+                padding:7px 10px;
+                color:#333;
+            }
+
+            .left-panel .pages-section .page:hover{
+                background:#ddd;
+            }
+
+            .left-panel .pages-section .page > .dp{
+                height:40px;
+                width:40px;
+                overflow:hidden;
+                cursor: pointer;
+            }
+
+            .left-panel .pages-section .page > .dp > img{
+                width:100%;
+            }
+
+            .left-panel .pages-section .name{
+                font-size:18px;
+                cursor:pointer;
+                margin-left:8px;
+            }
         </style>
 
     </head>
@@ -368,9 +412,9 @@
         <header>
             <%@include file="../block/header.jsp" %>
         </header>
-
         <%            //String id = (String) session.getAttribute("id");
             if (id != null) {
+            ArrayList<Business> businessList= new BusinessDAO().getBusinessByUserID(id);
         %>
         <div class="container" style="max-width: 1850px; width: 100%; min-width: 1045px; padding: 0;">
             <div class="left-panel">
@@ -391,7 +435,7 @@
                         <i class="fa fa-home"></i>
                         <p> Home</p>
                     </li>
-                    <a href="${pageContext.request.contextPath}/PersonalPage/FriendList.jsp">
+                    <a href="${pageContext.request.contextPath}/PersonalPage/FriendList.jsp" style="text-decoration: none">
                     <li>
                         <i class="fa fa-user-friends"></i>
                         <p>Friends</p>
@@ -403,13 +447,29 @@
                             <p>Inbox</p>
                         </li>
                     </a>
-                    <li>
-                        <i class="fas fa-gamepad"></i>
-                        <p>Game</p>
-                    </li>
-
                 </ul>
-
+                    <div class="pages-section">
+                    <% if(businessList!= null || businessList.size()!=0){%>
+                      
+                        <h4>Advertisements</h4>
+                        <%for(int i=0 ; i < businessList.size(); i++){%>
+                            <a class='page' href="/SocialNetworkIRCNV/Business/BusinessIndex.jsp?BID=<%=businessList.get(i).getBusinessID()%>">
+                                <div class="dp">
+                                    <img src="<%= businessList.get(i).getImageAvatar() %>" alt="">
+                                </div>
+                                <p class="name"><%= businessList.get(i).getBrandName()%></p>
+                            </a>
+                        <%}; %>
+                    <% } %>
+                    <div class="action" onclick="addBusiness()">
+                        <a>
+                            <i class="fa-brands fa-adversal fa-2x"></i>
+                            <span>Advertisement</span>
+                        </a>
+                    </div>
+                    </div>
+                    
+                    
                 <div class="footer-links">
                     <a href="#">Privacy</a>
                     <a href="#">Terms</a>
@@ -469,7 +529,7 @@
                                                                                                                                                 object-fit: cover;
                                                                                                                                                 height: 200px;
                                                                                                                                             }">
-                                            <input  type="file" accept="image/*,capture=camera" name="coverimage" id="fileInput3">
+                                            <input  type="file" accept="image,gif/*,capture=camera" name="coverimage" id="fileInput3">
                                         </div>
 
                                         <div class="form-group">
@@ -672,7 +732,90 @@
                                 </div>
                             </div>
                         </div>
+                        <script>
+                            document.getElementById('fileInput2').addEventListener('change', function (event) {
+    var file = event.target.files[0];
+
+    // T?o ??i t??ng FileReader ?? ??c t?p tin
+    var reader = new FileReader();
+    reader.onload = function (e) {
+        var previewImage = document.getElementById('imgPost');
+        previewImage.src = e.target.result;
+        previewImage.style = " max-width:660px; max-height:660px;";
+    };
+    reader.readAsDataURL(file);
+});
+                        </script>
                     </div>
+                </div>
+        <div class="modal" id = "createBusiness" tabindex="-1" role="dialog">
+
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Create Your Brand</h5>
+
+                            </div>
+                            <div class="modal-body">
+                                <div>
+
+                                    <div class="form-group">
+                                        <label for="full-name" class="col-form-label">Brand Name:</label>
+                                        <input type="text" id="name"  required name="name" class="form-control border-primary">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="current-city" class="col-form-label">Address:</label>
+                                        <input type="text" id="address" name="address" class="form-control border-primary" required>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="current-city" class="col-form-label">Mail: </label>
+                                        <input type="text" id="mail" name="mail" class="form-control border-primary" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="current-city" class="col-form-label">Phone: </label>
+                                        <input type="text" id="phone" name="phone" class="form-control border-primary" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="current-city" class="col-form-label">Intro: </label> <br>
+                                        <textarea id="intro" name="intro" rows="5" cols="60"></textarea>
+                                    </div>
+                                     <div class="form-group">
+                                        <label for="avatar" class="col-form-label">Avatar:</label>
+                                        <img id="previewImage" alt="Preview Image" style="width: 130px;
+                                             height: 130px;
+                                             margin-right: 30px;
+                                             border-radius: 3px;
+                                             object-fit: cover;">
+                                        <input  type="file" accept="image/*,capture=camera" name="photo" id="fileInput">
+                                    </div>   
+                                    <input type="submit" class="btn btn-primary" value="Save changes" onclick="insertBusiness()">
+                                    <!--<button type="submit" class="btn btn-primary">Save  changes</button>-->
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+
+                            </div>
+
+                        </div>
+                    </div>             
+
+                    <script>
+                        document.getElementById('fileInput').addEventListener('change', function (event) {
+                            var file = event.target.files[0];
+                            // T?o ??i t??ng FileReader ?? ??c t?p tin
+                            var reader = new FileReader();
+                            reader.onload = function (e) {
+                                var previewImage = document.getElementById('previewImage');
+                                previewImage.src = e.target.result;
+                            };
+                            reader.readAsDataURL(file);
+                        });
+
+                    </script>
                 </div>
         <script src="/SocialNetworkIRCNV/js/load.js" ></script>
         <script src="/SocialNetworkIRCNV/js/controlPost.js"></script>

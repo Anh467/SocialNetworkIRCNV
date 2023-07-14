@@ -35,8 +35,6 @@ public class PostUserDAO {
             + "		set Content= ? \n"
             + "		where PostID= ? ";
 
-    
-    
     String checkExistPostUser = "SELECT *\n"
             + "FROM dbo.POST\n"
             + "WHERE PostID= ? AND UserID= ? ";
@@ -121,6 +119,22 @@ public class PostUserDAO {
 
     }
 
+    public void updatePostShare(String ShareID, String Content, String UserID) {
+        String query = "UPDATE dbo.PostShare\n"
+                + "	SET Content= ?\n"
+                + "	WHERE ShareID= ? AND UserID= ?";
+         try {
+            PreparedStatement ps = cnn.prepareStatement(query);
+            ps.setString(1, Content);
+            ps.setString(2, ShareID);
+            ps.setString(3, UserID);
+            ps.executeUpdate();
+        } catch (Exception e) {
+             System.out.println("dao.PostUserDAO.updatePostShare()");
+            e.printStackTrace();
+        }
+    }
+
     public void createPostShare(String UserID, String PostID, String Content, String PublicPost) {
         try {
             PreparedStatement ps = cnn.prepareStatement(createPostShare);
@@ -168,9 +182,9 @@ public class PostUserDAO {
 
     public boolean deletePostShare(String PostID, String UserID) {
         String query = "DELETE dbo.POSTSHARE\n"
-            + "WHERE ShareID= ?";
+                + "WHERE ShareID= ?";
         try {
-            
+
             PreparedStatement ps = cnn.prepareStatement(query);
             ps.setString(1, PostID);
             ps.executeUpdate();
@@ -183,7 +197,7 @@ public class PostUserDAO {
 
     public boolean deletePost(String PostID, String UserID) {
         String query = "DELETE FROM dbo.POST\n"
-            + "WHERE PostID= ?";
+                + "WHERE PostID= ?";
         try {
             PreparedStatement ps = cnn.prepareStatement(query);
             ps.setString(1, PostID);

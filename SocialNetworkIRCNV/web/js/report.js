@@ -71,7 +71,7 @@ function askReportUser(rpID, userID){
 function reportUser(rpID, userID) {
     var data = {
         rpID: rpID,
-        userID: userID,
+        userID: userID
     };
 
     // Gửi yêu cầu Ajax tới Servlet

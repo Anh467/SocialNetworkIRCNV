@@ -4,6 +4,7 @@
  */
 package action;
 
+import dao.BusinessDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -11,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Advertisement;
 import model.CommentChild;
 import model.Comment;
 import model.PostShare;
@@ -58,6 +60,10 @@ public class LikeObject extends HttpServlet {
         }else if(ObejectID.substring(0, 3).equalsIgnoreCase("CID")){
             Comment comment= new dao.CommentDAO().getCommentByCmtID(ObejectID);
             div= comment.getUpdateDiv(id);
+        }else if(ObejectID.substring(0, 3).equalsIgnoreCase("AID")){
+            Advertisement advertisement= new BusinessDAO().getAdvertisementByAdvertiserID(ObejectID);
+            advertisement.setIDUserCurrent(id);
+            div= advertisement.getUpdateDiv();
         }
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */

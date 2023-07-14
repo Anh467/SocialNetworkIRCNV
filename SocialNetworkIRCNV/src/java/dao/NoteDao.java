@@ -164,6 +164,10 @@ public class NoteDao {
             ps.setString(1, UserID);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
+                NOTE note= getNoteByID(rs.getString(1));
+                if(note instanceof NOTE_LIKE)
+                    if(((NOTE_LIKE)note).getObjectID().substring(0, 3).equalsIgnoreCase("AID"))
+                        continue;
                 noteList.add(getNoteByID(rs.getString(1)));
             }
         } catch (Exception e) {
@@ -195,6 +199,10 @@ public class NoteDao {
             ps.setInt(2, offset);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
+                NOTE note= getNoteByID(rs.getString(1));
+                if(note instanceof NOTE_LIKE)
+                    if(((NOTE_LIKE)note).getObjectID().substring(0, 3).equalsIgnoreCase("AID"))
+                        continue;
                 noteList.add(getNoteByID(rs.getString(1)));
             }
         } catch (Exception e) {

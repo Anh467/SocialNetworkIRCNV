@@ -121,6 +121,8 @@ function load(Type) {
     ;
 }
 function deletePost(PostID, Type) {
+    if(!confirm("Are you sure to delete this post?"))
+        return;
     var post = document.getElementById(PostID);
     var postContain = document.getElementById("post");
     $.ajax({

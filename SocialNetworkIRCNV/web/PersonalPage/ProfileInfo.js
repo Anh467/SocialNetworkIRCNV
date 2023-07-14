@@ -1,17 +1,17 @@
 function relate(Type, UID) {
-    var isfriend= "<div style='color: blue'><i class='fa-solid fa-user-check'></i> Your Friend </div>";
-    var request= "<div style='color: black'><i class='fa-solid fa-people-arrows'></i> Requested </div>";
-    var isNotFriend= "<div style='color: black'><i class='fa-solid fa-user-check'></i> Stranger </div>";
-    var friendstatus= document.getElementById('friendstatus');
+    var isfriend = "<div style='color: blue'><i class='fa-solid fa-user-check'></i> Your Friend </div>";
+    var request = "<div style='color: black'><i class='fa-solid fa-people-arrows'></i> Requested </div>";
+    var isNotFriend = "<div style='color: black'><i class='fa-solid fa-user-check'></i> Stranger </div>";
+    var friendstatus = document.getElementById('friendstatus');
     $.ajax({
         url: "/SocialNetworkIRCNV/Relation",
         type: "POST",
-        data: {Type: Type, UID: UID },
+        data: {Type: Type, UID: UID},
         success: function (data) {
-            if(data=== "null"){
+            if (data === "null") {
                 alert('Request Fail');
-            }else{
-                friendstatus.innerHTML= data;
+            } else {
+                friendstatus.innerHTML = data;
             }
 
         },
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
             } else {
                 var currentOffset = parseInt(offsett.innerHTML);
                 offsett.innerHTML = currentOffset + 1;
-                post.innerHTML =  post.innerHTML+data;
+                post.innerHTML = post.innerHTML + data;
             }
 
 //            var currentOffset = parseInt(offsett.innerHTML);
@@ -47,3 +47,36 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
+function changePass() {
+    $('#changepass').modal('show');
+}
+function doChangePass() {
+    var oldPass = document.getElementById('pass').value;
+    var newPass = document.getElementById('newpass').value;
+    var repeat = document.getElementById('repeat').value;
+    if ((oldPass.trim() === '') || (newPass.trim() === '') || (repeat.trim() === '')) {
+        alert('All input must be fill');
+        return;
+    }
+    if (!(newPass.trim() === repeat.trim())) {
+        alert('New pass and repeat password must be the same!!!');
+        return;
+    }
+
+    $.ajax({
+        url: "/SocialNetworkIRCNV/ChangePassword",
+        type: "POST",
+        data: {oldPass: oldPass, newPass: newPass},
+        success: function (data) {
+            if (data.trim() === 'true') {
+                alert('!!!change password successfull!!!');
+            } else {
+                alert('!!!change password fail!!!');
+            }
+        },
+        error: function (xhr) {
+            console.log("?ã x?y ra l?i: ");
+        }
+    });
+}

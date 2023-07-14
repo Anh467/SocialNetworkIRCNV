@@ -1,5 +1,6 @@
 <html lang="en">
-
+    <%@ page isErrorPage="true" %> 
+    <%@ page errorPage="../Authen/signup.jsp" %>  
 <head>
   <meta charset="UTF-8" />
   <title>An Error Has Occured</title>
@@ -12,8 +13,6 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         <script src="https://kit.fontawesome.com/24c45437f2.js" crossorigin="anonymous"></script>
   <style>
-  
-
     .Container {
       text-align: center;
       position: relative;
@@ -85,7 +84,7 @@
 <body>
 
   <div class="headd">
-      <jsp:include page="block/header.jsp" />
+      <%@include file="../block/header.jsp" %>
   </div>
   <div class="bodyy" style="margin-top: 15vw;">
     <div class="Container">

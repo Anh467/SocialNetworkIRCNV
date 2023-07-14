@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.Advertisement;
 import model.User;
 
 /**
@@ -85,8 +86,10 @@ public class GetLoadPost extends HttpServlet {
             for (int i = 0; i < post.size(); i++) {
                 if (post.get(i) instanceof PostUser) {
                     out.append(((PostUser) post.get(i)).getDiv());
-                } else {
+                }else  if (post.get(i) instanceof PostShare) {
                     out.append(((PostShare) post.get(i)).getDiv());
+                }else{
+                    out.append(((Advertisement) post.get(i)).getDiv());
                 }
             }
         }

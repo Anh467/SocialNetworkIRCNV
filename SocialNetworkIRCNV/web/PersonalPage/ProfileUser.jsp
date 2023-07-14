@@ -471,8 +471,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
             <%@include file="../block/header.jsp" %>
         </header>
         <%            if (profileUser == null) {
-                response.sendRedirect("/error/errorPage.jsp");
-                return;
+                throw new Exception("User not fount");
             }
             System.out.println("id and UID" + id + UID);
             String FriendStatus = new dao.RelationDao("relate").getDivRelation(id, UID);
@@ -480,7 +479,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
 
             //request.setAttribute("profileUser", profileUser);
         %>
-
+        
         <div class ="profile-container">
             <img src="<%=profileUser.getCoverImg()%>" class="cover-img"/>
             <div class = "profile-details">

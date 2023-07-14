@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page isErrorPage="true" %>  
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -16,11 +17,11 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Authen/signup.css">
     </head>
     <body>
-        <section class="login-block" >
+        <section class="login-block" style="">
 
-            <div class="col-xl-5 col-lg-6 col-md-7 col-sm-9 col-11  login-sec container">
+            <div class="col-xl-5 col-lg-6 col-md-7 col-sm-9 col-11  login-sec container" >
                 <h2 class="text-center">Sign up now</h2>
-                <form action="/SocialNetworkIRCNV/Verify" method="get" class="login-form" onsubmit="return validateForm()">
+                <form action="/SocialNetworkIRCNV/Verify" method="get" class="login-form" onsubmit="return validateForm()" style="overflow-x:hidden; overflow-y:auto;">
                     <div class="form-group">
                         <label>User Name</label>
                         <input name="user" id="username" value="${user}" type="text" class="form-control" placeholder="Enter user name" onblur="validateUsername()">
@@ -32,7 +33,7 @@
                                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" 
                                title="Must contain at least one number and one uppercase and lowercase letter, 
                                and at least 8 or more characters" required> 
-                            <small id="usernameError" style="color: red;"></small>
+                        <small id="usernameError" style="color: red;"></small>
                     </div>
                     <div class="form-group">
 
@@ -77,7 +78,7 @@
                     <a href="${pageContext.request.contextPath}/Authen/forgotpass.jsp">Forgot password</a> <br>
                     <a href="${pageContext.request.contextPath}/Authen/login.jsp">You already have account?</a>
                 </div>
-               <script>
+                <script>
                     function validateForm() {
                         var username = document.getElementById("username").value;
                         var pass = document.getElementById("pass").value;
@@ -92,14 +93,14 @@
                             errorElement.textContent = "";
                             return true;
                         }
-                         if (!regex.test(pass)) {
-                             errorElement.textContent = "Invalid Password!";
+                        if (!regex.test(pass)) {
+                            errorElement.textContent = "Invalid Password!";
                             return false;
                         } else {
                             errorElement.textContent = "";
                             return true;
                         }
-                         if (!regex.test(repeat)) {
+                        if (!regex.test(repeat)) {
                             errorElement.textContent = "Invalid Password Repeat!";
                             return false;
                         } else {
@@ -109,7 +110,7 @@
                     }
 
                 </script>
-
+            </div>
 
 
 

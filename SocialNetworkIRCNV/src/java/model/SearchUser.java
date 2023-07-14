@@ -5,6 +5,7 @@
 package model;
 
 import controller.Text;
+import dao.UserDAO;
 
 /**
  *
@@ -14,15 +15,16 @@ public class SearchUser {
     private String UserID, fullName, img_user, link_href;
     private int mutual_friend;
 
-    public SearchUser(String UserID, String fullName, String img_user) throws Exception{
+    public SearchUser(String UserID, String fullName, String img_user, int mutual_friend) throws Exception{
         Text text= new controller.Text();
         this.UserID= UserID;
         if(img_user==null||img_user.isEmpty())
-            this.img_user = "";
+            this.img_user = "https://cdn-icons-png.flaticon.com/512/1946/1946429.png";
         else this.img_user = "/SocialNetworkIRCNV/"+img_user;
-        this.fullName = text.changeUTF8(fullName);
+        this.fullName =fullName;
         this.link_href= "../PersonalPage/ProfileUser.jsp?UID="+this.UserID;
-        this.mutual_friend= 0;
+        
+        this.mutual_friend= mutual_friend;
     }
 
     public String getLink_href() {

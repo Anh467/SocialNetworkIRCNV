@@ -84,39 +84,47 @@ public class ModifyPost extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
         Text text = new Text();
+        HttpSession session = request.getSession();
+        String id = (String) session.getAttribute("id");
+        String isPublic = request.getParameter("isPublic");
+        Part part = request.getPart("photoPost");
+        String PostID = request.getParameter("IDpost");
+        System.out.println(PostID + " ISPOST ");
+        String CONTENT = request.getParameter("contentPost");
+        
         try {
             //
-            HttpSession session = request.getSession();
-            String id = (String) session.getAttribute("id");
-            String isPublic = request.getParameter("isPublic");
-            Part part = request.getPart("photoPost");
-            String PostID = request.getParameter("IDpost");
-            System.out.println(PostID + " ISPOST ");
-            String CONTENT = request.getParameter("contentPost");
-            System.out.println(CONTENT + "    hoahsohdaosahkshdk");
             String content = text.changeUTF8((String) request.getParameter("contentPost"));
             dao.PostUserDAO api = new dao.PostUserDAO(id);
-            //get path image
             boolean checkExist = api.checkExistPostUser(PostID, id);
-            if (checkExist) {
-                if (part != null && part.getSubmittedFileName() != null) {
-                    //khởi tạo controldata
-                    ControlData data = new ControlData(part, getServletContext());
-                    // save to db
+            if (PostID.substring(0, 3).equalsIgnoreCase("PID")) {
+                System.out.println(CONTENT + "    hoahsohdaosahkshdk");
+                
 
-                    new dao.PostUserDAO(id).updatePost(PostID, id, content, data.getFilename());
-                    //khowri tao cho viec bai post
-                    data.createInitForPost(PostID);
-                    //create folder
-                    data.creatFolder();
-                    // save image
-                    data.SaveImage();
-                    System.out.println("path: " + data.getRealPath());
-                } else {
-                    new dao.PostUserDAO(id).updatePost(PostID, id, content);
+                //get path image
+                if (checkExist) {
+                    if (part != null && part.getSubmittedFileName() != null) {
+                        //khởi tạo controldata
+                        ControlData data = new ControlData(part, getServletContext());
+                        // save to db
+
+                        new dao.PostUserDAO(id).updatePost(PostID, id, content, data.getFilename());
+                        //khowri tao cho viec bai post
+                        data.createInitForPost(PostID);
+                        //create folder
+                        data.creatFolder();
+                        // save image
+                        data.SaveImage();
+                        System.out.println("path: " + data.getRealPath());
+                    } else {
+                        new dao.PostUserDAO(id).updatePost(PostID, id, content);
+                    }
                 }
-                request.getRequestDispatcher("ProfileInfo.jsp").forward(request, response);
+
+            } else if (PostID.substring(0, 3).equalsIgnoreCase("SID")) {
+                new dao.PostUserDAO(id).updatePostShare(PostID, content, id);
             }
+            request.getRequestDispatcher("ProfileInfo.jsp").forward(request, response);
 
         } catch (Exception e) {
             System.out.println("");

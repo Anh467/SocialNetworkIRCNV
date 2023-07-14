@@ -104,7 +104,22 @@ public class ControlData {
         this.realPath = projectRootPath + "\\web\\data\\user\\" + UserID + "\\background";
         this.pathForDb= "data\\user\\" + UserID + "\\background";
     }
-
+    
+    public void createInitForBusinessPost(String BusinessID, String AdvertiserID) {
+        this.realPathBuild = projectRootPath + "\\build\\web\\data\\business\\"+BusinessID+ "\\" + AdvertiserID + "\\post";
+        this.realPath = projectRootPath + "\\web\\data\\business\\"+BusinessID+ "\\" + AdvertiserID + "\\post";
+        this.pathForDb= "data\\business\\"+BusinessID+ "\\" + AdvertiserID + "\\post";
+    }
+    public void createInitForBusinessAvatar(String BID) {
+        this.realPathBuild = projectRootPath + "\\build\\web\\data\\business\\" + BID + "\\avatar";
+        this.realPath = projectRootPath + "\\web\\data\\business\\" + BID + "\\avatar";
+        this.pathForDb= "data\\business\\" + BID + "\\avatar";
+    }
+    public void createInitForBusinessBackGround(String BID) {
+        this.realPathBuild = projectRootPath + "\\build\\web\\data\\business\\" + BID + "\\background";
+        this.realPath = projectRootPath + "\\web\\data\\business\\" + BID + "\\background";
+        this.pathForDb= "data\\business\\" + BID + "\\background";
+    }
     //UserID
     //Content
     //ImagePost

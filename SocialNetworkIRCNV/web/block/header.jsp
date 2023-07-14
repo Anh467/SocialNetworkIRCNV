@@ -25,6 +25,7 @@
         <script src="https://kit.fontawesome.com/24c45437f2.js" crossorigin="anonymous"></script>
 
     </head>
+  
     <%       String id = (String) session.getAttribute("id");
         String UID = request.getParameter("UID");
         User profileUser = new dao.UserDAO().getUserByID(UID);

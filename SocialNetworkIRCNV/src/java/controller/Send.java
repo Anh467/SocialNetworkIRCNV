@@ -23,7 +23,7 @@ public class Send {
 
     final static String user = "ircnvsocialnetwork@gmail.com";
     final static String pass = "abvicwbypkycpkal";
-
+    final static String webname= "IRCN V";
     public void sendEmail(String emailTo, String emailSubject, String emailContent) {
         Properties prop = new Properties();
         prop.put("mail.smtp.host", "smtp.gmail.com");
@@ -62,7 +62,7 @@ public class Send {
 
     public void sendMailForgotPass(String mail, String name, String code) {
         try {
-            String emailSubject = "VERIFY CODE FOR CONFIRM";
+            String emailSubject = "VERIFY CODE FOR CONFIRM - "+webname;
             String emailContent = "hello user " + name + " this is reset password code: " + code;
             sendEmail(mail, emailSubject, emailContent);
         } catch (Exception e) {
@@ -73,7 +73,7 @@ public class Send {
     }
 public void sendMailCheckSignUp(String mail, String name, String code) {
         try {
-            String emailSubject = "VERIFY CODE FOR SIGNUP";
+            String emailSubject = "VERIFY CODE FOR SIGNUP - "+webname;
             String emailContent = "hello user " + name + " thank you for your enjoy us \n this is your mail code: " + code;
             sendEmail(mail, emailSubject, emailContent);
         } catch (Exception e) {

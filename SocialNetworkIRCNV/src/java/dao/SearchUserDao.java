@@ -22,14 +22,15 @@ public class SearchUserDao {
     
     public ArrayList<SearchUser> getSearchUserByKeyWord(String keyword) {
         ArrayList<SearchUser> searchUser= new ArrayList<>();
-        String query = "SELECT UserId,FullName, ImageUser\n"
+        String query = "SELECT UserId,FullName, ImageUser, NumFriend\n"
                 + "FROM dbo.UserInfor WHERE FullName COLLATE Latin1_General_CI_AI LIKE '%' + ? + '%'";
         try {
             PreparedStatement ps = cnn.prepareStatement(query);
             ps.setString(1, keyword);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                searchUser.add(new SearchUser(rs.getString(1), rs.getString(2), rs.getString(3)));
+                //String name= rs.getString(2);
+                searchUser.add(new SearchUser(rs.getString(1), rs.getString(2), rs.getString(3), rs.getInt(4)));
             }
         } catch (Exception e) {
             System.out.println("dao.SearchUserDao.getSearchUserByKeyWord()");

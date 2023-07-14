@@ -7,10 +7,12 @@ package dao;
 import controller.Text;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Random;
 import jdk.vm.ci.code.CodeUtil;
 import model.Post;
 import model.PostShare;
 import model.PostUser;
+import model.Advertisement;
 
 /**
  *
@@ -21,15 +23,17 @@ public class PostDAO {
     private Connection cnn;
     Text text;
     private String IDUserCurrent;
+
     public PostDAO(String IDUserCurrent) {
         cnn = new connection.connection().getConnection();
         text = new Text();
-        this.IDUserCurrent= IDUserCurrent;
+        this.IDUserCurrent = IDUserCurrent;
     }
+
     public PostDAO(Connection cnn, String IDUserCurrent) {
-         this.cnn= cnn;
+        this.cnn = cnn;
         text = new Text();
-        this.IDUserCurrent= IDUserCurrent;
+        this.IDUserCurrent = IDUserCurrent;
     }
     String getPostUser = "SELECT PostID, POST.UserID, Content, ImagePost, TimePost, NumInterface, NumComment, NumShare, PrivacyName, FullName, ImageUser\n"
             + "            FROM dbo.POST\n"
@@ -191,11 +195,43 @@ public class PostDAO {
         }
         return null;
     }
-    public Post getPostByID(String PostID){
-        if(PostOrShare(PostID))
+
+    public Advertisement getAdvertisement() {
+        String query = "DECLARE @AdvertiserID VARCHAR(11);\n"
+                + "SET @AdvertiserID= (SELECT TOP (1) AdvertiserID FROM dbo.Active ORDER BY dateShow);\n"
+                + "\n"
+                + "UPDATE dbo.Advertisement\n"
+                + "SET Quantity-=1\n"
+                + "WHERE AdvertiserID= @AdvertiserID\n"
+                + "\n"
+                + "UPDATE dbo.Active\n"
+                + "SET dateShow= GETDATE()\n"
+                + "WHERE AdvertiserID= @AdvertiserID\n"
+                + "\n"
+                + "SELECT AdvertiserID, BusinessID, Content, ImagePost, TimePost, NumInterface, NumComment, NumShare, NumOfShow, Status, Quantity\n"
+                + "FROM dbo.Advertisement\n"
+                + "WHERE AdvertiserID = @AdvertiserID";
+        try {
+            PreparedStatement ps = cnn.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                return new Advertisement(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
+                        rs.getString(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getInt(9), rs.getString(10), rs.getInt(11), IDUserCurrent);
+            }
+        } catch (Exception e) {
+            System.out.println("dao.BusinessDAO.getAdvertisementByAdvertiserID()");
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Post getPostByID(String PostID) {
+        if (PostOrShare(PostID)) {
             return getPostUserByPostID(PostID);
+        }
         return getPostShareByShareID(PostID);
     }
+
     public PostShare getPostShareByShareID(String ShareID) {
         try {
             String query = "SELECT c.UserID, c.FullName, c.ImageUser, \n"
@@ -268,6 +304,7 @@ public class PostDAO {
             ps.setString(1, id);
             ps.setInt(2, offset);
             ResultSet rs = ps.executeQuery();
+
             while (rs.next()) {
                 String PostID = rs.getString(1);
                 if (PostOrShare(PostID)) {
@@ -280,6 +317,12 @@ public class PostDAO {
             System.out.println("dao.PostDAO.getPostForProfileInfo()");
             e.printStackTrace();
         }
+        Advertisement advertisement = getAdvertisement();
+        if (advertisement != null) {
+            int rand = new Random().nextInt(post.size()) + 1;
+            post.add(rand, advertisement);
+        }
+
         return post;
     }
 

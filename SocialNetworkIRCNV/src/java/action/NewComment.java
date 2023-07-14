@@ -128,6 +128,8 @@ public class NewComment extends HttpServlet {
             excuteCommentChild(request, response, id, object, content, part);
         }else if (object.substring(0, 3).equalsIgnoreCase("PID")) {
             excuteComment(request, response, id, object, content, part);
+        }else if (object.substring(0, 3).equalsIgnoreCase("AID")) {
+            excuteComment(request, response, id, object, content, part);
         }
 
     }

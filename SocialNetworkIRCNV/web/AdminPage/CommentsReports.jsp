@@ -177,46 +177,24 @@
                                                 alert('Thành công');
                                             }
                                             function deleteDB(id, isPost, link) {
-                                                var data = {
-                                                    id: id,
-                                                    isPost: isPost
-                                                };
-                                                if (isPost === "1") {
-                                                    $.ajax({
-                                                        url: 'servlet_xóa-post bằng id',
-                                                        type: 'POST',
-                                                        data: data,
-                                                        success: function (response) {
-                                                            // Xử lý phản hồi từ servlet nếu cần
-                                                            console.log('Yêu cầu thành công');
-                                                            skipRow(link, id, isPost);
-                                                        },
-                                                        error: function (xhr, status, error) {
-                                                            // Xử lý lỗi nếu có
-                                                            console.log('Lỗi yêu cầu: ' + error);
-                                                            console.log('true');
+                                                $.ajax({
+                                                    url: "/SocialNetworkIRCNV/DeleteOrUpdateComment",
+                                                    type: "POST",
+                                                    data: {id: id, type: 'delete'},
+                                                    success: function (response) {
+                                                        if (response === 'null') {
+                                                            alert("Something wrong");
                                                         }
-                                                    });
-                                                } else {
-                                                    $.ajax({
-                                                        url: 'servlet_xóa-postShare bằng id',
-                                                        type: 'POST',
-                                                        data: data,
-                                                        success: function (response) {
-                                                            // Xử lý phản hồi từ servlet nếu cần
-                                                            console.log('Yêu cầu thành công');
-                                                            skipRow(link, id , isPost);
-                                                        },
-                                                        error: function (xhr, status, error) {
-                                                            // Xử lý lỗi nếu có
-                                                            console.log('Lỗi yêu cầu: ' + error);
-                                                            console.log('false');
-                                                        }
-                                                    });
-                                                }
+                                                    },
+                                                    error: function (xhr) {
+                                                        alert("Something wrong");
+                                                    }
+                                                });
                                             }
                                             function deleteRow(link, id, isPost) {
-                                                deleteDB(id, isPost, link)
+                                                if (!confirm("Are you sure to delete this comment!!!"))
+                                                    return;
+                                                deleteDB(id, isPost, link);
                                             }
                                         </script>
                                         <!-- Add more rows as needed -->

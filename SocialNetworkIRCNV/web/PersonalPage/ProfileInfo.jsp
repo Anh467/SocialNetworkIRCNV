@@ -371,7 +371,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                         <a href ="#" onclick="changeInfo()" style = "font-size: 17px; text-decoration: none; color:#626262;">  <i class="icon fa-solid fa-pen " style = " background:#e4e6eb;
                                                                                                                                   color:#000;"></i> Change Information</a></button>
                     <br>
-
+                    <button type = "button" style="background-color: #e4e6eb"> 
+                        <a href ="#" onclick="changePass()" style = "font-size: 17px; text-decoration: none; color:#626262;">  
+                            <i class="icon fa-solid fa-pen " style = " background:#e4e6eb;color:#000;"></i> Change Password</a>
+                    </button>
+                    <br>
                 </div>
             </div>
 
@@ -428,7 +432,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                             <div class ="post-input-container" id="post-input-container">
                                 <textarea id="NewPostTextarea" rows ="3" placeholder="What's on your mind?"></textarea>    
                                 <img id="previewImage" src="#" alt="Preview Image" style="display: none">
-                                <input type="file" accept="image/*,capture=camera" name="photo" id="fileInput">
+                                <input type="file" accept="image,gif/*,capture=camera" name="photo" id="fileInput">
                             </div> 
                             <button onclick="load('Post')">add new post</button>
                         </div>
@@ -498,7 +502,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">Change Information</h5>
+                                <h5 class="modal-title">Change Password</h5>
 
                             </div>
                             <div class="modal-body">
@@ -623,7 +627,49 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
 
                     </script>
                 </div>
+                <div class="modal" id = "changepass" tabindex="-1" role="dialog">
 
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Change Information</h5>
+
+                            </div>
+                            <div class="modal-body">
+                                <div>
+                                    <div class="form-group">
+                                        <label for="full-name" class="col-form-label">Old Password:</label>
+                                        <input type="password" id="pass" name="pass" class="form-control border-primary">
+                                    </div>
+                                     <div class="form-group">
+                                        <label >New Password</label>
+                                        <input name="newpass" value="${pass}" type="password" class="form-control" placeholder="Enter password"id="newpass"  onsubmit="return validateForm()" 
+                                               pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" 
+                                               title="Must contain at least one number and one uppercase and lowercase letter, 
+                                               and at least 8 or more characters" required> 
+                                        <small id="usernameError" style="color: red;"></small>
+                                    </div>
+                                    <div class="form-group">
+
+                                        <input type="password" class="form-control" placeholder="Repeat Password"id="repeat" name="repeat" onsubmit="return validateForm()"
+                                               pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" 
+                                               title="Password are not same" required>
+                                        <small id="usernameError" style="color: red;"></small>
+                                    </div>
+                                               <input type="submit" class="btn btn-primary" value="Save changes" onclick="doChangePass()">
+                                    <!--<button type="submit" class="btn btn-primary">Save  changes</button>-->
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+
+                            </div>
+
+                        </div>
+                    </div>             
+
+                </div>                   
                 <div class="modal" id = "modalShare" tabindex="-1" role="dialog">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">

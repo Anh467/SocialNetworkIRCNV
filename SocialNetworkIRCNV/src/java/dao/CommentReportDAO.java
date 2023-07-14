@@ -69,7 +69,7 @@ public class CommentReportDAO {
 
     public void AddReport(String pid, String uid, String isPost) {
         boolean isPostVerBool = false;
-        if (isPost.equalsIgnoreCase("1")) {
+        if (pid.substring(0, 3).equalsIgnoreCase("CID")) {
             isPostVerBool = true;
         }
         try {
@@ -86,7 +86,7 @@ public class CommentReportDAO {
                     + "    ?,   -- UserID - varchar(11)\n"
                     + "    CASE WHEN ? = 1 \n"
                     + "THEN (SELECT UserID FROM dbo.COMMENT WHERE dbo.COMMENT.CmtID=?) \n"
-                    + "ELSE (SELECT UserID FROM dbo.COMMENTSHARE WHERE dbo.COMMENTSHARE.CmtID=?) END,   -- UserID2 - varchar(11)\n"
+                    + "ELSE (SELECT UserID FROM dbo.COMMENTCHILD WHERE ChildID= ? ) END,   -- UserID2 - varchar(11)\n"
                     + "    ?, -- IsPost - bit\n"
                     + "    1  -- Status - bit\n"
                     + "    )");

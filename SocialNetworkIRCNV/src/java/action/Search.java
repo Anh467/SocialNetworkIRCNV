@@ -46,7 +46,7 @@ public class Search extends HttpServlet {
         // In ra chuỗi JSON
         System.out.println(json);
         response.setContentType("application/json");
-
+        response.setCharacterEncoding("UTF-8");
         // Gửi kết quả tìm kiếm về cho trình duyệt
         response.getWriter().write(json);
     }
