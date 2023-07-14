@@ -21,3 +21,21 @@ VALUES
 (   'wow', 'wow', '<i class="fa-solid fa-face-explode"></i>'),
 (   'none', 'none', '<i class="fa-regular fa-thumbs-up"></i>');
 
+INSERT INTO dbo.Role
+(
+    RoleID,
+    RoleName
+)
+VALUES
+(   'Lock', -- RoleID - varchar(11)
+    '1895'  -- RoleName - varchar(30)
+    )
+INSERT INTO dbo.Role
+(
+    RoleID,
+    RoleName
+)
+VALUES
+(   'DELETED', -- RoleID - varchar(11)
+    '4489'  -- RoleName - varchar(30)
+    )
