@@ -1,4 +1,5 @@
-# SocialNetworkIRCNV
+# SocialNetworkIRCNV 
+  Dồ án môn học SWP 
 # Tóm tắt
   IRCN V là một mạng xã hội trực tuyến mới, được phát triển để cung cấp một nền tảng cho người dùng để kết nối và giao tiếp với nhau. 
   Ngoài ra còn cung cấp các chức năng tạo thương hiệu và đăng quảng cáo dựa trên các thương hiệu đó 
