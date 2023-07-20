@@ -13,3 +13,9 @@
   Tầm nhìn chung của dự án trang mạng xã hội là tạo ra môi trường trực tuyến động và tương tác, làm phong phú cuộc sống xã hội của người dùng và tạo điều kiện cho việc kết nối có ý nghĩa. Bằng cách tận dụng sức mạnh của phương tiện truyền thông xã hội, nền tảng nhằm cung cấp cho cá nhân một nền tảng để tự thể hiện, khám phá và hợp tác. Nó hướng tới việc tạo ra một cộng đồng kỹ thuật số sôi nổi, nơi người dùng có thể khám phá các quan điểm đa dạng, xúc tiến các mối quan hệ mới và đóng góp vào sự phát triển cá nhân và chuyên nghiệp.
 
   Tóm lại, dự án trang mạng xã hội hướng đến việc tạo ra một nền tảng bao gồm và hấp dẫn, kết nối các cá nhân, thúc đẩy tương tác xã hội và cho phép người dùng tự thể hiện, khám phá mối quan hệ mới và tham gia vào các cuộc trò chuyện có ý nghĩa trong cộng đồng kỹ thuật số.
+
+# Step
+1. first run database: [A04-RT01_DB_final.sql] file in [database] folder
+2. Open project in netbean at [SocialNetworkIRCNV] folder 
+3. add all [.jar] file in [libary] folder
+4. Run it
